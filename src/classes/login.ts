@@ -7,5 +7,5 @@ export class Login {
     
     @IsNotEmpty()
     @Length( 6, 20)
-    password;
+    password: string;
 }
