@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtService } from './services/jwt.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { DbConfigService } from './services/db-config.service';
 
 @Module({
   imports: [
@@ -14,13 +15,20 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         secretOrPrivateKey: configService.get<string>('JWT_SEED'),
       }),
       inject: [ConfigService], 
-    })
+    }),
+
+    ConfigModule.forRoot({
+      isGlobal: true
+    }),
+    
   ],
   providers: [
-    JwtService
+    JwtService,
+    DbConfigService
   ],
   exports: [
-    JwtService
+    JwtService,
+    DbConfigService
   ]
 })
 export class SharedModule {}
