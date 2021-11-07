@@ -4,7 +4,7 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 @Injectable()
 export class DbConfigService {
-  getTypeORMconfig(): TypeOrmModuleOptions {
+  getTypeORMconfig(entity: string = '/../**/*.entity.ts'): TypeOrmModuleOptions {
     return {
       type: 'postgres',
       host: process.env.POSTGRES_HOST,
@@ -12,8 +12,11 @@ export class DbConfigService {
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DATABASE,
-      entities: [],
+      entities: [
+        __dirname + entity
+      ],
       synchronize: true,
+      autoLoadEntities: true
     };
   }
 }
