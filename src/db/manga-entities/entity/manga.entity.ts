@@ -2,10 +2,15 @@ import { PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToMany, JoinTable
 import { UserEntity } from '../../user-entity/entity/user.entity';
 
 @Entity({
-    name: 'MANGA'
+    name: 'MANGA',
+    orderBy: {
+        'CREATED_AT': 'DESC'
+    }
 })
-export class MangaEntity {
-    @PrimaryGeneratedColumn()
+export class MangaEntity {  
+    @PrimaryGeneratedColumn({
+        name: 'ID'
+    })
     id: number;
 
     @Column({
@@ -32,10 +37,20 @@ export class MangaEntity {
     created_at: Date;
 
     @ManyToMany(
-        (() => UserEntity)
+        (() => UserEntity),{
+            nullable: true
+        }
     )
     @JoinTable({
-        name: 'FAVORITES'
+        name: 'FAVORITES',
+        joinColumn: {
+            name: 'MANGA_ID',
+            referencedColumnName: 'id'
+        },
+        inverseJoinColumn: {
+            name: 'USER_ID',
+            referencedColumnName: 'id'
+        }
     })
     users: UserEntity[];
 }
