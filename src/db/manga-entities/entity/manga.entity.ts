@@ -1,5 +1,8 @@
 import { PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToMany, JoinTable, Entity } from 'typeorm';
 import { UserEntity } from '../../user-entity/entity/user.entity';
+import { LanguageEntity } from './language.entity';
+import { GenreEntity } from './genre.entity';
+import { ArtistEntity } from './artist.entity';
 
 @Entity({
     name: 'MANGA',
@@ -35,6 +38,30 @@ export class MangaEntity {
         type: 'timestamp'
     })
     created_at: Date;
+
+    @ManyToMany(
+        () => ArtistEntity, artist => artist.mangas,
+        {
+            nullable: false
+        }
+    )
+    artists: ArtistEntity[];
+
+    @ManyToMany(
+        () => LanguageEntity, language => language.mangas,
+        {
+            nullable: false
+        }
+    )
+    languages: LanguageEntity[];
+    
+    @ManyToMany(
+        () => GenreEntity, genre => genre.mangas,
+        {
+            nullable: false
+        }
+    )
+    genres: GenreEntity[];
 
     @ManyToMany(
         (() => UserEntity),{
