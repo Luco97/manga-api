@@ -5,7 +5,9 @@ import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateCol
     name: 'USUARIOS'
 })
 export class UserEntity {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn({
+        name: 'id'
+    })
     id: number;
 
     @Column({
@@ -31,6 +33,11 @@ export class UserEntity {
         nullable: false
     })
     password: string;
+
+    @Column({
+        name: 'ACTIVE',
+        type: 'boolean'
+    })
 
     @CreateDateColumn({
         name: 'CREATED_AT',
