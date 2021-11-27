@@ -7,6 +7,7 @@ import { MangaEntity } from '../entity/manga.entity';
 import { GenreEntity } from '../entity/genre.entity';
 import { ArtistEntity } from '../entity/artist.entity';
 import { LanguageEntity } from '../entity/language.entity';
+import { UserEntity } from '../../user-entity/entity/user.entity';
 
 @Injectable()
 export class MangaService {
@@ -40,19 +41,35 @@ export class MangaService {
         return await this.mangaRepository.remove(data);
     }
 
-    async createCategory( manga: MangaEntity, genre: GenreEntity) {
+    async addFavorite( manga: MangaEntity, user: UserEntity) {
+        const comic: MangaEntity = await this.findOne(manga.id);
+        comic.users.push( {...user} as UserEntity);
+        return await this.mangaRepository.save(comic);
+    }
+
+    async subtract( manga: MangaEntity, user: UserEntity) {
+        const comic: MangaEntity = await this.findOne(manga.id);
+        const value: number = comic.users.indexOf(user);
+        if(value >= 0) {
+            comic.users.splice(value,1);
+            return await this.mangaRepository.save(comic);
+        }
+        return new NotFoundException(`El usuario con id=${user.id} y username='${user.username}' no existe en los favoritos del manga con id=${manga.id} y titulo='${manga.title}'`)
+    }
+
+    async addCategory( manga: MangaEntity, genre: GenreEntity) {
         const comic = await this.findOne(manga.id);
         comic.genres.push({...genre} as GenreEntity);
         return await this.mangaRepository.save(comic);
     }
 
-    async createWriter( manga: MangaEntity, artist: ArtistEntity) {
+    async addWriter( manga: MangaEntity, artist: ArtistEntity) {
         const comic: MangaEntity = await this.findOne(manga.id);
         comic.artists.push( {...artist} as ArtistEntity);
         return await this.mangaRepository.save(comic);
     }
 
-    async createTranslate( manga: MangaEntity, language: LanguageEntity) {
+    async addTranslate( manga: MangaEntity, language: LanguageEntity) {
         const comic: MangaEntity = await this.findOne(manga.id);
         comic.languages.push( {...language} as LanguageEntity);
         return await this.mangaRepository.save(comic);
