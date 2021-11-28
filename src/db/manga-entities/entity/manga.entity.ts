@@ -1,8 +1,8 @@
 import { PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToMany, JoinTable, Entity } from 'typeorm';
-import { UserEntity } from '../../user-entity/entity/user.entity';
 import { LanguageEntity } from './language.entity';
 import { GenreEntity } from './genre.entity';
 import { ArtistEntity } from './artist.entity';
+import { UserEntity } from '@userDB/entity';
 
 @Entity({
     name: 'MANGA',
