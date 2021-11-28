@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ArtistEntity } from '../entity/artist.entity';
-import { MangaEntity } from '../entity/manga.entity';
+import { ArtistEntity, MangaEntity } from '@mangaDB/entity';
+
 
 @Injectable()
 export class ArtistService {

@@ -1,13 +1,20 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-
-
-import { MangaEntity } from '../entity/manga.entity';
+import {
+  ArtistEntity,
+  GenreEntity,
+  LanguageEntity,
+  MangaEntity,
+} from '@mangaDB/entity';
+/* import { MangaEntity } from '../entity/manga.entity';
 import { GenreEntity } from '../entity/genre.entity';
 import { ArtistEntity } from '../entity/artist.entity';
-import { LanguageEntity } from '../entity/language.entity';
-import { UserEntity } from '../../user-entity/entity/user.entity';
+import { LanguageEntity } from '../entity/language.entity'; */
+
+import { UserEntity } from '@userDB/entity';
+/* import { UserEntity } from '../../user-entity/entity/user.entity'; */
+
 
 @Injectable()
 export class MangaService {
