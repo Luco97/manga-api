@@ -23,15 +23,14 @@ export class ArtistService {
         }); */
     }
 
-    async findAll(): Promise<ArtistEntity[]> {
-        const data = await this.artistRepository.find();
+    async findAll(relations: string[] = ['mangas']): Promise<ArtistEntity[]> {
+        const data = await this.artistRepository.find({relations});
         return data;
     }
 
-    async findOne(id: number): Promise<ArtistEntity> {
-        const data = await this.artistRepository.findOne(id);
-        if(!data) throw new NotFoundException('No puede encontrar un artista');
-        console.log(data)
+    async findOne(id: number, relations: string[] = ['mangas']): Promise<ArtistEntity> {
+        const data = await this.artistRepository.findOne(id, {relations});
+        if(!data) throw new NotFoundException(`No puede encontrar un artista con id=${id}`);
         return data;
     }
 
@@ -40,14 +39,14 @@ export class ArtistService {
         return await this.artistRepository.save({...artist} as ArtistEntity);
     }
 
-    async delete( artist: ArtistEntity) {
-        const data = await this.findOne(artist.id);
+    async delete(artist: ArtistEntity) {
+        const data = await this.findOne(artist.id, []);
         return await this.artistRepository.remove(data);
     }
 
     async createWriter( manga: MangaEntity, artist: ArtistEntity) {
         const artista = await this.findOne(artist.id);
-        artista.mangas.push({...manga} as MangaEntity);
+        artista.mangas.push({...manga} as MangaEntity); 
         return await this.artistRepository.save(artista);
     }
 }

@@ -12,14 +12,14 @@ export class LanguageService {
         private languageRepository: Repository<LanguageEntity>
     ) {}
 
-    async findAll(): Promise<LanguageEntity[]> {
-        const data: LanguageEntity[] = await this.languageRepository.find();
+    async findAll(relations: string[] = ['mangas']): Promise<LanguageEntity[]> {
+        const data: LanguageEntity[] = await this.languageRepository.find({relations});
         return data;
     }
 
-    async findOne( id: number): Promise<LanguageEntity> {
-        const data: LanguageEntity = await this.languageRepository.findOne( id);
-        if(!data) throw new NotFoundException('No existe el lenguaje');
+    async findOne( id: number, relations: string[] = ['mangas']): Promise<LanguageEntity> {
+        const data: LanguageEntity = await this.languageRepository.findOne(id, {relations});
+        if(!data) throw new NotFoundException(`No existe el lenguaje con id=${id}`);
         return data;
     }
 
@@ -28,7 +28,7 @@ export class LanguageService {
     }
 
     async delete( language: LanguageEntity) {
-        const data: LanguageEntity = await this.findOne(language.id);
+        const data: LanguageEntity = await this.findOne(language.id, []);
         return await this.languageRepository.remove(data)
     }
 

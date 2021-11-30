@@ -8,23 +8,17 @@ export class GenreService {
     
     constructor(
         @InjectRepository(GenreEntity)
-        private genreRepository: Repository<GenreEntity>
+        public genreRepository: Repository<GenreEntity>
     ) {}
 
-    async findAll(): Promise<GenreEntity[]> {
-        const data: GenreEntity[] = await this.genreRepository.find();
-        /* this.genreRepository.find().then(
-            value => {
-                const data: GenreEntity[] = value;
-                return data;
-            }
-        ) */
+    async findAll(relations: string[] = ['mangas']): Promise<GenreEntity[]> {
+        const data: GenreEntity[] = await this.genreRepository.find({relations});
         return data;
     }
 
-    async findOne(id: number): Promise<GenreEntity> {
-        const data: GenreEntity = await this.genreRepository.findOne(id);
-        if(!data) throw new NotFoundException('No se encuentra el genero');
+    async findOne(id: number, relations: string[] = ['mangas']): Promise<GenreEntity> {
+        const data: GenreEntity = await this.genreRepository.findOne(id, {relations});
+        if(!data) throw new NotFoundException(`No se encuentra el genero id=${id}`);
         return data;
     }
 
@@ -33,13 +27,13 @@ export class GenreService {
     }
 
     async delete( genre: GenreEntity) {
-        const data = await this.findOne( genre.id);
+        const data = await this.findOne(genre.id, []);
         return await this.genreRepository.remove(data);
     }
 
     async createCategory( manga: MangaEntity, genre: GenreEntity) {
         const genero = await this.findOne( genre.id);
-        genero.mangas.push({...manga} as MangaEntity);
+        genero.mangas.push({...manga});
         return await this.genreRepository.save(genero);
     }
 }
