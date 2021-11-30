@@ -56,5 +56,5 @@ export class ArtistEntity {
             referencedColumnName: 'id'
         }
     })
-    mangas: MangaEntity[]
+    mangas: MangaEntity[];
 }
