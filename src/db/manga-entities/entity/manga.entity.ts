@@ -1,83 +1,93 @@
-import { PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToMany, JoinTable, Entity } from 'typeorm';
+import {
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  ManyToMany,
+  JoinTable,
+  Entity,
+} from 'typeorm';
 import { LanguageEntity } from './language.entity';
 import { GenreEntity } from './genre.entity';
 import { ArtistEntity } from './artist.entity';
 import { UserEntity } from '@userDB/entity';
 
 @Entity({
-    name: 'MANGA',
-    orderBy: {
-        'CREATED_AT': 'DESC'
-    }
+  name: 'MANGA',
+  orderBy: {
+    CREATED_AT: 'DESC',
+  },
 })
-export class MangaEntity {  
-    @PrimaryGeneratedColumn({
-        name: 'ID'
-    })
-    id: number;
+export class MangaEntity {
+  constructor(
+    title: string,
+    number_or_pages: number,
+    genres: GenreEntity[],
+    artists: ArtistEntity[],
+    languages: LanguageEntity[],
+  ) {
+      this.title =           title;
+      this.number_of_pages = number_or_pages;
+      this.genres =          genres;
+      this.artists =         artists;
+      this.languages =       languages;
+  }
 
-    @Column({
-        name: 'TITLE',
-        type: 'varchar',
-        length: 150,
-        update: false,
-        nullable: false
-    })
-    title: string;
+  @PrimaryGeneratedColumn({
+    name: 'ID',
+  })
+  id: number;
 
-    @Column({
-        name: 'NUMBER_OF_PAGES',
-        type: 'int',
-        update: false,
-        nullable: false
-    })
-    number_of_pages: number;
+  @Column({
+    name: 'TITLE',
+    type: 'varchar',
+    length: 150,
+    update: false,
+    nullable: false,
+  })
+  title: string;
 
-    @CreateDateColumn({
-        name: 'CREATED_AT',
-        type: 'timestamp'
-    })
-    created_at: Date;
+  @Column({
+    name: 'NUMBER_OF_PAGES',
+    type: 'int',
+    update: false,
+    nullable: false,
+  })
+  number_of_pages: number;
 
-    @ManyToMany(
-        () => ArtistEntity, artist => artist.mangas,
-        {
-            nullable: false
-        }
-    )
-    artists: ArtistEntity[];
+  @CreateDateColumn({
+    name: 'CREATED_AT',
+    type: 'timestamp',
+  })
+  created_at: Date;
 
-    @ManyToMany(
-        () => LanguageEntity, language => language.mangas,
-        {
-            nullable: false
-        }
-    )
-    languages: LanguageEntity[];
-    
-    @ManyToMany(
-        () => GenreEntity, genre => genre.mangas,
-        {
-            nullable: false
-        }
-    )
-    genres: GenreEntity[];
+  @ManyToMany(() => ArtistEntity, (artist) => artist.mangas, {
+    nullable: false,
+  })
+  artists: ArtistEntity[];
 
-    @ManyToMany(
-        (() => UserEntity),{
-            nullable: true
-        }
-    )
-    @JoinTable({
-        name: 'FAVORITES',
-        joinColumn: {
-            name: 'MANGA_ID',
-            referencedColumnName: 'id'
-        },
-        inverseJoinColumn: {
-            name: 'USER_ID',
-            referencedColumnName: 'id'
-        }
-    })
-    users: UserEntity[];
+  @ManyToMany(() => LanguageEntity, (language) => language.mangas, {
+    nullable: false,
+  })
+  languages: LanguageEntity[];
+
+  @ManyToMany(() => GenreEntity, (genre) => genre.mangas, {
+    nullable: false,
+  })
+  genres: GenreEntity[];
+
+  @ManyToMany(() => UserEntity, {
+    nullable: true,
+  })
+  @JoinTable({
+    name: 'FAVORITES',
+    joinColumn: {
+      name: 'MANGA_ID',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'USER_ID',
+      referencedColumnName: 'id',
+    },
+  })
+  users: UserEntity[];
 }
