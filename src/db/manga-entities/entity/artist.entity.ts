@@ -27,6 +27,37 @@ export class ArtistEntity {
     })
     description: string;
 
+    @Column({
+        name: 'YO',
+        type: 'int',
+        nullable: true
+    })
+    age: number;
+
+    @Column({
+        name: 'AKA',
+        type: 'varchar',
+        length: 35,
+        nullable: true
+    })
+    artistic_name: string;
+
+    @Column({
+        name: 'COUNTRY',
+        type: 'varchar',
+        length: 35,
+        nullable: true
+    })
+    country: string;
+
+    @Column({
+        name: 'CATEGORY',
+        type: 'varchar',
+        length: 20,
+        nullable: true
+    })
+    type: string;
+
     @CreateDateColumn({
         name: 'CREATED_AT',
         type: 'timestamp'
