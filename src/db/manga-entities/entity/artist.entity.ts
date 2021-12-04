@@ -6,6 +6,15 @@ import { MangaEntity } from './manga.entity';
 })
 export class ArtistEntity {
 
+    constructor(name: string, artistic_name?: string, age?: number, country?: string, type?: string, description?: string) {
+        this.name =           name;
+        this.artistic_name =  artistic_name;
+        this.age =            age;
+        this.country =        country;
+        this.type =           type;
+        this.description =    description;
+    }
+
     @PrimaryGeneratedColumn({
         name: 'ID'
     })
