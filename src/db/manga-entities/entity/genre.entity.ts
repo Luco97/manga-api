@@ -6,6 +6,10 @@ import { MangaEntity } from './manga.entity';
 })
 export class GenreEntity {
 
+    constructor( tag: string) {
+        this.tag = tag;
+    }
+
     @PrimaryGeneratedColumn({
         name: 'ID'
     })
