@@ -5,6 +5,10 @@ import { MangaEntity } from './manga.entity';
     name: 'IDIOMA'
 })
 export class LanguageEntity {
+
+    constructor( language: string) {
+        this.language = language;
+    }
     
     @PrimaryGeneratedColumn({
         name: 'ID',
