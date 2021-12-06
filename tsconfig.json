@@ -19,6 +19,7 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@manga/clases/*": ["classes/*"],
+      "@Manga/dto": ["manga/classes/index"],
       "@Shared/services/*": ["shared/services/*"],
       "@mangaDB/*": ["db/manga-entities/*"],
       "@userDB/*": ["db/user-entity/*"]
