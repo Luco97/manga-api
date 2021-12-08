@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { genSalt, hash } from "bcrypt";
+import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 
 @Entity({
@@ -29,7 +30,6 @@ export class UserEntity {
     @Column({
         name: 'PASSWORD',
         type: 'varchar',
-        length: 50,
         nullable: false
     })
     password: string;
@@ -38,6 +38,7 @@ export class UserEntity {
         name: 'ACTIVE',
         type: 'boolean'
     })
+    active: boolean;
 
     @CreateDateColumn({
         name: 'CREATED_AT',
@@ -50,4 +51,14 @@ export class UserEntity {
         type: 'timestamp'
     })
     updateDate: Date;
+
+    @BeforeInsert()
+    @BeforeUpdate()
+    async hashPassword() {
+        if(!this.password) return;
+
+        const saltRound: number = 10;
+        const bcSaltRound = await genSalt(saltRound);
+        this.password = await hash(this.password, bcSaltRound);
+    }
 }
