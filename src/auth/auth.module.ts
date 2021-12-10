@@ -13,7 +13,7 @@ import { UserEntityModule } from '../db/user-entity/user-entity.module';
             inject:[DbConfigService],
             useFactory: async ( dbService: DbConfigService): Promise<TypeOrmModuleOptions> => {
                 console.log('Conexion desde auth...');
-                return await dbService.getTypeORMconfig('/../**/user.entity.ts');
+                return dbService.getTypeORMconfig('/../**/user.entity.ts');
             }
         }),
         UserEntityModule
