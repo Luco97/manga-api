@@ -12,13 +12,23 @@ export class JwtService {
             username
         })
         console.log(value);
-        return 'token'
+        return value;
     }
     validateJWT( token: string ): boolean {
+        try {
+            const payload = this.JWT.verify( token, {secret: process.env.JWT_SEED})
+            console.log('ID: ', payload.id);
+            console.log('UserName: ', payload.username)
+            return true;
+        } catch (error) {
+            console.log('Token no valido !');
+            return false;
+        }
+        /* 
         if(token) {
             this.generateJWT( 24, 'Comepingas');
             return true;
         }
-        return false;
+        return false; */
     }
 }
