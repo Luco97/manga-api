@@ -18,16 +18,19 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
+      "@Shared/services/*": ["shared/services/*"],
       "@manga/clases/*": ["classes/*"],
+      "@mangaDB/*": ["db/manga-entities/*"],
       "@Manga/dto": [
         "manga/classes/artist.dto",
         "manga/classes/genre.dto",
         "manga/classes/language.dto",
         "manga/classes/manga.dto"
       ],
-      "@Shared/services/*": ["shared/services/*"],
-      "@mangaDB/*": ["db/manga-entities/*"],
-      "@userDB/*": ["db/user-entity/*"]
+      "@userDB/*": ["db/user-entity/*"],
+      "@user/dto": [
+        "auth/classes/user.dto"
+      ]
     }
   }
 }
