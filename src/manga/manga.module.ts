@@ -21,8 +21,7 @@ import { LanguageController } from './controller/language.controller';
       imports: [SharedModule],
       inject: [DbConfigService],
       useFactory: async ( dbService: DbConfigService): Promise<TypeOrmModuleOptions> => {
-        console.log('Conexion desde manga...');
-        return await dbService.getTypeORMconfig();
+        return dbService.getTypeORMconfig();
       }
     }),
     MangaEntitiesModule
