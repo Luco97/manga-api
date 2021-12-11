@@ -6,6 +6,13 @@ import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, PrimaryGe
     name: 'USUARIOS'
 })
 export class UserEntity {
+
+    constructor( username: string, email: string, password: string) {
+        this.username   = username;
+        this.email      = email;
+        this.password   = password;
+    }
+
     @PrimaryGeneratedColumn({
         name: 'id'
     })
@@ -36,7 +43,8 @@ export class UserEntity {
 
     @Column({
         name: 'ACTIVE',
-        type: 'boolean'
+        type: 'boolean',
+        nullable: true
     })
     active: boolean;
 
