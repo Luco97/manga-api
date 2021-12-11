@@ -9,10 +9,12 @@ export class createUserDto {
     })
     username: string;
 
-    @IsNotEmpty({
+    /* @IsNotEmpty({
+        message: `Falta definir la propiedad 'email'`
+    }) */
+    @IsEmail({},{
         message: `Falta definir la propiedad 'email'`
     })
-    @IsEmail()
     @Length( 6, 50, {
         message: 'Esta bajo el minimo/Supera el maximo de caracteres'
     })
