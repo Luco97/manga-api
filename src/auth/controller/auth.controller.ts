@@ -1,10 +1,56 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { Login } from '@manga/clases/login';
+import { Body, Controller, Post, Res, HttpStatus } from '@nestjs/common';
+import { Response } from 'express';
+import { FindOneOptions } from 'typeorm';
+import { createUserDto } from '@user/dto';
+import { UserService } from '@userDB/service';
+import { UserEntity } from '@userDB/entity';
 
 @Controller('auth')
 export class AuthController {
-    @Post('login')
-    login( @Body()login: Login) {
 
+    constructor(
+        private userService: UserService
+    ) {}
+
+    @Post('sign')
+    async sign(
+        @Body() createUser: createUserDto,
+        @Res() res: Response
+    ) {
+        try {
+            const user: UserEntity = await this.userService.findOneBy({
+                where: [
+                    {username:  createUser.username},
+                    {email:     createUser.email}
+                ]
+            } as FindOneOptions<UserEntity>)
+
+            if(user) {
+                return res.status(HttpStatus.CONFLICT)
+                            .json({
+                                status: HttpStatus.CONFLICT,
+                                message: 'Ya existe'
+                            })
+            }
+            const newUser: UserEntity = new UserEntity(createUser.username, createUser.email, createUser.password);
+            this.userService.create(newUser);
+            return res.status(HttpStatus.CREATED)
+                        .json({
+                            status: HttpStatus.CREATED,
+                            message: 'Usuario creado con exito !'
+                        })
+
+        } catch (error) {
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .json({
+                            status: HttpStatus.INTERNAL_SERVER_ERROR,
+                            message: 'Error en el servidor'
+                        })
+        }
+    }
+    
+    @Post('login')
+    login( @Body() login) {
+        return {x:'This action loggin han existent user'};
     }
 }
