@@ -18,14 +18,14 @@ export class AuthController {
         @Res() res: Response
     ) {
         try {
-            const user: UserEntity = await this.userService.findOneBy({
+            const users: UserEntity[] = await this.userService.findBy({
                 where: [
                     {username:  createUser.username},
                     {email:     createUser.email}
                 ]
             } as FindOneOptions<UserEntity>)
 
-            if(user) {
+            if(users.length) {
                 return res.status(HttpStatus.CONFLICT)
                             .json({
                                 status: HttpStatus.CONFLICT,
