@@ -28,3 +28,17 @@ export class createUserDto {
     })
     password: string;
 }
+
+export class updateUserDto {
+    @IsNotEmpty({
+        message: `Falta definir la propiedad 'password'`
+    })
+    @Length( 5, 50, {
+        message: 'Esta bajo el minimo/Supera el maximo de caracteres'
+    })
+    password: string;
+}
+
+export class loginUserDto {
+
+}
