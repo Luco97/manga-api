@@ -24,14 +24,15 @@ export class UserService {
         return data;
     }
 
-    async findOneBy(option: FindOneOptions<UserEntity>): Promise<UserEntity> {
-        const data: UserEntity = await this.userRepository.findOne({},option)
+    async findBy(option: FindOneOptions<UserEntity>): Promise<UserEntity[]> {
+        const data: UserEntity[] = await this.userRepository.find(option)
         //if(!data) throw new NotFoundException('No se puede encontrar usuario');
         return data;
     }
 
     async create( user: UserEntity) {
-        return await this.userRepository.save({...user} as UserEntity);
+        const newUser = this.userRepository.create(user);
+        return await this.userRepository.save(newUser);
     }
 
 }
