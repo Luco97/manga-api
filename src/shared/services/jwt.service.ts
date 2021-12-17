@@ -11,7 +11,6 @@ export class JwtService {
             id: user_id,
             username
         })
-        console.log(value);
         return value;
     }
     validateJWT( token: string ): boolean {
