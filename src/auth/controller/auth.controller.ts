@@ -1,9 +1,10 @@
 import { Body, Controller, Post, Res, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
 import { FindOneOptions } from 'typeorm';
-import { createUserDto } from '@user/dto';
+import { createUserDto, loginUserDto } from '@user/dto';
 import { UserService } from '@userDB/service';
 import { UserEntity } from '@userDB/entity';
+import { compare } from 'bcrypt';
 
 @Controller('auth')
 export class AuthController {
@@ -48,9 +49,52 @@ export class AuthController {
                         })
         }
     }
-    
+
     @Post('login')
-    login( @Body() login) {
-        return {x:'This action loggin han existent user'};
+    async login( 
+        @Body() login: loginUserDto,
+        @Res() res: Response
+    ) {
+        try {
+            const users: UserEntity[] = await this.userService.findBy({
+                where:{
+                    email: login.email
+                }
+            });
+            const user: UserEntity = users.pop()
+            if(user) {
+                const passCompare: boolean = await compare(login.password, user.password);
+                if(passCompare) {
+                    return res.status(HttpStatus.OK)
+                                .json({
+                                    status: HttpStatus.OK,
+                                    message: `Bienvenido ${user.username}`,
+                                })
+                }
+                return res.status(HttpStatus.OK)
+                            .json({
+                                status: HttpStatus.OK,
+                                message: 'Datos invalidos'
+                            })
+            }
+            return res.status(HttpStatus.NOT_FOUND)
+                        .json({
+                            status: HttpStatus.NOT_FOUND,
+                            message: 'Datos invalidos (El usuario no existe)'
+                        })
+
+            const user2: UserEntity = await this.userService.findOneByMail(login.email);
+            const user3: UserEntity = await this.userService.findOneByMail2(login.email);
+            
+            return res.status(HttpStatus.OK)
+                        .json({
+                            users,
+                            user2,
+                            user3
+                        });
+        } catch (error) {
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .json()
+        }
     }
 }
