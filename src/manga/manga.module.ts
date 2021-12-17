@@ -1,7 +1,7 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 //DB
-import { DbConfigService } from '@Shared/services/db-config.service';
+import { DbConfigService } from '@Shared/services';
 import { MangaEntitiesModule } from '../db/manga-entities/manga-entities.module';
 //Modules
 import { SharedModule } from '../shared/shared.module';
