@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { DbConfigService } from '@Shared/services/db-config.service';
+import { DbConfigService } from '@Shared/services';
 import { SharedModule } from './../shared/shared.module';
 import { AuthController } from './controller/auth.controller';
 import { AuthService } from './services/auth.service';
@@ -16,7 +16,8 @@ import { UserEntityModule } from '../db/user-entity/user-entity.module';
                 return dbService.getTypeORMconfig('/../**/user.entity.ts');
             }
         }),
-        UserEntityModule
+        UserEntityModule,
+        SharedModule
     ],
     providers:[
         AuthService,
