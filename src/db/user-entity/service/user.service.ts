@@ -18,6 +18,25 @@ export class UserService {
         return data;
     }
 
+    async findOneByMail(email: string): Promise<UserEntity> {
+        const data: UserEntity = await this.userRepository.findOneOrFail({},{
+            where: {
+                email
+            },
+
+        })
+        return data
+    }
+
+    async findOneByMail2(email: string): Promise<UserEntity> {
+        const data: UserEntity = await this.userRepository.findOne({}, {
+            where: {
+                email
+            }
+        })
+        return data;
+    }
+
     async findOne(id: number): Promise<UserEntity> {
         const data: UserEntity = await this.userRepository.findOne(id);
         if(!data) throw new NotFoundException('No se puede encontrar usuario');
