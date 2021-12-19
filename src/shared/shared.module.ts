@@ -12,7 +12,7 @@ import { DbConfigService } from './services/db-config.service';
         signOptions: {
            expiresIn: configService.get<string>('EXPIRES'),
         },
-        secretOrPrivateKey: configService.get<string>('JWT_SEED'),
+        secret: configService.get<string>('JWT_SEED')
       }),
       inject: [ConfigService], 
     }),
