@@ -32,14 +32,35 @@ export class AuthController {
     @Post('login')
     async login( 
         @Body() login: loginUserDto,
-        @Res() res: Response
+        @Res() res: Response<response>
     ) {
         try {
             const foo: response = await this._authService.loginUser(login);
             return res.status(foo.status).json(foo);
         } catch (error) {
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .json()
+                        .json({
+                            status: HttpStatus.INTERNAL_SERVER_ERROR,
+                            message: 'Error en el servidor'
+                        })
+        }
+    }
+
+    @Post('logout')
+    async logout(
+        @Body() login: loginUserDto,
+        @Res() res: Response<response>
+    ) {
+        try {
+            const foo: response = await this._authService.logoutUser(login);
+            return res.status(foo.status).json(foo);
+        } catch (error) {
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .json({
+                            status: HttpStatus.INTERNAL_SERVER_ERROR,
+                            message: 'Error en el servidor'
+                        })
+
         }
     }
 }
