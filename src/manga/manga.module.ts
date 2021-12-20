@@ -16,7 +16,6 @@ import { LanguageController } from './controller/language.controller';
 
 @Module({
   imports: [
-    SharedModule,
     TypeOrmModule.forRootAsync({
       imports: [SharedModule],
       inject: [DbConfigService],
@@ -24,7 +23,8 @@ import { LanguageController } from './controller/language.controller';
         return dbService.getTypeORMconfig();
       }
     }),
-    MangaEntitiesModule
+    MangaEntitiesModule,
+    SharedModule
   ],
   controllers: [
     MangaController,
