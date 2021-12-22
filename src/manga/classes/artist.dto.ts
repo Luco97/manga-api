@@ -8,7 +8,9 @@ export class createArtistDto {
         message: 'Esta bajo el minimo/Supera el maximo de caracteres'
     })
     name: string;
+}
 
+export class updateArtistsDto extends createArtistDto {
     @IsOptional()
     seudoName: string;
     
@@ -20,7 +22,7 @@ export class createArtistDto {
         message: 'Edad sobre el maximo'
     })
     age: number;
-
+    
     @IsOptional()
     @Length( 1, 35, {
         message: 'Esta bajo el minimo/Supera el maximo de caracteres'
@@ -38,5 +40,4 @@ export class createArtistDto {
         message: 'Esta bajo el minimo/Supera el maximo de caracteres'
     })
     description: string;
-    
 }
