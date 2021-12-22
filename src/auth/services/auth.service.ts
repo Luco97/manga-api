@@ -1,10 +1,10 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 import { compare } from 'bcrypt';
 
-import { createUserDto, loginUserDto } from '@user/dto';
+import { createUserDto, loginUserDto } from '@auth/dto';
 import { UserEntity } from '@userDB/entity';
 import { UserService } from '@userDB/service';
-import { JwtService } from '@Shared/services';
+import { JwtService } from '@shared/services';
 import { response } from '@interface';
 
 @Injectable()
