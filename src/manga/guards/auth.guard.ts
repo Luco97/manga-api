@@ -1,5 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { JwtService } from '@Shared/services';
+import { JwtService } from '@shared/services';
 import { Observable } from 'rxjs';
 import { Request } from 'express';
 
