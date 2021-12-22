@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { LanguageEntity, MangaEntity } from '@mangaDB/entity';
+import { LanguageEntity, MangaEntity } from '@db/manga/entity';
 
 
 @Injectable()

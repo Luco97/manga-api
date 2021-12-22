@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { GenreEntity, MangaEntity } from '@mangaDB/entity';
+import { GenreEntity, MangaEntity } from '@db/manga/entity';
 
 @Injectable()
 export class GenreService {

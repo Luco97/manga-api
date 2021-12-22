@@ -6,7 +6,7 @@ import {
   GenreEntity,
   LanguageEntity,
   MangaEntity,
-} from '@mangaDB/entity';
+} from '@db/manga/entity';
 /* import { MangaEntity } from '../entity/manga.entity';
 import { GenreEntity } from '../entity/genre.entity';
 import { ArtistEntity } from '../entity/artist.entity';
