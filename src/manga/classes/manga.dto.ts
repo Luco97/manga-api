@@ -1,4 +1,4 @@
-import { GenreEntity, ArtistEntity, LanguageEntity } from '@mangaDB/entity';
+import { GenreEntity, ArtistEntity, LanguageEntity } from '@db/manga/entity';
 import { ArrayMinSize, IsArray, IsNotEmpty, Length, Max, Min } from "class-validator";
 
 export class createMangaDto {
