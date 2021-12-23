@@ -1,4 +1,9 @@
-interface Artist {
+export interface response {
+  status: number;
+  message: string;
+}
+
+export interface Artist {
   id: number;
   name: string;
   artisticName?: string;
@@ -8,19 +13,19 @@ interface Artist {
   count?: number;
 }
 
-interface Genre {
+export interface Genre {
   id: number;
   tag: string;
   count?: number;
 }
 
-interface Language {
+export interface Language {
   id: number;
   language: string;
   count?: number;
 }
 
-interface Manga {
+export interface Manga {
   title: string;
   pages: number;
   artists?: Artist[];
@@ -28,26 +33,10 @@ interface Manga {
   language?: Language[];
 }
 
-interface response {
-  status: number;
-  message: string;
-}
 
-export interface ArtistResponse extends response {
-  artist: Artist;
-}
-
-export interface GenreResponse extends response {
-  genre: Genre;
-}
-
-export interface LanguageResponse extends response {
-  language: Language;
-}
-
-export interface MangaResponse extends response {
-  manga?: Manga;
-  mangas?: Manga[];
+export interface MangaResponse {
+  /* manga?: Manga;
+  mangas?: Manga[]; */
   lenght?: number;
   next?: string;
   previous?: string;
