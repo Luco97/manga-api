@@ -2,7 +2,7 @@ import { Body, Controller, Post, Res, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
 import { createUserDto, loginUserDto } from '@auth/dto';
 import { AuthService } from 'auth/services/auth.service';
-import { response } from '@interface';
+import { response, userResponse } from '@interface/authResponses.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -32,7 +32,7 @@ export class AuthController {
     @Post('login')
     async login( 
         @Body() login: loginUserDto,
-        @Res() res: Response<response>
+        @Res() res: Response<userResponse>
     ) {
         try {
             const foo: response = await this._authService.loginUser(login);
