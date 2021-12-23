@@ -5,7 +5,7 @@ import { createUserDto, loginUserDto } from '@auth/dto';
 import { UserEntity } from '@userDB/entity';
 import { UserService } from '@userDB/service';
 import { JwtService } from '@shared/services';
-import { response } from '@interface';
+import { response, userResponse } from '@interface/authResponses.interface';
 
 @Injectable()
 export class AuthService {
@@ -37,7 +37,7 @@ export class AuthService {
     };
   }
 
-  async loginUser(loginUser: loginUserDto): Promise<response> {
+  async loginUser(loginUser: loginUserDto): Promise<userResponse> {
     const users: UserEntity[] = await this._userService.findBy({
       where: {
         email: loginUser.email,
