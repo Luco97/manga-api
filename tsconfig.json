@@ -19,7 +19,7 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@shared/services": ["shared/services/index"],
-      "@interface": ["interface/authResponses.interface"],
+      "@interface/*": ["interface/*"],
       "@db/manga/*": ["db/manga-entities/*"],
       "@manga/dto": [
         "manga/classes/artist.dto",
