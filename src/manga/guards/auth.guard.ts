@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
 
     const request: Request = context.switchToHttp().getRequest();
-    const token: string | string[] = request.headers.authorization.replace('Bearer ', '');
+    const token: string | string[] = request.headers.authorization?.replace('Bearer ', '');
     return this.JWTservice.validateJWT( token as string);
     
   }
