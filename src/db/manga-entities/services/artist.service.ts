@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 import { ArtistEntity, MangaEntity } from '@db/manga/entity';
 
 
@@ -31,6 +31,11 @@ export class ArtistService {
     async findOne(id: number, relations: string[] = ['mangas']): Promise<ArtistEntity> {
         const data = await this.artistRepository.findOne(id, {relations});
         if(!data) throw new NotFoundException(`No puede encontrar un artista con id=${id}`);
+        return data;
+    }
+
+    async findBy(options: FindOneOptions<ArtistEntity>): Promise<ArtistEntity[]> {
+        const data = await this.artistRepository.find(options);
         return data;
     }
 
