@@ -28,5 +28,29 @@ export class ArtistService {
             }
         }
     }
+
+    async getOne(id: number, relations: string[]): Promise<{response: response, data?: Artist}> {
+        const data: ArtistEntity[] = await this._artistService.findBy({
+            relations,
+            where: {
+                id
+            }
+        });
+        if(data.length) {
+            return {
+                response:{
+                    status: HttpStatus.OK,
+                    message: 'getOne artistas'
+                },
+                data: data.pop()
+            }
+        }
+        return {
+            response: {
+                status: HttpStatus.NOT_FOUND,
+                message: 'No encontrado'
+            }
+        }
+    }
     
 }
