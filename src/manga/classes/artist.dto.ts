@@ -1,16 +1,14 @@
 import { IsNotEmpty, IsOptional, Length, Max, Min } from 'class-validator';
 
-export class createArtistDto {
+
+export class readArtistDto {
     @IsNotEmpty({
         message: `No se encuentra definida la propiedad 'name'`
-    })
-    @Length( 1, 35, {
-        message: 'Esta bajo el minimo/Supera el maximo de caracteres'
     })
     name: string;
 }
 
-export class updateArtistsDto extends createArtistDto {
+export class updateArtistsDto {
     @IsOptional()
     seudoName: string;
     
@@ -40,4 +38,14 @@ export class updateArtistsDto extends createArtistDto {
         message: 'Esta bajo el minimo/Supera el maximo de caracteres'
     })
     description: string;
+}
+
+export class createArtistDto extends updateArtistsDto {
+    @IsNotEmpty({
+        message: `No se encuentra definida la propiedad 'name'`
+    })
+    @Length( 1, 35, {
+        message: 'Esta bajo el minimo/Supera el maximo de caracteres'
+    })
+    name: string;
 }
