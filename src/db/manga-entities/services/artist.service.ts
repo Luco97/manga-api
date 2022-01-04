@@ -41,7 +41,8 @@ export class ArtistService {
 
     async create( artist: ArtistEntity) {
         /* const data = this.artistRepository.create({...artist} as ArtistEntity) */
-        return await this.artistRepository.save({...artist} as ArtistEntity);
+        const newArtist = this.artistRepository.create(artist);
+        return await this.artistRepository.save(newArtist);
     }
 
     async delete(artist: ArtistEntity) {
