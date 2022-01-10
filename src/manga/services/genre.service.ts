@@ -28,4 +28,28 @@ export class GenreService {
             }
         }
     }
+
+    async getOne(id: number, relations: string[]): Promise<{response: response, data?: Genre}> {
+        const data: GenreEntity[] = await this._genreService.findBy({
+            relations,
+            where: {
+                id
+            }
+        });
+        if(data.length) {
+            return {
+                response: {
+                    status: HttpStatus.OK,
+                    message: 'getOne generos'
+                },
+                data: data.pop()
+            }
+        }
+        return {
+            response: {
+                status: HttpStatus.NOT_FOUND,
+                message: 'No encontrado'
+            }
+        }
+    }
 }
