@@ -6,7 +6,7 @@ export interface response {
 export interface Artist {
   id: number;
   name: string;
-  artisticName?: string;
+  artistic_name?: string;
   age?: number;
   country?: string;
   type?: string;
