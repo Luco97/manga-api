@@ -28,10 +28,7 @@
         "manga/classes/manga.dto"
       ],
       "@manga/services": [
-        "manga/services/artist.service",
-        "manga/services/genre.service",
-        "manga/services/language.service",
-        "manga/services/manga.service"
+        "manga/services/index"
       ],
       "@userDB/*": ["db/user-entity/*"],
       "@auth/dto": ["auth/classes/user.dto"]
