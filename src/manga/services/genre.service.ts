@@ -2,6 +2,7 @@ import { Injectable, HttpStatus } from '@nestjs/common';
 import { GenreService as genreService } from '@db/manga/services';
 import { Genre, response } from '@interface/mangaResponses.interface';
 import { GenreEntity } from '@db/manga/entity';
+import { createGenreDto } from '@manga/dto';
 
 @Injectable()
 export class GenreService {
@@ -50,6 +51,32 @@ export class GenreService {
                 status: HttpStatus.NOT_FOUND,
                 message: 'No encontrado'
             }
+        }
+    }
+
+    async create(createGenre: createGenreDto): Promise<{response: response, data?: Genre}> {
+        const genres: GenreEntity[] = await this._genreService.findBy({
+            where: {
+                tag: createGenre.tag.toLocaleLowerCase()
+            }
+        })
+        if(!genres.length) {
+            const newGenre: GenreEntity = new GenreEntity(createGenre.tag.toLocaleLowerCase());
+            const data = await this._genreService.create(newGenre);
+            return {
+                response: {
+                    status: HttpStatus.CREATED,
+                    message: 'Genero creado'
+                },
+                data
+            }
+        }
+        return {
+            response: {
+                status: HttpStatus.CONFLICT,
+                message: 'Ya existe un genero con ese tag'
+            },
+            data: genres.pop()
         }
     }
 }
