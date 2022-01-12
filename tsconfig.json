@@ -22,10 +22,7 @@
       "@interface/*": ["interface/*"],
       "@db/manga/*": ["db/manga-entities/*"],
       "@manga/dto": [
-        "manga/classes/artist.dto",
-        "manga/classes/genre.dto",
-        "manga/classes/language.dto",
-        "manga/classes/manga.dto"
+        "manga/classes/index"
       ],
       "@manga/services": [
         "manga/services/index"
