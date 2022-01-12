@@ -1,6 +1,7 @@
 import { Genre, response } from '@interface/mangaResponses.interface';
+import { createGenreDto } from '@manga/dto';
 import { GenreService } from '@manga/services';
-import { Controller, Get, Res, UseGuards, HttpStatus, Param, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Res, UseGuards, HttpStatus, Param, ParseIntPipe, Post, Body } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthGuard } from '../guards/auth.guard';
 
@@ -40,6 +41,25 @@ export class GenreController {
             return res.status(foo.response.status).json(foo);
         } catch (error) {
             
+        }
+    }
+
+    @Post()
+    async create(
+        @Body() createGenre: createGenreDto,
+        @Res() res: Response<{response: response, data?: Genre}>
+    ) {
+        try {
+            const foo: {response: response, data?: Genre} = await this._genreService.create(createGenre);
+            return res.status(foo.response.status).json(foo);
+        } catch (error) {
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .json({
+                            response: {
+                                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                                message: 'Error en el servidor'
+                            }
+                        })
         }
     }
 }
