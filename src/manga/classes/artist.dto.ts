@@ -1,11 +1,16 @@
-import { IsNotEmpty, IsOptional, Length, Max, Min } from 'class-validator';
+import { artistRelations } from '@db/manga/const';
+import { ArrayContains, ArrayNotEmpty, IsNotEmpty, IsOptional, Length, Max, Min } from 'class-validator';
 
 
 export class readArtistDto {
-    @IsNotEmpty({
-        message: `No se encuentra definida la propiedad 'name'`
+    @IsOptional()
+    @ArrayNotEmpty({
+        message: `No se encuentran definido 'relations', si no quiere relaciones ingresar 'relations: []'`
     })
-    name: string;
+    @ArrayContains(artistRelations, {
+        message: 'No existen la(s) propiedades'
+    })
+    relations: string[];
 }
 
 export class updateArtistsDto {
