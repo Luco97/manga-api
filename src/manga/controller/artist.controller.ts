@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { Artist, response } from '@interface/mangaResponses.interface';
 import { ArtistService } from '@manga/services';
 import { AuthGuard } from '../guards/auth.guard';
-import { createArtistDto, updateArtistsDto } from '@manga/dto';
+import { createArtistDto, readArtistDto, updateArtistsDto } from '@manga/dto';
 
 @Controller('artist')
 @UseGuards(AuthGuard)
@@ -31,16 +31,16 @@ export class ArtistController {
                         })
         }
     }
-
-    @Get(':id')
+    
+    @Post(':id')
     async findOne(
         @Param('id', ParseIntPipe) id: number, 
+        @Body() readArtist: readArtistDto,
         @Res() res: Response<{response: response, data?: Artist}>
     ) {
         try {
-            const foo: {response: response, data?: Artist} = await this._artistService.getOne(id, []);
-            return res.status(foo.response.status)
-                        .json(foo);
+            const foo: {response: response, data?: Artist} = await this._artistService.getOne(id, readArtist.relations);
+            return res.status(foo.response.status).json(foo);
         } catch (error) {
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .json({
