@@ -4,7 +4,7 @@ import { FindOneOptions, Repository } from 'typeorm';
 import { GenreEntity, MangaEntity } from '@db/manga/entity';
 
 @Injectable()
-export class GenreService {
+export class GenreEntityService {
     
     constructor(
         @InjectRepository(GenreEntity)

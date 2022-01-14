@@ -1,5 +1,5 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
-import { GenreService as genreService } from '@db/manga/services';
+import { GenreEntityService } from '@db/manga/services';
 import { Genre, response } from '@interface/mangaResponses.interface';
 import { GenreEntity } from '@db/manga/entity';
 import { createGenreDto } from '@manga/dto';
@@ -8,7 +8,7 @@ import { createGenreDto } from '@manga/dto';
 export class GenreService {
 
     constructor(
-        private _genreService: genreService
+        private _genreService: GenreEntityService
     ) {}
 
     async getAll(): Promise<{response: response, data?: GenreEntity[]}> {
