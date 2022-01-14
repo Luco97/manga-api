@@ -1,3 +1,5 @@
+import { MangaEntity } from "@db/manga/entity";
+
 export interface response {
   status: number;
   message: string;
@@ -10,18 +12,21 @@ export interface Artist {
   age?: number;
   country?: string;
   type?: string;
+  mangas?: MangaEntity[];
   count?: number;
 }
 
 export interface Genre {
   id: number;
   tag: string;
+  mangas?: MangaEntity[];
   count?: number;
 }
 
 export interface Language {
   id: number;
   language: string;
+  mangas?: MangaEntity[];
   count?: number;
 }
 
