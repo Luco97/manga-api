@@ -5,7 +5,7 @@ import { ArtistEntity, MangaEntity } from '@db/manga/entity';
 
 
 @Injectable()
-export class ArtistService {
+export class ArtistEntityService {
     constructor(
         @InjectRepository(ArtistEntity)
         private artistRepository: Repository<ArtistEntity>

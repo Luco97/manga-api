@@ -1,5 +1,5 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
-import { ArtistService as artistService } from '@db/manga/services';
+import { ArtistEntityService } from '@db/manga/services';
 import { response, Artist } from '@interface/mangaResponses.interface';
 import { ArtistEntity } from '@db/manga/entity';
 import { createArtistDto, updateArtistsDto } from '@manga/dto';
@@ -8,7 +8,7 @@ import { createArtistDto, updateArtistsDto } from '@manga/dto';
 export class ArtistService {
 
     constructor(
-        private _artistService: artistService
+        private _artistService: ArtistEntityService
     ) {}
     
     async getAll(): Promise<{response: response, data?: Artist[]}> {
