@@ -7,10 +7,10 @@ import {
   MangaEntity,
 } from './entity';
 import {
-  ArtistService,
-  GenreService,
-  LanguageService,
-  MangaService,
+  ArtistEntityService,
+  GenreEntityService,
+  LanguageEntityService,
+  MangaEntityService,
 } from './services';
 
 @Module({
@@ -22,9 +22,9 @@ import {
       GenreEntity,
     ]),
   ],
-  exports: [MangaService, ArtistService, LanguageService, GenreService],
+  exports: [MangaEntityService, ArtistEntityService, LanguageEntityService, GenreEntityService],
 
-  providers: [MangaService, ArtistService, LanguageService, GenreService],
+  providers: [MangaEntityService, ArtistEntityService, LanguageEntityService, GenreEntityService],
 })
 export class MangaEntitiesModule {
   constructor() {}
