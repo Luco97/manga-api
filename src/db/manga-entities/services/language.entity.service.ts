@@ -5,7 +5,7 @@ import { LanguageEntity, MangaEntity } from '@db/manga/entity';
 
 
 @Injectable()
-export class LanguageService {
+export class LanguageEntityService {
 
     constructor(
         @InjectRepository(LanguageEntity)
