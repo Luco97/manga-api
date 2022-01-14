@@ -26,13 +26,15 @@ export class LanguageEntity {
 
     @CreateDateColumn({
         name: 'CREATED_AT',
-        type: 'timestamp'
+        type: 'timestamp',
+        select: false
     })
     createDate: Date;
 
     @UpdateDateColumn({
         name: 'UPDATED_AT',
-        type: 'timestamp'
+        type: 'timestamp',
+        select: false
     })
     updateDate: Date;
 
