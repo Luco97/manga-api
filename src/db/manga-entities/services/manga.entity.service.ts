@@ -16,7 +16,7 @@ import { UserEntity } from '@userDB/entity';
 /* import { UserEntity } from '../../user-entity/entity/user.entity'; */
 
 @Injectable()
-export class MangaService {
+export class MangaEntityService {
   constructor(
     @InjectRepository(MangaEntity)
     private mangaRepository: Repository<MangaEntity>,
