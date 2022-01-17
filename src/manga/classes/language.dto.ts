@@ -1,4 +1,5 @@
-import { IsNotEmpty, Length } from "class-validator";
+import { languageRelations } from "@db/manga/const";
+import { ArrayContains, ArrayNotEmpty, IsNotEmpty, IsOptional, Length } from "class-validator";
 
 export class createLanguageDto {
     @IsNotEmpty({
@@ -8,4 +9,15 @@ export class createLanguageDto {
         message: 'Esta bajo el minimo/Supera el maximo de caracteres'
     })
     language: string;
+}
+
+export class readLanguageDto {
+    @IsOptional()
+    @ArrayNotEmpty({
+        message: `Existe 'relations' pero se encuetra vacio`
+    })
+    @ArrayContains(languageRelations, {
+        message: 'No existen la(s) propiedades'
+    })
+    relations: string[];
 }
