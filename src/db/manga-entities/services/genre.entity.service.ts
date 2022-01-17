@@ -28,7 +28,8 @@ export class GenreEntityService {
     }
 
     async create( genre: GenreEntity) {
-        return await this.genreRepository.save({...genre} as GenreEntity);
+        const data = this.genreRepository.create(genre);
+        return await this.genreRepository.save(data);
     }
 
     async delete( genre: GenreEntity) {

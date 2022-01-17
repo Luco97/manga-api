@@ -29,7 +29,8 @@ export class LanguageEntityService {
     }
 
     async create( language: LanguageEntity) {
-        return await this.languageRepository.save( {...language} as LanguageEntity);
+        const data = this.languageRepository.create(language);
+        return await this.languageRepository.save(data);
     }
 
     async delete( language: LanguageEntity) {
