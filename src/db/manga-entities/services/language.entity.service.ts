@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 import { LanguageEntity, MangaEntity } from '@db/manga/entity';
 
 
@@ -20,6 +20,11 @@ export class LanguageEntityService {
     async findOne( id: number, relations: string[] = ['mangas']): Promise<LanguageEntity> {
         const data: LanguageEntity = await this.languageRepository.findOne(id, {relations});
         if(!data) throw new NotFoundException(`No existe el lenguaje con id=${id}`);
+        return data;
+    }
+
+    async findBy(options: FindOneOptions<LanguageEntity>): Promise<LanguageEntity[]> {
+        const data: LanguageEntity[] = await this.languageRepository.find(options);
         return data;
     }
 
