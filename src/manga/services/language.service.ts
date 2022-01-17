@@ -28,4 +28,28 @@ export class LanguageService {
             }
         }
     }
+
+    async getOne( id: number, relations: string[]): Promise<{response: response, data?: Language}> {
+        const data: LanguageEntity[] = await this._languageService.findBy({
+            relations,
+            where: {
+                id
+            }
+        });
+        if(data.length) {
+            return {
+                response: {
+                    status: HttpStatus.OK,
+                    message: 'getOne idioma'
+                },
+                data: data.pop()
+            }
+        }
+        return {
+            response: {
+                status: HttpStatus.NOT_FOUND,
+                message: 'No encontrado'
+            }
+        }
+    }
 }
