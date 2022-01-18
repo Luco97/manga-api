@@ -1,6 +1,7 @@
 import { LanguageEntity } from '@db/manga/entity';
 import { LanguageEntityService } from '@db/manga/services';
 import { Language, response } from '@interface/mangaResponses.interface';
+import { createLanguageDto } from '@manga/dto';
 import { Injectable, HttpStatus } from '@nestjs/common';
 
 @Injectable()
@@ -50,6 +51,32 @@ export class LanguageService {
                 status: HttpStatus.NOT_FOUND,
                 message: 'No encontrado'
             }
+        }
+    }
+
+    async create(createLanguage: createLanguageDto): Promise<{response: response, data?: Language}> {
+        const languages = await this._languageService.findBy({
+            where: {
+                language: createLanguage.language.toLocaleLowerCase()
+            }
+        });
+        if(!languages.length) {
+            const newLanguage: LanguageEntity = new LanguageEntity(createLanguage.language.toLocaleLowerCase());
+            const data = await this._languageService.create(newLanguage);
+            return {
+                response: {
+                    status: HttpStatus.CREATED,
+                    message: 'Idioma creado'
+                },
+                data: data
+            }
+        }
+        return {
+            response: {
+                status: HttpStatus.CONFLICT,
+                message: 'Ya existe un idioma con ese nombre'
+            },
+            data: languages.pop()
         }
     }
 }
