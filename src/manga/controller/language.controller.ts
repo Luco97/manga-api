@@ -1,5 +1,5 @@
 import { Language, response } from '@interface/mangaResponses.interface';
-import { readLanguageDto } from '@manga/dto';
+import { createLanguageDto, readLanguageDto } from '@manga/dto';
 import { LanguageService } from '@manga/services';
 import { Controller, Get, HttpStatus, Param, Post, Res, UseGuards, ParseIntPipe, Body } from '@nestjs/common';
 import { Response } from 'express';
@@ -52,6 +52,22 @@ export class LanguageController {
     }
 
     @Post()
-    async create() {}
+    async create(
+        @Body() createLanguage: createLanguageDto,
+        @Res() res: Response<{response: response, data?: Language}>
+    ) {
+        try {
+            const foo: {response: response, data?: Language} = await this._languageService.create(createLanguage);
+            return res.status(foo.response.status).json(foo);
+        } catch (error) {
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .json({
+                            response: {
+                                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                                message: 'Error en el servidor'
+                            }
+                        })
+        }
+    }
 }
 
