@@ -1,4 +1,5 @@
 import { genSalt, hash } from "bcrypt";
+import { Exclude } from "class-transformer";
 import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 
@@ -39,6 +40,7 @@ export class UserEntity {
         type: 'varchar',
         nullable: false
     })
+    @Exclude()
     password: string;
 
     @Column({
