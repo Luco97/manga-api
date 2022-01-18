@@ -1,3 +1,4 @@
+import { Exclude } from "class-transformer";
 import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { MangaEntity } from './manga.entity';
 
@@ -29,13 +30,15 @@ export class LanguageEntity {
         type: 'timestamp',
         select: false
     })
+    @Exclude()
     createDate: Date;
-
+    
     @UpdateDateColumn({
         name: 'UPDATED_AT',
         type: 'timestamp',
         select: false
     })
+    @Exclude()
     updateDate: Date;
 
     @ManyToMany(
