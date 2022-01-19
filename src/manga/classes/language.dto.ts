@@ -9,6 +9,13 @@ export class createLanguageDto {
         message: 'Esta bajo el minimo/Supera el maximo de caracteres'
     })
     language: string;
+    @IsNotEmpty({
+        message: `Falta definir la propiedad 'country'`
+    })
+    @Length( 1, 30, {
+        message: 'Esta bajo el minimo/Supera el maximo de caracteres'
+    })
+    country: string;
 }
 
 export class readLanguageDto {
