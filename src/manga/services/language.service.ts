@@ -61,7 +61,7 @@ export class LanguageService {
             }
         });
         if(!languages.length) {
-            const newLanguage: LanguageEntity = new LanguageEntity(createLanguage.language.toLocaleLowerCase());
+            const newLanguage: LanguageEntity = new LanguageEntity(createLanguage.language.toLocaleLowerCase(), createLanguage.country.toLocaleLowerCase());
             const data = await this._languageService.create(newLanguage);
             return {
                 response: {
