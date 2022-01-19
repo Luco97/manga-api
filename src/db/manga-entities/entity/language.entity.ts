@@ -7,8 +7,9 @@ import { MangaEntity } from './manga.entity';
 })
 export class LanguageEntity {
 
-    constructor( language: string) {
-        this.language = language;
+    constructor( language: string, country: string) {
+        this.language   = language;
+        this.country    = country;
     }
     
     @PrimaryGeneratedColumn({
@@ -24,6 +25,14 @@ export class LanguageEntity {
         nullable: false
     })
     language: string;
+
+    @Column({
+        name: 'COUNTRY',
+        type: 'varchar',
+        length: 30,
+        nullable: false
+    })
+    country: string;
 
     @CreateDateColumn({
         name: 'CREATED_AT',
