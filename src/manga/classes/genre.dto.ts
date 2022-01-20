@@ -1,5 +1,6 @@
 import { genreRelations } from "@db/manga/const";
-import { ArrayContains, ArrayNotEmpty, IsNotEmpty, IsOptional, Length, ValidateIf } from "class-validator";
+import { ArrayContainsSome } from "./custom-validator/ArrayContainsSome.class-validator";
+import { ArrayNotEmpty, IsNotEmpty, IsOptional, Length } from "class-validator";
 
 export class createGenreDto {
     @IsNotEmpty({
@@ -16,8 +17,8 @@ export class readGenreDto {
     @ArrayNotEmpty({
         message: `No se encuentran definido 'relations', si no quiere relaciones ingresar 'relations: []'`
     })
-    @ArrayContains(genreRelations, {
-        message: 'No existen la(s) propiedades'
+    @ArrayContainsSome(genreRelations, {
+        message: 'Hay campos que no se encuentran definidos en la tabla consultada'
     })
     relations: string[];
 }
