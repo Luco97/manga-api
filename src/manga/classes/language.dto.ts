@@ -1,4 +1,5 @@
 import { languageRelations } from "@db/manga/const";
+import { ArrayContainsSome } from "./custom-validator/ArrayContainsSome.class-validator";
 import { ArrayContains, ArrayNotEmpty, IsNotEmpty, IsOptional, Length } from "class-validator";
 
 export class createLanguageDto {
@@ -23,8 +24,8 @@ export class readLanguageDto {
     @ArrayNotEmpty({
         message: `Existe 'relations' pero se encuetra vacio`
     })
-    @ArrayContains(languageRelations, {
-        message: 'No existen la(s) propiedades'
+    @ArrayContainsSome(languageRelations, {
+        message: 'Hay campos que no se encuentran definidos en la tabla consultada'
     })
     relations: string[];
 }
