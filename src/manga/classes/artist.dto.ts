@@ -1,5 +1,6 @@
 import { artistRelations } from '@db/manga/const';
-import { ArrayContains, ArrayNotEmpty, IsNotEmpty, IsOptional, Length, Max, Min } from 'class-validator';
+import { ArrayContainsSome } from './custom-validator/ArrayContainsSome.class-validator';
+import { ArrayNotEmpty, IsNotEmpty, IsOptional, Length, Max, Min } from 'class-validator';
 
 
 export class readArtistDto {
@@ -7,8 +8,8 @@ export class readArtistDto {
     @ArrayNotEmpty({
         message: `No se encuentran definido 'relations', si no quiere relaciones ingresar 'relations: []'`
     })
-    @ArrayContains(artistRelations, {
-        message: 'No existen la(s) propiedades'
+    @ArrayContainsSome(artistRelations, {
+        message: 'Hay campos que no se encuentran definidos en la tabla consultada'
     })
     relations: string[];
 }
