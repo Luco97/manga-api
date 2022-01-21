@@ -11,7 +11,7 @@ export class ArtistService {
         private _artistService: ArtistEntityService
     ) {}
     
-    async getAll(): Promise<{response: response, data?: Artist[]}> {
+    async getAll(): Promise<{response: response, data: Artist[]}> {
         const data: ArtistEntity[] = await this._artistService.findAll([])
         if(data.length) {
             return {
@@ -24,9 +24,10 @@ export class ArtistService {
         }
         return {
             response: {
-                status: HttpStatus.NO_CONTENT,
+                status: HttpStatus.OK,
                 message: 'Sin artistas'
-            }
+            },
+            data: []
         }
     }
 
