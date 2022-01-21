@@ -11,7 +11,7 @@ export class GenreService {
         private _genreService: GenreEntityService
     ) {}
 
-    async getAll(): Promise<{response: response, data?: GenreEntity[]}> {
+    async getAll(): Promise<{response: response, data: GenreEntity[]}> {
         const data: GenreEntity[] = await this._genreService.findAll([]);
         if(data.length) {
             return {
@@ -24,9 +24,10 @@ export class GenreService {
         }
         return {
             response: {
-                status: HttpStatus.NO_CONTENT,
+                status: HttpStatus.OK,
                 message: 'Sin generos'
-            }
+            },
+            data: []
         }
     }
 
