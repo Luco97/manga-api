@@ -5,6 +5,7 @@ import {
   ManyToMany,
   JoinTable,
   Entity,
+  UpdateDateColumn,
 } from 'typeorm';
 import { LanguageEntity } from './language.entity';
 import { GenreEntity } from './genre.entity';
@@ -20,16 +21,16 @@ import { UserEntity } from '@userDB/entity';
 export class MangaEntity {
   constructor(
     title: string,
-    number_or_pages: number,
+    chapters: number,
     genres: GenreEntity[],
     artists: ArtistEntity[],
     languages: LanguageEntity[],
   ) {
-      this.title =           title;
-      this.number_of_pages = number_or_pages;
-      this.genres =          genres;
-      this.artists =         artists;
-      this.languages =       languages;
+      this.title      = title;
+      this.chapters   = chapters;
+      this.genres     = genres;
+      this.artists    = artists;
+      this.languages  = languages;
   }
 
   @PrimaryGeneratedColumn({
@@ -47,12 +48,12 @@ export class MangaEntity {
   title: string;
 
   @Column({
-    name: 'NUMBER_OF_PAGES',
+    name: 'CHAPTERS',
     type: 'int',
     update: false,
     nullable: false,
   })
-  number_of_pages: number;
+  chapters: number;
 
   @CreateDateColumn({
     name: 'CREATED_AT',
@@ -60,6 +61,13 @@ export class MangaEntity {
     select: false
   })
   created_at: Date;
+
+  @UpdateDateColumn({
+    name: 'UPDATED_AT',
+    type: 'timestamp',
+    select: false
+  })
+  updated_at: Date;
 
   @ManyToMany(() => ArtistEntity, (artist) => artist.mangas, {
     nullable: false,
