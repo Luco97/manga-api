@@ -11,7 +11,7 @@ export class LanguageService {
         private _languageService: LanguageEntityService
     ) {}
 
-    async getAll(): Promise<{response: response, data?: Language[]}> {
+    async getAll(): Promise<{response: response, data: Language[]}> {
         const data: LanguageEntity[] = await this._languageService.findAll([]);
         if(data.length) {
             return {
@@ -24,9 +24,10 @@ export class LanguageService {
         }
         return {
             response: {
-                status: HttpStatus.NO_CONTENT,
+                status: HttpStatus.OK,
                 message: 'Sin idiomas'
-            }
+            },
+            data: []
         }
     }
 
