@@ -32,7 +32,7 @@ export interface Language {
 
 export interface Manga {
   title: string;
-  pages: number;
+  chapters: number;
   artists?: Artist[];
   genres?: Genre[];
   language?: Language[];
