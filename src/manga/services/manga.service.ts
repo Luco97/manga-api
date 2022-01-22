@@ -2,6 +2,7 @@
 import { MangaEntity } from '@db/manga/entity';
 import { MangaEntityService } from '@db/manga/services';
 import { Manga, response } from '@interface/mangaResponses.interface';
+import { readMangaDto } from '@manga/dto';
 import { Injectable, HttpStatus } from '@nestjs/common';
 
 @Injectable()
@@ -28,6 +29,30 @@ export class MangaService {
                 message: 'Sin mangas'
             },
             data: []
+        }
+    }
+
+    async getOne(id: number, readManga: readMangaDto): Promise<{response: response, data?: Manga}> {
+        const data: MangaEntity[] = await this._mangaService.findBy({
+            relations: readManga.relations,
+            where: {
+                id
+            }
+        })
+        if(data.length) {
+            return {
+                response: {
+                    status: HttpStatus.OK,
+                    message: 'getOne Manga'
+                },
+                data: data.pop()
+            }
+        }
+        return {
+            response: {
+                status: HttpStatus.NOT_FOUND,
+                message: 'No encontrado'
+            }
         }
     }
 }
