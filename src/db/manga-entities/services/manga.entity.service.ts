@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 import {
   ArtistEntity,
   GenreEntity,
@@ -33,6 +33,11 @@ export class MangaEntityService {
   async findOne(id: number, relations: string[] = ['users', 'genres', 'languages', 'artists']): Promise<MangaEntity> {
     const data: MangaEntity = await this.mangaRepository.findOne(id, {relations});
     if (!data) throw new NotFoundException(`No existe el manga con id=${id}`);
+    return data;
+  }
+
+  async findBy(options: FindOneOptions<MangaEntity>): Promise<MangaEntity[]> {
+    const data: MangaEntity[] = await this.mangaRepository.find(options);
     return data;
   }
 
