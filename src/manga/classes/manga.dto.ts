@@ -1,5 +1,7 @@
+import { mangaRelations } from '@db/manga/const';
 import { GenreEntity, ArtistEntity, LanguageEntity } from '@db/manga/entity';
-import { ArrayMinSize, IsArray, IsNotEmpty, Length, Max, Min } from "class-validator";
+import { ArrayMinSize, ArrayNotEmpty, IsArray, IsNotEmpty, IsOptional, Length, Max, Min } from "class-validator";
+import { ArrayContainsSome } from './custom-validator/ArrayContainsSome.class-validator';
 
 export class createMangaDto {
     @IsNotEmpty({
@@ -54,4 +56,15 @@ export class createMangaDto {
     })
     languages: LanguageEntity[];
 
+}
+
+export class readMangaDto {
+    @IsOptional()
+    @ArrayNotEmpty({
+        message: `Existe 'relations' pero se encuetra vacio`
+    })
+    @ArrayContainsSome( mangaRelations, {
+        message: 'Hay campos que no se encuentran definidos en la tabla consultada'
+    })
+    relations: string[];
 }
