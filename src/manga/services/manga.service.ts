@@ -2,7 +2,7 @@
 import { MangaEntity } from '@db/manga/entity';
 import { MangaEntityService } from '@db/manga/services';
 import { Manga, response } from '@interface/mangaResponses.interface';
-import { readMangaDto } from '@manga/dto';
+import { createMangaDto, readMangaDto } from '@manga/dto';
 import { Injectable, HttpStatus } from '@nestjs/common';
 
 @Injectable()
@@ -32,9 +32,9 @@ export class MangaService {
         }
     }
 
-    async getOne(id: number, readManga: readMangaDto): Promise<{response: response, data?: Manga}> {
+    async getOne(id: number, relations: string[]): Promise<{response: response, data?: Manga}> {
         const data: MangaEntity[] = await this._mangaService.findBy({
-            relations: readManga.relations,
+            relations,
             where: {
                 id
             }
@@ -53,6 +53,32 @@ export class MangaService {
                 status: HttpStatus.NOT_FOUND,
                 message: 'No encontrado'
             }
+        }
+    }
+    
+    async create(createManga: createMangaDto): Promise<{response: response, data?: Manga}> {
+        const mangas: MangaEntity[] = await this._mangaService.findBy({
+            where: {
+                title: createManga.title.toLocaleLowerCase()
+            }
+        });
+        if(!mangas.length) {
+            const newManga = new MangaEntity(createManga.title.toLocaleLowerCase(), createManga.chapters, createManga.genres, createManga.artists, createManga.languages);
+            const data: MangaEntity = await this._mangaService.create(newManga);
+            return {
+                response: {
+                    status: HttpStatus.CREATED,
+                    message: 'Manga creado'
+                },
+                data
+            }
+        }
+        return {
+            response: {
+                status: HttpStatus.CONFLICT,
+                message: 'Ya existe un manga con ese titulo'
+            },
+            data: mangas.pop()
         }
     }
 }
