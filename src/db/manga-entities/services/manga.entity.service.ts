@@ -42,7 +42,8 @@ export class MangaEntityService {
   }
 
   async create(manga: MangaEntity) {
-    return await this.mangaRepository.save({ ...manga } as MangaEntity);
+    const data: MangaEntity = this.mangaRepository.create(manga);
+    return await this.mangaRepository.save(data);
   }
 
   async delete(manga: MangaEntity) {
