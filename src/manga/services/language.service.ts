@@ -80,4 +80,24 @@ export class LanguageService {
             data: languages.pop()
         }
     }
+
+    async delete(id: number):  Promise<{response: response, data?: Language}> {
+        const data: {response: response, data?: Language} = await this.getOne(id, []);
+        if(data?.data) {
+            const language = await this._languageService.delete(data.data as LanguageEntity);
+            return {
+                response: {
+                    status: HttpStatus.OK,
+                    message: 'Idioma borrado'
+                },
+                data: data.data
+            }
+        }
+        return {
+            response: {
+                status: HttpStatus.NOT_FOUND,
+                message: `Idioma con id = '${id}' no existe`
+            }
+        }
+    }
 }
