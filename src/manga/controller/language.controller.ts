@@ -1,7 +1,7 @@
 import { Language, response } from '@interface/mangaResponses.interface';
 import { createLanguageDto, readLanguageDto } from '@manga/dto';
 import { LanguageService } from '@manga/services';
-import { Controller, Get, HttpStatus, Param, Post, Res, UseGuards, ParseIntPipe, Body } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param, Post, Res, UseGuards, ParseIntPipe, Body, Delete } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthGuard } from '../guards/auth.guard';
 
@@ -58,6 +58,25 @@ export class LanguageController {
     ) {
         try {
             const foo: {response: response, data?: Language} = await this._languageService.create(createLanguage);
+            return res.status(foo.response.status).json(foo);
+        } catch (error) {
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .json({
+                            response: {
+                                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                                message: 'Error en el servidor'
+                            }
+                        })
+        }
+    }
+
+    @Delete(':id')
+    async delete(
+        @Param('id', ParseIntPipe) id: number,
+        @Res() res: Response<{response: response, data?: Language}>
+    ) {
+        try {
+            const foo: {response: response, data?: Language} = await this._languageService.delete(id);
             return res.status(foo.response.status).json(foo);
         } catch (error) {
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
