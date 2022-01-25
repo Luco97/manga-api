@@ -80,4 +80,24 @@ export class GenreService {
             data: genres.pop()
         }
     }
+
+    async delete (id: number): Promise<{response: response, data?: Genre}> {
+        const data: {response: response, data?: Genre} = await this.getOne(id, []);
+        if(data?.data) {
+            const genre = await this._genreService.delete(data.data as GenreEntity);
+            return {
+                response: {
+                    status: HttpStatus.OK,
+                    message: 'Idioma borrado'
+                },
+                data: data.data
+            }
+        }
+        return {
+            response: {
+                status: HttpStatus.NOT_FOUND,
+                message: `Idioma con id = '${id}' no existe`
+            }
+        }
+    }
 }
