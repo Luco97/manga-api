@@ -122,4 +122,23 @@ export class ArtistService {
         }
     }
     
+    async delete(id: number): Promise<{response: response, data?: Artist}> {
+        const data: {response: response, data?: Artist} = await this.getOne(id, []);
+        if(data?.data) {
+            const artist = await this._artistService.delete(data.data as ArtistEntity);
+            return {
+                response: {
+                    status: HttpStatus.OK,
+                    message: 'Artista eliminado'
+                },
+                data: data.data
+            }
+        }
+        return {
+            response: {
+                status: HttpStatus.NOT_FOUND,
+                message: `Artista con id = ${id} no existe`
+            }
+        }
+    }
 }
