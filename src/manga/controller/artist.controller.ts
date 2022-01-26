@@ -1,4 +1,4 @@
-import { Controller, Get, Res, HttpStatus, UseGuards, Param, ParseIntPipe, Post, Body, Put } from '@nestjs/common';
+import { Controller, Get, Res, HttpStatus, UseGuards, Param, ParseIntPipe, Post, Body, Put, Delete } from '@nestjs/common';
 import { Response } from 'express';
 import { Artist, response } from '@interface/mangaResponses.interface';
 import { ArtistService } from '@manga/services';
@@ -89,6 +89,24 @@ export class ArtistController {
                                 message: 'Error en el servidor'
                             }
                         })
+        }
+    }
+
+    @Delete(':id')
+    async delete(
+        @Param('id', ParseIntPipe) id: number,
+        @Res() res: Response<{response: response, data?: Artist}>
+    ){
+        try {
+            const foo: {response: response, data?: Artist} = await this._artistService.delete(id);
+        } catch (error) {
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .json({
+                response: {
+                    status: HttpStatus.INTERNAL_SERVER_ERROR,
+                    message: 'Error en el servidor'
+                }
+            })   
         }
     }
 }
