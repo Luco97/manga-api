@@ -30,12 +30,19 @@ export interface Language {
   count?: number;
 }
 
+export interface User {
+  id: number;
+  username: string;
+  email: string;
+}
+
 export interface Manga {
   title: string;
   chapters: number;
   artists?: Artist[];
   genres?: Genre[];
-  language?: Language[];
+  languages?: Language[];
+  users?: User[];
 }
 
 
