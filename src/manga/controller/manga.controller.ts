@@ -1,7 +1,7 @@
-import { Controller, UseGuards, Get, Res, HttpStatus, Post, Param, ParseIntPipe, Body, Delete } from '@nestjs/common';
+import { Controller, UseGuards, Get, Res, HttpStatus, Post, Param, ParseIntPipe, Body, Delete, Put } from '@nestjs/common';
 import { Response } from 'express';
 import { Manga, response } from '@interface/mangaResponses.interface';
-import { createMangaDto, readMangaDto } from '@manga/dto';
+import { createMangaDto, readMangaDto, updateMangaDto } from '@manga/dto';
 import { MangaService } from '@manga/services';
 import { AuthGuard } from '../guards/auth.guard';
 
@@ -34,6 +34,26 @@ export class MangaController {
   ) {
     try {
       const foo: {response: response, data?: Manga} = await this._mangaService.getOne(id, readManga.relations);
+      return res.status(foo.response.status).json(foo);
+    } catch (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                  .json({
+                    response: {
+                      status: HttpStatus.INTERNAL_SERVER_ERROR,
+                      message: 'Error en el servidor'
+                    }
+                  });
+    }
+  }
+
+  @Put(':id')
+  async updateManga (
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateManga: updateMangaDto,
+    @Res() res: Response<{response: response, newData?: Manga, oldData?: Manga}>
+  ) {
+    try {
+      const foo: {response: response, newData?: Manga, oldData?: Manga} = await this._mangaService.updateMangaContent(id, updateManga);
       return res.status(foo.response.status).json(foo);
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
