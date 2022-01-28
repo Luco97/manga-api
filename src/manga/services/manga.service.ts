@@ -1,8 +1,9 @@
 
+import { mangaRelations } from '@db/manga/const';
 import { MangaEntity } from '@db/manga/entity';
 import { MangaEntityService } from '@db/manga/services';
 import { Manga, response } from '@interface/mangaResponses.interface';
-import { createMangaDto, readMangaDto } from '@manga/dto';
+import { createMangaDto, updateMangaDto } from '@manga/dto';
 import { Injectable, HttpStatus } from '@nestjs/common';
 
 @Injectable()
@@ -79,6 +80,37 @@ export class MangaService {
                 message: 'Ya existe un manga con ese titulo'
             },
             data: mangas.pop()
+        }
+    }
+
+    async updateMangaContent(id: number, updateManga: updateMangaDto): Promise<{response: response, newData?: Manga, oldData?: Manga}> {
+        const data: {response: response, data?: Manga} = await this.getOne( id, ['artists', 'genres', 'languages']);
+        if(data?.data) {
+
+            const manga: Manga = { ...data.data };
+
+            manga.title = updateManga?.title || manga.title;
+            manga.chapters = updateManga?.chapters || manga.chapters;
+            manga.artists = updateManga?.artists || manga.artists;
+            manga.genres = updateManga?.genres || manga.genres;
+            manga.languages = updateManga?.languages || manga.languages;
+
+            const updatedManga: MangaEntity = await this._mangaService.create(manga as MangaEntity);
+
+            return {
+                response: {
+                    status: HttpStatus.OK,
+                    message: 'Manga actualizado'
+                },
+                newData: updatedManga,
+                oldData: data.data
+            }
+        }
+        return {
+            response: {
+                status: HttpStatus.NOT_FOUND,
+                message: `No se encuentra un manga con id = '${id}'`
+            }
         }
     }
 
