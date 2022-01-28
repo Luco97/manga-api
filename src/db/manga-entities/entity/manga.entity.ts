@@ -50,7 +50,7 @@ export class MangaEntity {
   @Column({
     name: 'CHAPTERS',
     type: 'int',
-    update: false,
+    update: true,
     nullable: false,
   })
   chapters: number;
