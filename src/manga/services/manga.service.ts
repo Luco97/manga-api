@@ -81,4 +81,24 @@ export class MangaService {
             data: mangas.pop()
         }
     }
+
+    async delete(id: number): Promise<{response: response, data?: Manga}> {
+        const data: {response: response, data?: Manga} = await this.getOne(id, []);
+        if(data?.data) {
+            const manga = await this._mangaService.delete(data.data as MangaEntity);
+            return {
+                response: {
+                    status: HttpStatus.OK,
+                    message: 'Manga eliminado'
+                },
+                data: data.data
+            }
+        }
+        return {
+            response: {
+                status: HttpStatus.NOT_FOUND,
+                message: `No se encuentra un manga con id = '${id}'`
+            }
+        }
+    }
 }
