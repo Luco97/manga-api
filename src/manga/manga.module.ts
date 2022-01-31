@@ -17,6 +17,8 @@ import { MangaService } from './services/manga.service';
 import { ArtistService } from './services/artist.service';
 import { GenreService } from './services/genre.service';
 import { LanguageService } from './services/language.service';
+import { UserService } from './services/user.service';
+import { UserEntityModule } from '@userDB/user-entity.module';
 
 @Module({
   imports: [
@@ -27,6 +29,7 @@ import { LanguageService } from './services/language.service';
         return dbService.getTypeORMconfig();
       }
     }),
+    UserEntityModule,
     MangaEntitiesModule,
     SharedModule
   ],
@@ -42,7 +45,8 @@ import { LanguageService } from './services/language.service';
     MangaService,
     ArtistService,
     GenreService,
-    LanguageService
+    LanguageService,
+    UserService
   ]
 })
 export class MangaModule implements NestModule {
