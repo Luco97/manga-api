@@ -6,7 +6,7 @@ import { FindOneOptions, Repository } from 'typeorm';
 import { UserEntity } from '../entity/user.entity';
 
 @Injectable()
-export class UserService {
+export class UserEntityService {
 
     constructor(
         @InjectRepository(UserEntity)
