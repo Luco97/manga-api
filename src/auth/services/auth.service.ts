@@ -3,14 +3,14 @@ import { compare } from 'bcrypt';
 
 import { createUserDto, loginUserDto } from '@auth/dto';
 import { UserEntity } from '@userDB/entity';
-import { UserService } from '@userDB/service';
+import { UserEntityService } from '@userDB/service';
 import { JwtService } from '@shared/services';
 import { response, userResponse } from '@interface/authResponses.interface';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private _userService: UserService,
+    private _userService: UserEntityService,
     private _jwtService: JwtService,
   ) {}
 
