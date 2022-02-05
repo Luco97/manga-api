@@ -19,6 +19,7 @@ import { GenreService } from './services/genre.service';
 import { LanguageService } from './services/language.service';
 import { UserService } from './services/user.service';
 import { UserEntityModule } from '@userDB/user-entity.module';
+import { UserController } from './controller/user.controller';
 
 @Module({
   imports: [
@@ -37,7 +38,8 @@ import { UserEntityModule } from '@userDB/user-entity.module';
     MangaController,
     ArtistController,
     GenreController,
-    LanguageController
+    LanguageController,
+    UserController
   ],
   providers: [
     LoginMiddleware,
