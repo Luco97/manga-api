@@ -39,6 +39,7 @@ export class AuthService {
 
   async loginUser(loginUser: loginUserDto): Promise<userResponse> {
     const users: UserEntity[] = await this._userService.findBy({
+      select: [ 'id', 'email', 'username', 'password'],
       where: {
         email: loginUser.email,
       },
