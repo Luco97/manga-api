@@ -38,9 +38,9 @@ export class UserEntity {
     @Column({
         name: 'PASSWORD',
         type: 'varchar',
-        nullable: false
+        nullable: false,
+        select: false
     })
-    @Exclude()
     password: string;
 
     @Column({
