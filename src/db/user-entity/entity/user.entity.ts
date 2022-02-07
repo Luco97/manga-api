@@ -1,6 +1,7 @@
+import { MangaEntity } from "@db/manga/entity";
 import { genSalt, hash } from "bcrypt";
 import { Exclude } from "class-transformer";
-import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 
 @Entity({
@@ -73,4 +74,9 @@ export class UserEntity {
         const bcSaltRound = await genSalt(saltRound);
         this.password = await hash(this.password, bcSaltRound);
     }
+
+    @ManyToMany(() => MangaEntity, {
+        nullable: true
+    })
+    mangas: MangaEntity[];
 }
