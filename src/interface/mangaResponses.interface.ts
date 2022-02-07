@@ -34,6 +34,7 @@ export interface User {
   id: number;
   username: string;
   email: string;
+  mangas?: MangaEntity[]
 }
 
 export interface Manga {
