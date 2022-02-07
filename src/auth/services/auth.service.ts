@@ -81,6 +81,7 @@ export class AuthService {
 
   async logoutUser(loginUser: loginUserDto): Promise<response> {
     const users: UserEntity[] = await this._userService.findBy({
+      select: ['email', 'username', 'password', 'active'],
       where: {
         email: loginUser.email,
       },
