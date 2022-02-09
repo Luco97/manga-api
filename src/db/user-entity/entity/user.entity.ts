@@ -64,6 +64,13 @@ export class UserEntity {
         select: false
     })
     updateDate: Date;
+    
+    @ManyToMany(
+        () => MangaEntity, (manga) => manga.users,
+        {
+        nullable: true
+    })
+    mangas: MangaEntity[];
 
     @BeforeInsert()
     @BeforeUpdate()
@@ -75,8 +82,4 @@ export class UserEntity {
         this.password = await hash(this.password, bcSaltRound);
     }
 
-    @ManyToMany(() => MangaEntity, {
-        nullable: true
-    })
-    mangas: MangaEntity[];
 }

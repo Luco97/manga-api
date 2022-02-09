@@ -84,7 +84,7 @@ export class MangaEntity {
   })
   genres: GenreEntity[];
 
-  @ManyToMany(() => UserEntity, {
+  @ManyToMany(() => UserEntity, user => user.mangas,{
     nullable: true,
   })
   @JoinTable({
