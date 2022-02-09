@@ -46,21 +46,4 @@ export class AuthController {
         }
     }
 
-    @Post('logout')
-    async logout(
-        @Body() login: loginUserDto,
-        @Res() res: Response<response>
-    ) {
-        try {
-            const foo: response = await this._authService.logoutUser(login);
-            return res.status(foo.status).json(foo);
-        } catch (error) {
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .json({
-                            status: HttpStatus.INTERNAL_SERVER_ERROR,
-                            message: 'Error en el servidor'
-                        })
-
-        }
-    }
 }
