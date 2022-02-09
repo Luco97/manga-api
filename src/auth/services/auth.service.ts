@@ -53,12 +53,6 @@ export class AuthService {
         user.password,
       );
       if (passCompare) {
-          if(user.active) {
-            return {
-              status: HttpStatus.CONFLICT,
-              message: 'Datos invalidos (El usuario se encuentra actualmente en uso)'
-            }
-          }
           const token: string = this._jwtService.generateJWT( user.id, user.username);
           user.password = loginUser.password;
           this._userService.updateStatus(user);
