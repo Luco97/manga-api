@@ -54,6 +54,10 @@ export class UserEntityService {
         return await this.userRepository.save(newUser);
     }
 
+    async save( user: UserEntity) {
+        return await this.userRepository.save(user);
+    }
+
     async updateStatus( user: UserEntity) {
         user.active = !user.active;
         this.userRepository.save(user);
