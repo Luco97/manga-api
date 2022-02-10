@@ -1,8 +1,8 @@
-import { mangaRelations } from '@db/manga/const';
-import { GenreEntity, ArtistEntity, LanguageEntity } from '@db/manga/entity';
-import { UserEntity } from '@userDB/entity';
 import { ArrayMinSize, ArrayNotEmpty, IsArray, IsNotEmpty, IsOptional, Length, Max, Min } from "class-validator";
 import { ArrayContainsSome } from './custom-validator/ArrayContainsSome.class-validator';
+import { GenreEntity, ArtistEntity, LanguageEntity } from '@db/manga/entity';
+import { mangaRelations } from '@db/manga/const';
+import { UserEntity } from '@userDB/entity';
 
 export class readMangaDto {
     @IsOptional()
