@@ -38,6 +38,7 @@ export interface User {
 }
 
 export interface Manga {
+  id: number;
   title: string;
   chapters: number;
   artists?: Artist[];
