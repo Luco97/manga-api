@@ -47,6 +47,16 @@ export interface Manga {
   users?: User[];
 }
 
+export interface MangaResponse {
+  id: number;
+  title: string;
+  chapters: number;
+  artists?: Artist[];
+  genres?: Genre[];
+  languages?: Language[];
+  count?: number;
+}
+
 
 export interface MangaResponse {
   /* manga?: Manga;
