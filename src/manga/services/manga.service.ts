@@ -2,7 +2,7 @@
 import { mangaRelations } from '@db/manga/const';
 import { MangaEntity } from '@db/manga/entity';
 import { MangaEntityService } from '@db/manga/services';
-import { Manga, response } from '@interface/mangaResponses.interface';
+import { Manga, MangaResponse, response } from '@interface/mangaResponses.interface';
 import { createMangaDto, updateMangaDto } from '@manga/dto';
 import { Injectable, HttpStatus } from '@nestjs/common';
 
@@ -33,7 +33,7 @@ export class MangaService {
         }
     }
 
-    async getOne(id: number, relations: string[]): Promise<{response: response, data?: Manga}> {
+    async getOne(id: number, relations: string[]): Promise<{response: response, data?: MangaResponse}> {
         const data: MangaEntity[] = await this._mangaService.findBy({
             relations,
             where: {
@@ -41,12 +41,21 @@ export class MangaService {
             }
         })
         if(data.length) {
+            const { artists, chapters, genres, id, languages, title, users} = data.pop();
             return {
                 response: {
                     status: HttpStatus.OK,
                     message: 'getOne Manga'
                 },
-                data: data.pop()
+                data: {
+                    artists,
+                    chapters,
+                    genres,
+                    id,
+                    languages,
+                    title,
+                    count: users?.length
+                }
             }
         }
         return {
