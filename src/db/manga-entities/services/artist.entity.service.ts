@@ -1,6 +1,6 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOneOptions, Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 import { ArtistEntity, MangaEntity } from '@db/manga/entity';
 
 
@@ -34,7 +34,7 @@ export class ArtistEntityService {
         return data;
     }
 
-    async findBy(options: FindOneOptions<ArtistEntity>): Promise<ArtistEntity[]> {
+    async findBy(options: FindManyOptions<ArtistEntity>): Promise<ArtistEntity[]> {
         const data = await this.artistRepository.find(options);
         return data;
     }
