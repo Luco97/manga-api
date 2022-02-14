@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { Artist, response } from '@interface/mangaResponses.interface';
 import { ArtistService } from '@manga/services';
 import { AuthGuard } from '../guards/auth.guard';
-import { createArtistDto, readArtistDto, updateArtistsDto } from '@manga/dto';
+import { createArtistDto, Pagination, readArtistDto, updateArtistsDto } from '@manga/dto';
 
 @Controller('artist')
 @UseGuards(AuthGuard)
@@ -13,12 +13,13 @@ export class ArtistController {
         private _artistService: ArtistService
     ) {}
 
-    @Get()
+    @Post()
     async getAll(
+        @Body() pagination: readArtistDto,
         @Res() res: Response<{response: response, data?: Artist[]}>
     ) {
         try {
-            const foo: {response: response, data?: Artist[]} = await this._artistService.getAll();
+            const foo: {response: response, data?: Artist[]} = await this._artistService.getAll( pagination);
             return res.status(foo.response.status)
                         .json(foo);
         } catch (error) {
@@ -52,7 +53,7 @@ export class ArtistController {
         }
     }
 
-    @Post()
+    @Put()
     async create(
         @Body() createArtist: createArtistDto,
         @Res() res: Response<{response: response, data?: Artist}>
