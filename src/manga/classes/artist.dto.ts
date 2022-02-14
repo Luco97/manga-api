@@ -1,9 +1,10 @@
 import { artistRelations } from '@db/manga/const';
 import { ArrayContainsSome } from './custom-validator/ArrayContainsSome.class-validator';
 import { ArrayNotEmpty, IsNotEmpty, IsOptional, Length, Max, Min } from 'class-validator';
+import { Pagination } from './utils.dto';
 
 
-export class readArtistDto {
+export class readArtistDto extends Pagination{
     @IsOptional()
     @ArrayNotEmpty({
         message: `No se encuentran definido 'relations', si no quiere relaciones ingresar 'relations: []'`
