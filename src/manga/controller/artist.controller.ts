@@ -15,11 +15,11 @@ export class ArtistController {
 
     @Post()
     async getAll(
-        @Body() pagination: readArtistDto,
+        @Body() pagination: Pagination,
         @Res() res: Response<{response: response, data?: Artist[]}>
     ) {
         try {
-            const foo: {response: response, data?: Artist[]} = await this._artistService.getAll( pagination);
+            const foo: {response: response, data?: Artist[]} = await this._artistService.getAll(pagination);
             return res.status(foo.response.status)
                         .json(foo);
         } catch (error) {
