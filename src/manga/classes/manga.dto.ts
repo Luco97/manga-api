@@ -3,8 +3,9 @@ import { ArrayContainsSome } from './custom-validator/ArrayContainsSome.class-va
 import { GenreEntity, ArtistEntity, LanguageEntity } from '@db/manga/entity';
 import { mangaRelations } from '@db/manga/const';
 import { UserEntity } from '@userDB/entity';
+import { Pagination } from './utils.dto';
 
-export class readMangaDto {
+export class readMangaDto extends Pagination {
     @IsOptional()
     @ArrayNotEmpty({
         message: `Existe 'relations' pero se encuetra vacio`
