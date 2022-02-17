@@ -16,7 +16,8 @@ export class DbConfigService {
         __dirname + entity
       ],
       synchronize: true,
-      autoLoadEntities: true
+      autoLoadEntities: true,
+      logging: ['query']
     };
   }
 }
