@@ -9,7 +9,7 @@ export function ArrayContainsSome(property: string[], validationOptions?: Valida
       options: validationOptions,
       validator: {
         validate(value: string[], args: ValidationArguments) {
-            for (let index = 0; index < value.length; index++) {
+            for (let index = 0; index < value?.length; index++) {
                 const element = value[index];
                 if(!property.includes(element)) 
                     return false;
