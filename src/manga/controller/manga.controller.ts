@@ -1,7 +1,7 @@
-import { Controller, UseGuards, Get, Res, HttpStatus, Post, Param, ParseIntPipe, Body, Delete, Put } from '@nestjs/common';
+import { Controller, UseGuards, Res, HttpStatus, Post, Param, ParseIntPipe, Body, Delete, Put } from '@nestjs/common';
 import { Response } from 'express';
 import { Manga, response } from '@interface/mangaResponses.interface';
-import { createMangaDto, Pagination, readMangaDto, updateMangaDto } from '@manga/dto';
+import { createMangaDto, readMangaDto, updateMangaDto } from '@manga/dto';
 import { MangaService } from '@manga/services';
 import { AuthGuard } from '../guards/auth.guard';
 
@@ -12,11 +12,11 @@ export class MangaController {
 
   @Post()
   async allManga(
-    @Body() pagination: Pagination,
+    @Body() bodyMangas: readMangaDto,
     @Res() res: Response<{response: response, data?: Manga[]}>
   ) {
     try {
-        const foo: {response: response, data: Manga[]} = await this._mangaService.getAll(pagination);
+        const foo: {response: response, data: Manga[]} = await this._mangaService.getAll(bodyMangas);
         return res.status(foo.response.status).json(foo);
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR)

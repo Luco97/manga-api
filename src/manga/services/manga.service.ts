@@ -1,11 +1,8 @@
-
-import { mangaRelations } from '@db/manga/const';
 import { MangaEntity } from '@db/manga/entity';
 import { MangaEntityService } from '@db/manga/services';
 import { Manga, MangaResponse, response } from '@interface/mangaResponses.interface';
 import { createMangaDto, readMangaDto, updateMangaDto } from '@manga/dto';
 import { Injectable, HttpStatus } from '@nestjs/common';
-import { Pagination } from '../classes/utils.dto';
 
 @Injectable()
 export class MangaService {
@@ -14,12 +11,17 @@ export class MangaService {
         private _mangaService: MangaEntityService
     ) {}
 
-    async getAll(pagination: Pagination): Promise<{response: response, data: Manga[]}> {
-        const { skip, take } = pagination;
-        const data: MangaEntity[] = await this._mangaService.findBy({
+    async getAll(getMangas: readMangaDto): Promise<{response: response, data: Manga[]}> {
+        const { skip, take, relations } = getMangas;
+        const elements: readMangaDto = {
             skip,
-            take
-        });
+            take,
+            relations
+        }
+        const data: MangaEntity[] = await this._mangaService.findBy({
+            ...elements
+        }
+        );
         if(data.length) {
             return {
                 response: {
