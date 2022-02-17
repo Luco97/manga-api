@@ -2,7 +2,7 @@ import { Injectable, HttpStatus } from '@nestjs/common';
 import { ArtistEntityService } from '@db/manga/services';
 import { response, Artist } from '@interface/mangaResponses.interface';
 import { ArtistEntity } from '@db/manga/entity';
-import { createArtistDto, Pagination, readArtistDto, updateArtistsDto } from '@manga/dto';
+import { createArtistDto, readArtistDto, updateArtistsDto } from '@manga/dto';
 
 @Injectable()
 export class ArtistService {
@@ -11,11 +11,15 @@ export class ArtistService {
         private _artistService: ArtistEntityService
     ) {}
     
-    async getAll( pagination: Pagination): Promise<{response: response, data: Artist[]}> {
-        const { skip, take } = pagination;
-        const data: ArtistEntity[] = await this._artistService.findBy({
+    async getAll( getArtists: readArtistDto): Promise<{response: response, data: Artist[]}> {
+        const { skip, take, relations } = getArtists;
+        const elements: readArtistDto = {
             skip,
-            take
+            take,
+            relations
+        }
+        const data: ArtistEntity[] = await this._artistService.findBy({
+            ...elements
         });
         if(data.length) {
             return {

@@ -1,4 +1,4 @@
-import { Controller, Get, Res, HttpStatus, UseGuards, Param, ParseIntPipe, Post, Body, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Res, HttpStatus, UseGuards, Param, ParseIntPipe, Post, Body, Put, Delete, Query } from '@nestjs/common';
 import { Response } from 'express';
 import { Artist, response } from '@interface/mangaResponses.interface';
 import { ArtistService } from '@manga/services';
@@ -15,11 +15,11 @@ export class ArtistController {
 
     @Post()
     async getAll(
-        @Body() pagination: Pagination,
+        @Body() bodyArtists: readArtistDto,
         @Res() res: Response<{response: response, data?: Artist[]}>
     ) {
         try {
-            const foo: {response: response, data?: Artist[]} = await this._artistService.getAll(pagination);
+            const foo: {response: response, data?: Artist[]} = await this._artistService.getAll(bodyArtists);
             return res.status(foo.response.status)
                         .json(foo);
         } catch (error) {
