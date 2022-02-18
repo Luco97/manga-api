@@ -1,4 +1,4 @@
-import { ArrayMinSize, ArrayNotEmpty, IsArray, IsNotEmpty, IsOptional, Length, Max, Min } from "class-validator";
+import { ArrayMinSize, ArrayNotEmpty, IsArray, IsDefined, IsIn, IsNotEmpty, IsOptional, Length, Max, Min } from "class-validator";
 import { ArrayContainsSome } from './custom-validator/ArrayContainsSome.class-validator';
 import { GenreEntity, ArtistEntity, LanguageEntity } from '@db/manga/entity';
 import { mangaRelations } from '@db/manga/const';
@@ -6,10 +6,7 @@ import { UserEntity } from '@userDB/entity';
 import { Pagination } from './utils.dto';
 
 export class readMangaDto extends Pagination {
-    @IsOptional()
-    @ArrayNotEmpty({
-        message: `Existe 'relations' pero se encuetra vacio`
-    })
+    @IsDefined()
     @ArrayContainsSome( mangaRelations, {
         message: 'Hay campos que no se encuentran definidos en la tabla consultada'
     })
