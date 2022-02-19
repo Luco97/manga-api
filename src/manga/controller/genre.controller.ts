@@ -1,7 +1,7 @@
 import { Genre, response } from '@interface/mangaResponses.interface';
 import { createGenreDto, readGenreDto } from '@manga/dto';
 import { GenreService } from '@manga/services';
-import { Controller, Get, Res, UseGuards, HttpStatus, Param, ParseIntPipe, Post, Body, Delete } from '@nestjs/common';
+import { Controller, Get, Res, UseGuards, HttpStatus, Param, ParseIntPipe, Post, Body, Delete, Put } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthGuard } from '../guards/auth.guard';
 
@@ -13,12 +13,13 @@ export class GenreController {
         private _genreService: GenreService
     ) {}
 
-    @Get()
+    @Post()
     async getAll(
+        @Body() readGenres: readGenreDto,
         @Res() res: Response<{response: response, data?: Genre[]}>
     ) {
         try {
-            const foo: {response: response, data?: Genre[]} = await this._genreService.getAll();
+            const foo: {response: response, data?: Genre[]} = await this._genreService.getAll(readGenres);
             return res.status(foo.response.status).json(foo);
         } catch (error) {
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -51,7 +52,7 @@ export class GenreController {
         }
     }
 
-    @Post()
+    @Put()
     async create(
         @Body() createGenre: createGenreDto,
         @Res() res: Response<{response: response, data?: Genre}>
