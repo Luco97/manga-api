@@ -2,7 +2,7 @@ import { Injectable, HttpStatus } from '@nestjs/common';
 import { GenreEntityService } from '@db/manga/services';
 import { Genre, response } from '@interface/mangaResponses.interface';
 import { GenreEntity } from '@db/manga/entity';
-import { createGenreDto } from '@manga/dto';
+import { createGenreDto, readGenreDto } from '@manga/dto';
 
 @Injectable()
 export class GenreService {
@@ -11,8 +11,16 @@ export class GenreService {
         private _genreService: GenreEntityService
     ) {}
 
-    async getAll(): Promise<{response: response, data: GenreEntity[]}> {
-        const data: GenreEntity[] = await this._genreService.findAll([]);
+    async getAll(readGenres: readGenreDto): Promise<{response: response, data: GenreEntity[]}> {
+        const { take, skip, relations } = readGenres;
+        const elements = {
+            take,
+            skip,
+            relations
+        };
+        const data: GenreEntity[] = await this._genreService.findBy({
+            ...elements
+        });
         if(data.length) {
             return {
                 response:{
