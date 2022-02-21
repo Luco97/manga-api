@@ -16,7 +16,7 @@ export class UserController {
         private _userEntity: UserEntityService
     ){}
 
-    @Get()
+    /* @Get()
     async getAll(
         @Res() res: Response<{response: response, users?: User[]}>
     ) {
@@ -41,7 +41,7 @@ export class UserController {
                             }
                         })
         }
-    }
+    } */
 
     @Post(':id')
     async favoriteManga(
