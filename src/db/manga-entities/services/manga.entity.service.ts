@@ -12,7 +12,7 @@ import { GenreEntity } from '../entity/genre.entity';
 import { ArtistEntity } from '../entity/artist.entity';
 import { LanguageEntity } from '../entity/language.entity'; */
 
-import { UserEntity } from '@userDB/entity';
+import { UserEntity } from '@db/user/entity';
 /* import { UserEntity } from '../../user-entity/entity/user.entity'; */
 
 @Injectable()

@@ -10,7 +10,7 @@ import {
 import { LanguageEntity } from './language.entity';
 import { GenreEntity } from './genre.entity';
 import { ArtistEntity } from './artist.entity';
-import { UserEntity } from '@userDB/entity';
+import { UserEntity } from '@db/user/entity';
 
 @Entity({
   name: 'MANGA',
