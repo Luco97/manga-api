@@ -27,7 +27,7 @@
       "@manga/services": [
         "manga/services/index"
       ],
-      "@userDB/*": ["db/user-entity/*"],
+      "@db/user/*": ["db/user-entity/*"],
       "@auth/dto": ["auth/classes/user.dto"]
     }
   }
