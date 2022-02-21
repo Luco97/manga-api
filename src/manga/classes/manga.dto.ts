@@ -2,7 +2,7 @@ import { ArrayMinSize, ArrayNotEmpty, IsArray, IsDefined, IsIn, IsNotEmpty, IsOp
 import { ArrayContainsSome } from './custom-validator/ArrayContainsSome.class-validator';
 import { GenreEntity, ArtistEntity, LanguageEntity } from '@db/manga/entity';
 import { mangaRelations } from '@db/manga/const';
-import { UserEntity } from '@userDB/entity';
+import { UserEntity } from '@db/user/entity';
 import { Pagination } from './utils.dto';
 
 export class readMangaDto extends Pagination {

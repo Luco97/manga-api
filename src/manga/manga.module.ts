@@ -18,7 +18,7 @@ import { ArtistService } from './services/artist.service';
 import { GenreService } from './services/genre.service';
 import { LanguageService } from './services/language.service';
 import { UserService } from './services/user.service';
-import { UserEntityModule } from '@userDB/user-entity.module';
+import { UserEntityModule } from '@db/user/user-entity.module';
 import { UserController } from './controller/user.controller';
 
 @Module({
