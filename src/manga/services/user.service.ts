@@ -2,8 +2,8 @@ import { MangaEntity } from '@db/manga/entity';
 import { response, User } from '@interface/mangaResponses.interface';
 import { setFavorite } from '@manga/dto';
 import { Injectable, HttpStatus } from '@nestjs/common';
-import { UserEntity } from '@userDB/entity';
-import { UserEntityService } from '@userDB/service';
+import { UserEntity } from '@db/user/entity';
+import { UserEntityService } from '@db/user/service';
 
 @Injectable()
 export class UserService {

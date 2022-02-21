@@ -1,6 +1,6 @@
 import { response, User } from '@interface/mangaResponses.interface';
 import { Controller, Get, HttpStatus, Res, UseGuards, Post, Param, ParseIntPipe, Body } from '@nestjs/common';
-import { UserEntityService } from '@userDB/service';
+import { UserEntityService } from '@db/user/service';
 import { Response } from 'express';
 import { AuthGuard } from '../guards/auth.guard';
 import { UserEntity } from '../../db/user-entity/entity/user.entity';
@@ -42,6 +42,13 @@ export class UserController {
                         })
         }
     } */
+
+    @Post('favorites/:username')
+    async getFavorites(
+        
+    ) {
+
+    }
 
     @Post(':id')
     async favoriteManga(

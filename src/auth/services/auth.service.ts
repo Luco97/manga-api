@@ -2,8 +2,8 @@ import { Injectable, HttpStatus } from '@nestjs/common';
 import { compare } from 'bcrypt';
 
 import { createUserDto, loginUserDto } from '@auth/dto';
-import { UserEntity } from '@userDB/entity';
-import { UserEntityService } from '@userDB/service';
+import { UserEntity } from '@db/user/entity';
+import { UserEntityService } from '@db/user/service';
 import { JwtService } from '@shared/services';
 import { response, userResponse } from '@interface/authResponses.interface';
 
