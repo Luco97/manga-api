@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 //DB
 import { DbConfigService } from '@shared/services';
@@ -7,7 +7,7 @@ import { MangaEntitiesModule } from '../db/manga-entities/manga-entities.module'
 import { SharedModule } from '../shared/shared.module';
 //Guard
 import { AuthGuard } from './guards/auth.guard';
-import { LoginMiddleware } from './middleware/login.middleware';
+import { PayloadMiddleware } from './middleware/payload.middleware';
 //Controllers
 import { MangaController } from './controller/manga.controller';
 import { ArtistController } from './controller/artist.controller';
@@ -42,8 +42,6 @@ import { UserController } from './controller/user.controller';
     UserController
   ],
   providers: [
-    LoginMiddleware,
-    AuthGuard,
     MangaService,
     ArtistService,
     GenreService,
@@ -54,7 +52,10 @@ import { UserController } from './controller/user.controller';
 export class MangaModule implements NestModule {
   configure( consumer: MiddlewareConsumer) {
     consumer
-      .apply(LoginMiddleware)
-      .forRoutes(MangaController)
+      .apply(PayloadMiddleware)
+      .forRoutes({
+        path: 'user/favorites',
+        method: RequestMethod.POST
+      })
   }
 }
