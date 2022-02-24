@@ -29,14 +29,13 @@ export class MangaController {
     }
   }
 
-  @Post(':id')
-  async oneMangaById(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() readManga: readMangaDto,
+  @Post('create')
+  async createManga(
+    @Body() createManga: createMangaDto,
     @Res() res: Response<{response: response, data?: Manga}>
   ) {
     try {
-      const foo: {response: response, data?: Manga} = await this._mangaService.getOne(id, readManga.relations);
+      const foo: {response: response, data?: Manga} = await this._mangaService.create(createManga);
       return res.status(foo.response.status).json(foo);
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -49,7 +48,7 @@ export class MangaController {
     }
   }
 
-  @Put(':id')
+  @Post('update/:id')
   async updateManga (
     @Param('id', ParseIntPipe) id: number,
     @Body() updateManga: updateMangaDto,
@@ -69,13 +68,13 @@ export class MangaController {
     }
   }
 
-  @Put()
-  async createManga(
-    @Body() createManga: createMangaDto,
+  @Delete('delete/:id')
+  async delete (
+    @Param('id', ParseIntPipe) id: number,
     @Res() res: Response<{response: response, data?: Manga}>
   ) {
     try {
-      const foo: {response: response, data?: Manga} = await this._mangaService.create(createManga);
+      const foo: {response: response, data?: Manga} = await this._mangaService.delete(id);
       return res.status(foo.response.status).json(foo);
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -88,13 +87,14 @@ export class MangaController {
     }
   }
 
-  @Delete(':id')
-  async delete (
+  @Post(':id')
+  async oneMangaById(
     @Param('id', ParseIntPipe) id: number,
+    @Body() readManga: readMangaDto,
     @Res() res: Response<{response: response, data?: Manga}>
   ) {
     try {
-      const foo: {response: response, data?: Manga} = await this._mangaService.delete(id);
+      const foo: {response: response, data?: Manga} = await this._mangaService.getOne(id, readManga.relations);
       return res.status(foo.response.status).json(foo);
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
