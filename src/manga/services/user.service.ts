@@ -1,15 +1,17 @@
 import { MangaEntity } from '@db/manga/entity';
 import { response, User } from '@interface/mangaResponses.interface';
-import { setFavorite } from '@manga/dto';
+import { getFavorite, setFavorite } from '@manga/dto';
 import { Injectable, HttpStatus } from '@nestjs/common';
 import { UserEntity } from '@db/user/entity';
 import { UserEntityService } from '@db/user/service';
+import { MangaEntityService } from '@db/manga/services';
 
 @Injectable()
 export class UserService {
 
     constructor(
-        private _userService: UserEntityService
+        private _userService: UserEntityService,
+        private _mangaService: MangaEntityService
     ) {} 
 
     async getOne(id: number, relations: string[] = ['mangas']): Promise<{response: response, data?: User}> {
@@ -37,6 +39,32 @@ export class UserService {
         }
     }
 
+    async getFavorites( getFavoritesBody: getFavorite): Promise<{response: response, data?: User}> {
+
+        const { take, skip, user } = getFavoritesBody;
+        const mangas: MangaEntity[] = await this._mangaService.getFavoritesById( user.id, take, skip);
+        const { data }: { response: response, data?: User; } = await this.getOne( user.id, []);
+        
+        if(data) {
+            data.mangas = mangas;
+            return {
+                response: {
+                    status: 200,
+                    message: 'getFavorites'
+                },
+                data: {
+                    ...data
+                }
+            }
+        }
+        return {
+            response: {
+                status: HttpStatus.NOT_FOUND,
+                message: 'Error dentro del metodo getFavorites'
+            }
+        }
+    }
+
     async setFavorite(id: number, body: setFavorite): Promise<{response: response, data?: User}> {
         const data: {response: response, data?: User} = await this.getOne(id);
         if(data?.data) {
@@ -44,7 +72,7 @@ export class UserService {
             const manga = data.data.mangas.find( manga => manga.id == body.manga.id);
             //Manga ya existe como favorito
             if(manga) {
-                user.mangas = data.data.mangas.splice(1, 0, manga);
+                user.mangas.splice( data.data.mangas.indexOf(manga), 1);
                 await this._userService.create(user);
                 return {
                     response: {
