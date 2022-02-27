@@ -1,10 +1,10 @@
-import { response, User } from '@interface/mangaResponses.interface';
-import { Controller, Get, HttpStatus, Res, UseGuards, Post, Param, ParseIntPipe, Body } from '@nestjs/common';
-import { UserEntityService } from '@db/user/service';
+import { Controller, HttpStatus, Res, UseGuards, Post, Param, ParseIntPipe, Body } from '@nestjs/common';
 import { Response } from 'express';
+
+import { response, User } from '@interface/mangaResponses.interface';
+import { UserEntityService } from '@db/user/service';
 import { AuthGuard } from '../guards/auth.guard';
-import { UserEntity } from '../../db/user-entity/entity/user.entity';
-import { setFavorite } from '@manga/dto';
+import { getFavorite, setFavorite } from '@manga/dto';
 import { UserService } from '@manga/services';
 
 @Controller('user')
@@ -43,11 +43,26 @@ export class UserController {
         }
     } */
 
-    @Post('favorites/:username')
+    @Post('favorites')
     async getFavorites(
-        
+        @Body() getBody: getFavorite,
+        @Res() res: Response<{
+            response: response;
+            data?: User;
+        }>
     ) {
-
+        try {
+            const foo: { response: response, data?: User; } = await this._userService.getFavorites(getBody);
+            return res.status(foo.response.status).json(foo);   
+        } catch (error) {
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .json({
+                            response: {
+                                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                                message: 'Error en el servidor'
+                            }
+                        })
+        }
     }
 
     @Post(':id')
