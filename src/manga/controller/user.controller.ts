@@ -3,9 +3,9 @@ import { Response } from 'express';
 
 import { response, User } from '@interface/mangaResponses.interface';
 import { UserEntityService } from '@db/user/service';
-import { AuthGuard } from '../guards/auth.guard';
 import { getFavorite, setFavorite } from '@manga/dto';
 import { UserService } from '@manga/services';
+import { AuthGuard } from '../guards/auth.guard';
 
 @Controller('user')
 @UseGuards(AuthGuard)
