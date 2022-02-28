@@ -1,8 +1,8 @@
+import { Controller, Res, UseGuards, HttpStatus, Param, ParseIntPipe, Post, Body, Delete } from '@nestjs/common';
+import { Response } from 'express';
 import { Genre, response } from '@interface/mangaResponses.interface';
 import { createGenreDto, readGenreDto } from '@manga/dto';
 import { GenreService } from '@manga/services';
-import { Controller, Get, Res, UseGuards, HttpStatus, Param, ParseIntPipe, Post, Body, Delete, Put } from '@nestjs/common';
-import { Response } from 'express';
 import { AuthGuard } from '../guards/auth.guard';
 
 @Controller('genre')
@@ -32,27 +32,7 @@ export class GenreController {
         }
     }
 
-    @Post(':id')
-    async getOne(
-        @Param('id', ParseIntPipe) id: number,
-        @Body() readGenre: readGenreDto,
-        @Res() res: Response<{response: response, data?: Genre}>
-    ) {
-        try {
-            const foo: {response: response, data?: Genre} = await this._genreService.getOne(id, readGenre.relations);
-            return res.status(foo.response.status).json(foo);
-        } catch (error) {
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .json({
-                            response:{
-                                status: HttpStatus.INTERNAL_SERVER_ERROR,
-                                message: 'Error en el servidor'
-                            }
-                        })
-        }
-    }
-
-    @Put()
+    @Post('create')
     async create(
         @Body() createGenre: createGenreDto,
         @Res() res: Response<{response: response, data?: Genre}>
@@ -71,7 +51,7 @@ export class GenreController {
         }
     }
 
-    @Delete(':id')
+    @Delete('delete/:id')
     async delete(
         @Param('id', ParseIntPipe) id: number,
         @Res() res: Response<{response: response, data?: Genre}>
@@ -83,6 +63,26 @@ export class GenreController {
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .json({
                             response: {
+                                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                                message: 'Error en el servidor'
+                            }
+                        })
+        }
+    }
+
+    @Post(':id')
+    async getOne(
+        @Param('id', ParseIntPipe) id: number,
+        @Body() readGenre: readGenreDto,
+        @Res() res: Response<{response: response, data?: Genre}>
+    ) {
+        try {
+            const foo: {response: response, data?: Genre} = await this._genreService.getOne(id, readGenre.relations);
+            return res.status(foo.response.status).json(foo);
+        } catch (error) {
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .json({
+                            response:{
                                 status: HttpStatus.INTERNAL_SERVER_ERROR,
                                 message: 'Error en el servidor'
                             }
