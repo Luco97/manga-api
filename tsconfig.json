@@ -21,12 +21,8 @@
       "@shared/services": ["shared/services/index"],
       "@interface/*": ["interface/*"],
       "@db/manga/*": ["db/manga-entities/*"],
-      "@manga/dto": [
-        "manga/classes/index"
-      ],
-      "@manga/services": [
-        "manga/services/index"
-      ],
+      "@manga/dto": ["manga/classes/index"],
+      "@manga/services": ["manga/services/index"],
       "@db/user/*": ["db/user-entity/*"],
       "@auth/dto": ["auth/classes/user.dto"]
     }
