@@ -8,7 +8,8 @@ import { Subject } from 'rxjs';
 @Injectable()
 export class MangaService {
 
-    mangaSubject: Subject<{response: response, data?: Manga}> = new Subject();
+    mangaCreateSubject: Subject<{response: response, data?: Manga}> = new Subject();
+    mangaFavoriteSubject: Subject<{response: response, data?: Manga}> = new Subject();
     
     constructor(
         private _mangaService: MangaEntityService
@@ -86,7 +87,7 @@ export class MangaService {
             const newManga = new MangaEntity(createManga.title.toLocaleLowerCase(), createManga.chapters, createManga.genres, createManga.artists, createManga.languages);
             const data: MangaEntity = await this._mangaService.create(newManga);
             //Prueba ------ Para emitir via socket que un nuevo manga fue creado (evitando listener de postgres)
-            this.mangaSubject.next({
+            this.mangaCreateSubject.next({
                 response: {
                     status: HttpStatus.CREATED,
                     message: 'Manga creado'
