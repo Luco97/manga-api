@@ -1,18 +1,17 @@
+import { Injectable, HttpStatus } from '@nestjs/common';
 import { MangaEntity } from '@db/manga/entity';
 import { MangaEntityService } from '@db/manga/services';
 import { Manga, MangaResponse, response } from '@interface/mangaResponses.interface';
 import { createMangaDto, readMangaDto, updateMangaDto } from '@manga/dto';
-import { Injectable, HttpStatus } from '@nestjs/common';
-import { Subject } from 'rxjs';
+import { UtilsService } from './utils.service';
 
 @Injectable()
 export class MangaService {
 
-    mangaCreateSubject: Subject<{response: response, data?: Manga}> = new Subject();
-    mangaFavoriteSubject: Subject<{response: response, data?: Manga}> = new Subject();
     
     constructor(
-        private _mangaService: MangaEntityService
+        private _mangaService: MangaEntityService,
+        private _utilsService: UtilsService
     ) {}
 
     async getAll(getMangas: readMangaDto): Promise<{response: response, data: Manga[]}> {
@@ -87,7 +86,7 @@ export class MangaService {
             const newManga = new MangaEntity(createManga.title.toLocaleLowerCase(), createManga.chapters, createManga.genres, createManga.artists, createManga.languages);
             const data: MangaEntity = await this._mangaService.create(newManga);
             //Prueba ------ Para emitir via socket que un nuevo manga fue creado (evitando listener de postgres)
-            this.mangaCreateSubject.next({
+            this._utilsService.mangaCreateSubject.next({
                 response: {
                     status: HttpStatus.CREATED,
                     message: 'Manga creado'
