@@ -8,4 +8,6 @@ export class UtilsService {
     new Subject();
   mangaFavoriteSubject: Subject<{ response: response; data?: Manga }> =
     new Subject();
+  mangaDropSubject: Subject<{ response: response; data?: Manga }> =
+    new Subject();
 }
