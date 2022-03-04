@@ -1,17 +1,19 @@
+import { Injectable, HttpStatus } from '@nestjs/common';
 import { MangaEntity } from '@db/manga/entity';
 import { response, User } from '@interface/mangaResponses.interface';
 import { getFavorite, setFavorite } from '@manga/dto';
-import { Injectable, HttpStatus } from '@nestjs/common';
 import { UserEntity } from '@db/user/entity';
 import { UserEntityService } from '@db/user/service';
 import { MangaEntityService } from '@db/manga/services';
+import { UtilsService } from './utils.service';
 
 @Injectable()
 export class UserService {
 
     constructor(
         private _userService: UserEntityService,
-        private _mangaService: MangaEntityService
+        private _mangaService: MangaEntityService,
+        private _utilsService: UtilsService
     ) {} 
 
     async getOne(id: number, relations: string[] = ['mangas']): Promise<{response: response, data?: User}> {
@@ -74,12 +76,27 @@ export class UserService {
             if(manga) {
                 user.mangas.splice( data.data.mangas.indexOf(manga), 1);
                 await this._userService.create(user);
+                 //Prueba ------ Para emitir via socket que un nuevo manga fue creado (evitando listener de postgres)
+                this._utilsService.mangaDropSubject.next({
+                    response: {
+                        status: HttpStatus.OK,
+                        message: `Manga con id = '${body.manga.id}' y titulo = '${body.manga.title}' fue quitado de favoritos por someone`
+                    },
+                    data: body.manga
+                });
+                //fin Prueba
+                const { id, username, email} = user
                 return {
                     response: {
                         status: HttpStatus.OK,
                         message: `Manga con id = '${body.manga.id}' y titulo = '${body.manga.title}' ya existe, Manga eliminado`
                     },
-                    data: user
+                    data: {
+                        id,
+                        username,
+                        email,
+                        mangas: []
+                    }
                 };
             }
             user.mangas.push(body.manga as MangaEntity);
@@ -95,12 +112,27 @@ export class UserService {
                     }
                 };
             }
+            const { id, username, email} = user
+            //Prueba ------ Para emitir via socket que un nuevo manga fue creado (evitando listener de postgres)
+            this._utilsService.mangaFavoriteSubject.next({
+                response: {
+                    status: HttpStatus.CREATED,
+                    message: 'Manga agregado a favorito'
+                },
+                data: body.manga
+            });
+            //fin Prueba
             return {
                 response: {
                     status: HttpStatus.OK,
                     message: 'setFavorite user'
                 },
-                data: user
+                data: {
+                    id,
+                    username,
+                    email,
+                    mangas: [body.manga as MangaEntity]
+                }
             };
         }
         return {
