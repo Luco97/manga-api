@@ -3,6 +3,12 @@ import { IsNotEmpty } from "class-validator";
 import { Pagination } from './utils.dto';
 
 export class setFavorite {
+    
+    user: {
+        id: number;
+        username: string;
+    }
+
     @IsNotEmpty({
         message: `Falta definir la propiedad 'manga'`
     })
