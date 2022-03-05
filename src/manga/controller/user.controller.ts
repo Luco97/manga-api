@@ -1,4 +1,4 @@
-import { Controller, HttpStatus, Res, UseGuards, Post, Param, ParseIntPipe, Body } from '@nestjs/common';
+import { Controller, HttpStatus, Res, UseGuards, Post, Param, ParseIntPipe, Body, Put } from '@nestjs/common';
 import { Response } from 'express';
 
 import { response, User } from '@interface/mangaResponses.interface';
@@ -65,13 +65,17 @@ export class UserController {
         }
     }
 
-    @Post(':id')
+    @Put('favorites')
     async favoriteManga(
-        @Param('id', ParseIntPipe) id: number,
+        //@Param('id', ParseIntPipe) id: number,
         @Body() newFavorite: setFavorite,
-        @Res() res: Response<{response: response, data?: User}>
+        @Res() res: Response<{
+            response: response;
+            data?: User;
+        }>
     ) {
         try {
+            const { id } = newFavorite.user
             const foo: {response: response, data?: User} = await this._userService.setFavorite(id, newFavorite);
             return res.status(foo.response.status).json(foo);
         } catch (error) {
