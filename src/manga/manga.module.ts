@@ -60,6 +60,10 @@ export class MangaModule implements NestModule {
       .forRoutes({
         path: 'user/favorites',
         method: RequestMethod.POST
+      },
+      {
+        path: 'user/favorites',
+        method: RequestMethod.PUT
       })
   }
 }
