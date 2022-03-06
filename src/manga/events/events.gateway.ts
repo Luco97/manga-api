@@ -16,6 +16,12 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayInit {
         data
       });
     })
+    this._utilsService.mangaDropSubject.subscribe( ({response, data}) => {
+      server.emit(`favorite:drop:manga:${data.id}`, {
+        response,
+        data
+      })
+    })
   }
   
   handleConnection(client: Socket, ...args: any[]) {
@@ -23,7 +29,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayInit {
     //listener que emite los mangas que fueron creados 
     //desde que alguien a iniciado una conexion con el servidor
     this._utilsService.mangaCreateSubject.subscribe( ({ response, data }) => {
-      client.emit('manga-create-controller', {
+      client.emit('manga:create:controller', {
         response,
         data
       });
