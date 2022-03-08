@@ -1,11 +1,10 @@
+import { IsNotEmpty, IsOptional, Length, Max, Min } from 'class-validator';
 import { artistRelations } from '@db/manga/const';
 import { ArrayContainsSome } from './custom-validator/ArrayContainsSome.class-validator';
-import { ArrayNotEmpty, IsNotEmpty, IsOptional, Length, Max, Min, IsDefined } from 'class-validator';
 import { Pagination } from './utils.dto';
 
 
 export class readArtistDto extends Pagination{
-    @IsDefined()
     @ArrayContainsSome(artistRelations, {
         message: 'Hay campos que no se encuentran definidos en la tabla consultada'
     })

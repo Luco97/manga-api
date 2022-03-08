@@ -1,6 +1,6 @@
+import { IsNotEmpty, Length } from 'class-validator';
 import { genreRelations } from "@db/manga/const";
 import { ArrayContainsSome } from "./custom-validator/ArrayContainsSome.class-validator";
-import { ArrayNotEmpty, IsNotEmpty, IsOptional, Length, IsDefined } from 'class-validator';
 import { Pagination } from './utils.dto';
 
 export class createGenreDto {
@@ -14,7 +14,6 @@ export class createGenreDto {
 }
 
 export class readGenreDto extends Pagination{
-    @IsDefined()
     @ArrayContainsSome(genreRelations, {
         message: 'Hay campos que no se encuentran definidos en la tabla consultada'
     })
