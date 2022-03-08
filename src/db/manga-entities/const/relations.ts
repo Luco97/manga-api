@@ -8,5 +8,4 @@ export const mangaRelations: string[] = [
   'genres',
   'languages',
   'artists',
-  'users',
 ];
