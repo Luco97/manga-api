@@ -1,13 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {
-  Repository,
-  FindManyOptions,
-} from 'typeorm';
-import {
-  MangaEntity,
-} from '@db/manga/entity';
-
+import { Repository, FindManyOptions, SelectQueryBuilder } from 'typeorm';
+import { MangaEntity } from '@db/manga/entity';
 
 @Injectable()
 export class MangaEntityService {
@@ -52,14 +46,33 @@ export class MangaEntityService {
     return await this.mangaRepository.remove(data);
   }
 
+  private mangaQueryInner(
+    queryBuilder: SelectQueryBuilder<MangaEntity>,
+    relation: string,
+  ): SelectQueryBuilder<MangaEntity> {
+    return queryBuilder.innerJoinAndSelect(`manga.${relation}`, relation)
+  }
+
   async getFavoritesById(
     user_id: number,
+    relations: string[],
     take: number = 10,
     skip: number = 0,
   ): Promise<MangaEntity[]> {
-    const data = await this.mangaRepository
+    let data = this.mangaRepository
       .createQueryBuilder('manga')
-      .innerJoin('manga.users', 'user', 'user.id = :user_id', { user_id })
+      .innerJoin('manga.users', 'user', 'user.id = :user_id', { user_id });
+
+    for (let i = 0; i < relations.length; i++) {
+      const element = relations[i];
+      data = this.mangaQueryInner(data, element);
+    }
+
+    data = data
+      .orderBy('manga.id')
+      .take(take || 10)
+      .skip(skip || 0);
+    /* 
       .innerJoinAndSelect('manga.genres', 'genres')
       .innerJoinAndSelect('manga.languages', 'languages')
       .innerJoinAndSelect('manga.artists', 'artists')
@@ -68,6 +81,8 @@ export class MangaEntityService {
       .skip(skip || 0)
       .getMany();
 
-    return data;
+ */
+    const readyQuery = await data.getMany();
+    return readyQuery;
   }
 }
