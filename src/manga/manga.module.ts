@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 //DB
 import { DbConfigService } from '@shared/services';
@@ -8,6 +13,7 @@ import { SharedModule } from '../shared/shared.module';
 //Guard
 import { AuthGuard } from './guards/auth.guard';
 import { PayloadMiddleware } from './middleware/payload.middleware';
+import { RelationsMiddleware } from './middleware/relations.middleware';
 //Controllers
 import { MangaController } from './controller/manga.controller';
 import { ArtistController } from './controller/artist.controller';
@@ -28,20 +34,22 @@ import { UtilsService } from './services/utils.service';
     TypeOrmModule.forRootAsync({
       imports: [SharedModule],
       inject: [DbConfigService],
-      useFactory: async ( dbService: DbConfigService): Promise<TypeOrmModuleOptions> => {
+      useFactory: async (
+        dbService: DbConfigService,
+      ): Promise<TypeOrmModuleOptions> => {
         return dbService.getTypeORMconfig();
-      }
+      },
     }),
     UserEntityModule,
     MangaEntitiesModule,
-    SharedModule
+    SharedModule,
   ],
   controllers: [
     MangaController,
     ArtistController,
     GenreController,
     LanguageController,
-    UserController
+    UserController,
   ],
   providers: [
     MangaService,
@@ -50,20 +58,49 @@ import { UtilsService } from './services/utils.service';
     LanguageService,
     UserService,
     EventsGateway,
-    UtilsService
-  ]
+    UtilsService,
+  ],
 })
 export class MangaModule implements NestModule {
-  configure( consumer: MiddlewareConsumer) {
+  configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(PayloadMiddleware)
-      .forRoutes({
-        path: 'user/favorites',
-        method: RequestMethod.POST
-      },
-      {
-        path: 'user/favorites',
-        method: RequestMethod.PUT
-      })
+      .forRoutes(
+        {
+          path: 'user/favorites',
+          method: RequestMethod.POST,
+        },
+        {
+          path: 'user/favorites',
+          method: RequestMethod.PUT,
+        },
+      )
+      .apply(RelationsMiddleware)
+      .forRoutes(
+        {
+          path: 'manga',
+          method: RequestMethod.POST,
+        },
+        {
+          path: 'manga/:id',
+          method: RequestMethod.PUT,
+        },
+        {
+          path: 'artist',
+          method: RequestMethod.POST,
+        },
+        {
+          path: 'artist/:id',
+          method: RequestMethod.PUT,
+        },
+        {
+          path: 'genre',
+          method: RequestMethod.POST,
+        },
+        {
+          path: 'genre/:id',
+          method: RequestMethod.PUT,
+        },
+      );
   }
 }
