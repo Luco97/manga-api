@@ -43,8 +43,8 @@ export class UserService {
 
     async getFavorites( getFavoritesBody: getFavorite): Promise<{response: response, data?: User}> {
 
-        const { take, skip, user } = getFavoritesBody;
-        const mangas: MangaEntity[] = await this._mangaService.getFavoritesById( user.id, take, skip);
+        const { take, skip, user, relations } = getFavoritesBody;
+        const mangas: MangaEntity[] = await this._mangaService.getFavoritesById( user.id, relations, take, skip);
         const { data }: { response: response, data?: User; } = await this.getOne( user.id, []);
         
         if(data) {
