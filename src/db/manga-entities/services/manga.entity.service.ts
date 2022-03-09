@@ -50,7 +50,7 @@ export class MangaEntityService {
     queryBuilder: SelectQueryBuilder<MangaEntity>,
     relation: string,
   ): SelectQueryBuilder<MangaEntity> {
-    return queryBuilder.innerJoinAndSelect(`manga.${relation}`, relation)
+    return queryBuilder.innerJoinAndSelect(`manga.${relation}`, relation);
   }
 
   async getFavoritesById(
@@ -63,7 +63,7 @@ export class MangaEntityService {
       .createQueryBuilder('manga')
       .innerJoin('manga.users', 'user', 'user.id = :user_id', { user_id });
 
-    for (let i = 0; i < relations.length; i++) {
+    for (let i = 0; i < relations?.length; i++) {
       const element = relations[i];
       data = this.mangaQueryInner(data, element);
     }
@@ -72,16 +72,7 @@ export class MangaEntityService {
       .orderBy('manga.id')
       .take(take || 10)
       .skip(skip || 0);
-    /* 
-      .innerJoinAndSelect('manga.genres', 'genres')
-      .innerJoinAndSelect('manga.languages', 'languages')
-      .innerJoinAndSelect('manga.artists', 'artists')
-      .orderBy('manga.id')
-      .take(take || 10)
-      .skip(skip || 0)
-      .getMany();
 
- */
     const readyQuery = await data.getMany();
     return readyQuery;
   }
