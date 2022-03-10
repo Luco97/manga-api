@@ -91,7 +91,7 @@ export class ArtistController {
         }
     }
 
-    @Post(':id')
+    @Put(':id')
     async findOne(
         @Param('id', ParseIntPipe) id: number, 
         @Body() readArtist: readArtistDto,
