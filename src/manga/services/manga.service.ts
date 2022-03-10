@@ -1,4 +1,5 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
+import { Like } from 'typeorm';
 import { MangaEntity } from '@db/manga/entity';
 import { MangaEntityService } from '@db/manga/services';
 import { Manga, MangaResponse, response } from '@interface/mangaResponses.interface';
@@ -14,15 +15,17 @@ export class MangaService {
         private _utilsService: UtilsService
     ) {}
 
-    async getAll(getMangas: readMangaDto): Promise<{response: response, data: Manga[]}> {
+    async getAll(getMangas: readMangaDto, name?: string): Promise<{response: response, data: Manga[]}> {
         const { skip, take, relations } = getMangas;
+        const where = name ? { title: Like(`%${name}%`)} : {}
         const elements: readMangaDto = {
             skip,
             take,
             relations
         }
         const data: MangaEntity[] = await this._mangaService.findBy({
-            ...elements
+            ...elements,
+            where
         }
         );
         if(data.length) {
