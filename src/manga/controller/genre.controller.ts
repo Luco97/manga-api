@@ -1,4 +1,4 @@
-import { Controller, Res, UseGuards, HttpStatus, Param, ParseIntPipe, Post, Body, Delete } from '@nestjs/common';
+import { Controller, Res, UseGuards, HttpStatus, Param, ParseIntPipe, Post, Body, Delete, Put } from '@nestjs/common';
 import { Response } from 'express';
 import { Genre, response } from '@interface/mangaResponses.interface';
 import { createGenreDto, readGenreDto } from '@manga/dto';
@@ -70,7 +70,7 @@ export class GenreController {
         }
     }
 
-    @Post(':id')
+    @Put(':id')
     async getOne(
         @Param('id', ParseIntPipe) id: number,
         @Body() readGenre: readGenreDto,
