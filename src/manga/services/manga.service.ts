@@ -17,17 +17,8 @@ export class MangaService {
 
     async getAll(getMangas: readMangaDto, name?: string): Promise<{response: response, data: Manga[]}> {
         const { skip, take, relations } = getMangas;
-        const where = name ? { title: Like(`%${name}%`)} : {}
-        const elements: readMangaDto = {
-            skip,
-            take,
-            relations
-        }
-        const data: MangaEntity[] = await this._mangaService.findBy({
-            ...elements,
-            where
-        }
-        );
+        const manga_title = `%${name || ''}%`
+        const data: MangaEntity[] = await this._mangaService.findAll({relations, take, skip, manga_title})
         if(data.length) {
             return {
                 response: {
