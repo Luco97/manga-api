@@ -10,16 +10,6 @@ export class MangaEntityService {
     private mangaRepository: Repository<MangaEntity>,
   ) {}
 
-  /**
-   * Encuentra todos los mangas en BD.
-   * @param {string[]} relations - Vector con relaciones, [ ] no toma ninguna tabla relacional.
-   */
-  async findAll(
-    relations: string[] = ['users', 'genres', 'languages', 'artists'],
-  ): Promise<MangaEntity[]> {
-    return await this.mangaRepository.find({ relations });
-  }
-
   async findOne(
     id: number,
     relations: string[] = ['users', 'genres', 'languages', 'artists'],
@@ -51,6 +41,36 @@ export class MangaEntityService {
     relation: string,
   ): SelectQueryBuilder<MangaEntity> {
     return queryBuilder.innerJoinAndSelect(`manga.${relation}`, relation);
+  }
+
+  async findAll(options: {
+    relations: string[];
+    take: number;
+    skip: number;
+    manga_title?: string;
+  }): Promise<MangaEntity[]> {
+    const { relations, skip, take, manga_title } = options;
+
+    let data = this.mangaRepository.createQueryBuilder('manga');
+
+    for (let i = 0; i < relations?.length; i++) {
+      const element = relations[i];
+      data = this.mangaQueryInner(data, element);
+    }
+
+    if (manga_title) {
+      data.where(`manga.title like :manga_title`, {
+        manga_title: manga_title || '%%',
+      });
+    }
+
+    data = data
+      .orderBy('manga.id', 'ASC')
+      .take(take || 10)
+      .skip(skip * take || 0);
+
+    const readyQuery = await data.getMany();
+    return readyQuery;
   }
 
   async getFavoritesById(
