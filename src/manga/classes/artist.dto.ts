@@ -1,11 +1,18 @@
 import { IsNotEmpty, IsOptional, Length, Max, Min } from 'class-validator';
-import { artistRelations } from '@db/manga/const';
+import { artistRelations, mangaRelations } from '@db/manga/const';
 import { ArrayContainsSome } from './custom-validator/ArrayContainsSome.class-validator';
 import { Pagination } from './utils.dto';
 
 
 export class readArtistDto extends Pagination{
     @ArrayContainsSome(artistRelations, {
+        message: 'Hay campos que no se encuentran definidos en la tabla consultada'
+    })
+    relations: string[];
+}
+
+export class readArtist_GetMangaDto extends Pagination {
+    @ArrayContainsSome(mangaRelations, {
         message: 'Hay campos que no se encuentran definidos en la tabla consultada'
     })
     relations: string[];
