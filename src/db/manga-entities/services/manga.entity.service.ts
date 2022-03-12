@@ -91,7 +91,39 @@ export class MangaEntityService {
     data = data
       .orderBy('manga.id')
       .take(take || 10)
-      .skip(skip || 0);
+      .skip(skip * take || 0);
+
+    const readyQuery = await data.getMany();
+    return readyQuery;
+  }
+
+  async getMangasById(options: {
+    relations: string[];
+    take: number;
+    skip: number;
+    relation_name: string;
+    relation_id: number;
+  }): Promise<MangaEntity[]> {
+    const { relations, skip, take, relation_name, relation_id } = options;
+
+    let data = this.mangaRepository
+      .createQueryBuilder('manga')
+      .innerJoin(
+        `manga.${relation_name}`,
+        'entity_alias',
+        'entity_alias.id = :relation_id',
+        { relation_id },
+      );
+
+    for (let i = 0; i < relations?.length; i++) {
+      const element = relations[i];
+      data = this.mangaQueryInner(data, element);
+    }
+
+    data = data
+      .orderBy('manga.id')
+      .take(take || 10)
+      .skip(skip * take || 0);
 
     const readyQuery = await data.getMany();
     return readyQuery;
