@@ -1,152 +1,210 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
-import { ArtistEntityService } from '@db/manga/services';
+import { ArtistEntityService, MangaEntityService } from '@db/manga/services';
 import { response, Artist } from '@interface/mangaResponses.interface';
-import { ArtistEntity } from '@db/manga/entity';
-import { createArtistDto, readArtistDto, updateArtistsDto } from '@manga/dto';
+import { ArtistEntity, MangaEntity } from '@db/manga/entity';
+import {
+  createArtistDto,
+  readArtistDto,
+  readArtist_GetMangaDto,
+  updateArtistsDto,
+} from '@manga/dto';
 
 @Injectable()
 export class ArtistService {
+  constructor(
+    private _artistService: ArtistEntityService,
+    private _mangaService: MangaEntityService,
+  ) {}
 
-    constructor(
-        private _artistService: ArtistEntityService
-    ) {}
-    
-    async getAll( getArtists: readArtistDto): Promise<{response: response, data: Artist[]}> {
-        const { skip, take, relations } = getArtists;
-        const elements: readArtistDto = {
-            skip,
-            take,
-            relations
-        }
-        const data: ArtistEntity[] = await this._artistService.findBy({
-            ...elements
-        });
-        if(data.length) {
-            return {
-                response:{
-                    status: HttpStatus.OK,
-                    message: 'getAll artistas'
-                },
-                data: data
-            }
-        }
-        return {
-            response: {
-                status: HttpStatus.OK,
-                message: 'Sin artistas'
-            },
-            data: []
+  async getAll(
+    getArtists: readArtistDto,
+  ): Promise<{ response: response; data: Artist[] }> {
+    const { skip, take, relations } = getArtists;
+    const elements: readArtistDto = {
+      skip,
+      take,
+      relations,
+    };
+    const data: ArtistEntity[] = await this._artistService.findBy({
+      ...elements,
+    });
+    if (data.length) {
+      return {
+        response: {
+          status: HttpStatus.OK,
+          message: 'getAll artistas',
+        },
+        data: data,
+      };
+    }
+    return {
+      response: {
+        status: HttpStatus.OK,
+        message: 'Sin artistas',
+      },
+      data: [],
+    };
+  }
+
+  async getArtistMangas(
+    artist_id: number,
+    getArtistsBody: readArtist_GetMangaDto,
+  ): Promise<{ response: response; data?: Artist }> {
+    const { skip, take, relations } =
+      getArtistsBody;
+    const data: MangaEntity[] = await this._mangaService.getMangasById({
+      skip,
+      take,
+      relations,
+      relation_id: artist_id,
+      relation_name: 'artists',
+    });
+    const artist = await this.getOne(artist_id, []);
+    if (artist?.data)
+      return {
+        response: {
+          status: HttpStatus.OK,
+          message:
+            'getMangas por un artista, mangas paginados y con opciones de relaciones',
+        },
+        data: {
+          ...artist.data,
+          mangas: data,
+        },
+      };
+    return {
+        response: {
+            status: HttpStatus.BAD_REQUEST,
+            message: `No existe artista con id = '${artist_id}'`
         }
     }
+  }
 
-    async getOne(id: number, relations: string[]): Promise<{response: response, data?: Artist}> {
-        const data: ArtistEntity[] = await this._artistService.findBy({
-            relations,
-            where: {
-                id
-            }
-        });
-        if(data.length) {
-            return {
-                response:{
-                    status: HttpStatus.OK,
-                    message: 'getOne artistas'
-                },
-                data: data.pop()
-            }
-        }
-        return {
-            response: {
-                status: HttpStatus.NOT_FOUND,
-                message: 'No encontrado'
-            }
-        }
+  async getOne(
+    id: number,
+    relations: string[],
+  ): Promise<{ response: response; data?: Artist }> {
+    const data: ArtistEntity[] = await this._artistService.findBy({
+      relations,
+      where: {
+        id,
+      },
+    });
+    if (data.length) {
+      return {
+        response: {
+          status: HttpStatus.OK,
+          message: 'getOne artistas',
+        },
+        data: data.pop(),
+      };
+    }
+    return {
+      response: {
+        status: HttpStatus.NOT_FOUND,
+        message: 'No encontrado',
+      },
+    };
+  }
+
+  async create(
+    createArtist: createArtistDto,
+  ): Promise<{ response: response; data?: Artist }> {
+    const artists: ArtistEntity[] = await this._artistService.findBy({
+      where: {
+        name: createArtist.name.toLocaleLowerCase(),
+      },
+    });
+    if (!artists.length) {
+      const newArtist: ArtistEntity = new ArtistEntity(
+        createArtist.name.toLocaleLowerCase(),
+        createArtist?.seudoName,
+        createArtist?.age,
+        createArtist?.country,
+        createArtist?.type,
+        createArtist?.description,
+      );
+      const data = await this._artistService.create(newArtist);
+      return {
+        response: {
+          status: HttpStatus.CREATED,
+          message: 'Artista creado',
+        },
+        data,
+      };
+    }
+    return {
+      response: {
+        status: HttpStatus.CONFLICT,
+        message: 'Ya existe un artista con ese nombre',
+      },
+      data: artists.pop(),
+    };
+  }
+
+  async update(
+    id: number,
+    updateArtist: updateArtistsDto,
+  ): Promise<{ response: response; data?: Artist }> {
+    const artists: ArtistEntity[] = await this._artistService.findBy({
+      where: {
+        id,
+      },
+    });
+
+    if (artists.length) {
+      const artist: ArtistEntity = artists.pop();
+      updateArtist.age ? (artist.age = updateArtist.age) : 0;
+      updateArtist.country ? (artist.country = updateArtist.country) : 0;
+      updateArtist.description
+        ? (artist.description = updateArtist.description)
+        : 0;
+      updateArtist.seudoName
+        ? (artist.artistic_name = updateArtist.seudoName)
+        : 0;
+      updateArtist.type ? (artist.type = updateArtist.type) : 0;
+
+      await this._artistService.create(artist);
+
+      return {
+        response: {
+          status: HttpStatus.OK,
+          message: `Artista ${artist.name} actualizado`,
+        },
+        data: artist,
+      };
     }
 
-    async create(createArtist: createArtistDto): Promise<{response: response, data?: Artist}> {
-        const artists: ArtistEntity[] = await this._artistService.findBy({
-            where:{
-                name: createArtist.name.toLocaleLowerCase()
-            }
-        });
-        if(!artists.length) {
-            const newArtist: ArtistEntity = new ArtistEntity(
-                createArtist.name.toLocaleLowerCase(),
-                createArtist?.seudoName,
-                createArtist?.age,
-                createArtist?.country,
-                createArtist?.type,
-                createArtist?.description
-            );
-            const data = await this._artistService.create(newArtist);
-            return {
-                response: {
-                    status: HttpStatus.CREATED,
-                    message: 'Artista creado'
-                },
-                data
-            }
-        }
-        return {
-            response:{
-                status: HttpStatus.CONFLICT,
-                message: 'Ya existe un artista con ese nombre'
-            },
-            data: artists.pop()
-        }
-    }
+    return {
+      response: {
+        status: HttpStatus.NOT_FOUND,
+        message: 'Artista no encontrado',
+      },
+    };
+  }
 
-    async update( id: number, updateArtist: updateArtistsDto): Promise <{ response: response, data?: Artist}> {
-        const artists: ArtistEntity[] = await this._artistService.findBy({
-            where: {
-                id
-            }
-        });
-        
-        if(artists.length) {
-            const artist: ArtistEntity = artists.pop();
-            updateArtist.age ?          artist.age           = updateArtist.age : 0 ;
-            updateArtist.country ?      artist.country       = updateArtist.country: 0 ;
-            updateArtist.description ?  artist.description   = updateArtist.description : 0 ;
-            updateArtist.seudoName ?    artist.artistic_name = updateArtist.seudoName : 0 ;
-            updateArtist.type ?         artist.type          = updateArtist.type : 0 ;
-            
-            await this._artistService.create(artist);
-            
-            return {
-                response: {
-                    status: HttpStatus.OK,
-                    message: `Artista ${artist.name} actualizado`
-                },
-                data: artist
-            }
-        }
-
-        return {
-            response: {
-                status: HttpStatus.NOT_FOUND,
-                message: 'Artista no encontrado'
-            }
-        }
+  async delete(id: number): Promise<{ response: response; data?: Artist }> {
+    const data: { response: response; data?: Artist } = await this.getOne(
+      id,
+      [],
+    );
+    if (data?.data) {
+      const artist = await this._artistService.delete(
+        data.data as ArtistEntity,
+      );
+      return {
+        response: {
+          status: HttpStatus.OK,
+          message: 'Artista eliminado',
+        },
+        data: data.data,
+      };
     }
-    
-    async delete(id: number): Promise<{response: response, data?: Artist}> {
-        const data: {response: response, data?: Artist} = await this.getOne(id, []);
-        if(data?.data) {
-            const artist = await this._artistService.delete(data.data as ArtistEntity);
-            return {
-                response: {
-                    status: HttpStatus.OK,
-                    message: 'Artista eliminado'
-                },
-                data: data.data
-            }
-        }
-        return {
-            response: {
-                status: HttpStatus.NOT_FOUND,
-                message: `Artista con id = ${id} no existe`
-            }
-        }
-    }
+    return {
+      response: {
+        status: HttpStatus.NOT_FOUND,
+        message: `Artista con id = ${id} no existe`,
+      },
+    };
+  }
 }
