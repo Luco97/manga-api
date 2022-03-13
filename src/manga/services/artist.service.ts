@@ -5,7 +5,7 @@ import { ArtistEntity, MangaEntity } from '@db/manga/entity';
 import {
   createArtistDto,
   readArtistDto,
-  readArtist_GetMangaDto,
+  readArtist_getMangasDto,
   updateArtistsDto,
 } from '@manga/dto';
 
@@ -48,10 +48,9 @@ export class ArtistService {
 
   async getArtistMangas(
     artist_id: number,
-    getArtistsBody: readArtist_GetMangaDto,
+    getArtistsBody: readArtist_getMangasDto,
   ): Promise<{ response: response; data?: Artist }> {
-    const { skip, take, relations } =
-      getArtistsBody;
+    const { skip, take, relations } = getArtistsBody;
     const data: MangaEntity[] = await this._mangaService.getMangasById({
       skip,
       take,
@@ -73,11 +72,11 @@ export class ArtistService {
         },
       };
     return {
-        response: {
-            status: HttpStatus.BAD_REQUEST,
-            message: `No existe artista con id = '${artist_id}'`
-        }
-    }
+      response: {
+        status: HttpStatus.NOT_FOUND,
+        message: `No existe artista con id = '${artist_id}'`,
+      },
+    };
   }
 
   async getOne(
