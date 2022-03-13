@@ -16,7 +16,7 @@ import { ArtistService } from '@manga/services';
 import {
   createArtistDto,
   readArtistDto,
-  readArtist_GetMangaDto,
+  readArtist_getMangasDto,
   updateArtistsDto,
 } from '@manga/dto';
 import { AuthGuard } from '../guards/auth.guard';
@@ -102,15 +102,15 @@ export class ArtistController {
     }
   }
 
-  @Post(':id/manga')
-  async getMangasByArtist(
-    @Body() bodyArtists: readArtist_GetMangaDto,
+  @Put(':id')
+  async findOne(
     @Param('id', ParseIntPipe) id: number,
+    @Body() readArtist: readArtistDto,
     @Res() res: Response<{ response: response; data?: Artist }>,
   ) {
     try {
       const foo: { response: response; data?: Artist } =
-        await this._artistService.getArtistMangas(id, bodyArtists);
+        await this._artistService.getOne(id, readArtist.relations);
       return res.status(foo.response.status).json(foo);
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
@@ -122,15 +122,15 @@ export class ArtistController {
     }
   }
 
-  @Put(':id')
-  async findOne(
+  @Post(':id/mangas')
+  async getMangasOfArtist(
+    @Body() bodyArtists: readArtist_getMangasDto,
     @Param('id', ParseIntPipe) id: number,
-    @Body() readArtist: readArtistDto,
     @Res() res: Response<{ response: response; data?: Artist }>,
   ) {
     try {
       const foo: { response: response; data?: Artist } =
-        await this._artistService.getOne(id, readArtist.relations);
+        await this._artistService.getArtistMangas(id, bodyArtists);
       return res.status(foo.response.status).json(foo);
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
