@@ -121,7 +121,7 @@ export class MangaEntityService {
     }
 
     data = data
-      .orderBy('manga.id')
+      .orderBy('manga.id', 'DESC')
       .take(take || 10)
       .skip(skip * take || 0);
 
