@@ -5,16 +5,16 @@ import { Request } from 'express';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-
-  constructor( private JWTservice: JwtService) {}
+  constructor(private JWTservice: JwtService) {}
 
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-
     const request: Request = context.switchToHttp().getRequest();
-    const token: string | string[] = request.headers.authorization?.replace('Bearer ', '');
-    return this.JWTservice.validateJWT( token as string);
-    
+    const token: string | string[] = request.headers.authorization?.replace(
+      'Bearer ',
+      '',
+    );
+    return this.JWTservice.validateJWT(token as string);
   }
 }
