@@ -4,11 +4,11 @@ import { Request } from 'express';
 @Injectable()
 export class RelationsMiddleware implements NestMiddleware {
   use(req: Request, res: any, next: () => void) {
-    if(!req.body?.relations) {
+    if (!req.body?.relations) {
       req.body = {
         ...req.body,
-        relations: []
-      }
+        relations: [],
+      };
     }
     next();
   }
