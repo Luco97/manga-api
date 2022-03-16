@@ -36,6 +36,8 @@ lerna-debug.log*
 
 #config
 .env
+#local env
+.env.example
 
 #cosas
 cosas.txt
