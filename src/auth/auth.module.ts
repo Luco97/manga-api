@@ -8,14 +8,6 @@ import { UserEntityModule } from '../db/user-entity/user-entity.module';
 
 @Module({
     imports: [
-        TypeOrmModule.forRootAsync({
-            imports: [SharedModule],
-            inject:[DbConfigService],
-            useFactory: async ( dbService: DbConfigService): Promise<TypeOrmModuleOptions> => {
-                console.log('Conexion desde auth...');
-                return dbService.getTypeORMconfig('/../**/user.entity.ts');
-            }
-        }),
         UserEntityModule,
         SharedModule
     ],

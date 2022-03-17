@@ -31,15 +31,6 @@ import { UtilsService } from './services/utils.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forRootAsync({
-      imports: [SharedModule],
-      inject: [DbConfigService],
-      useFactory: async (
-        dbService: DbConfigService,
-      ): Promise<TypeOrmModuleOptions> => {
-        return dbService.getTypeORMconfig();
-      },
-    }),
     UserEntityModule,
     MangaEntitiesModule,
     SharedModule,
