@@ -5,6 +5,7 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 @Injectable()
 export class DbConfigService {
   getTypeORMconfig(entity: string = '/../**/*.entity.ts'): TypeOrmModuleOptions {
+    console.log(__dirname)
     return {
       type: 'postgres',
       host: process.env.POSTGRES_HOST,
@@ -17,7 +18,13 @@ export class DbConfigService {
       ],
       synchronize: true,
       autoLoadEntities: true,
-      logging: ['query']
+      //logging: ['query'],
+      ssl: true,
+      extra: {
+        ssl: {
+          rejectUnauthorized: false
+        }
+      }
     };
   }
 }
