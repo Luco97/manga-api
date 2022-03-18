@@ -4,16 +4,15 @@ import { Request, Response } from 'express';
 
 @Injectable()
 export class PayloadMiddleware implements NestMiddleware {
-
-  constructor(
-    private jwtService: JwtService
-  ) {}
+  constructor(private jwtService: JwtService) {}
 
   use(req: Request, res: Response, next: () => void) {
     req.body = {
-      user: this.jwtService.getObjectJWT(req.headers.authorization?.replace('Bearer ', '')),
-      ...req.body
-    } 
+      user: this.jwtService.getObjectJWT(
+        req.headers.authorization?.replace('Bearer ', ''),
+      ),
+      ...req.body,
+    };
     next();
   }
 }
