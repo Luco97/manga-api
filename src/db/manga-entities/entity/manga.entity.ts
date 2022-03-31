@@ -6,11 +6,13 @@ import {
   JoinTable,
   Entity,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { LanguageEntity } from './language.entity';
 import { GenreEntity } from './genre.entity';
 import { ArtistEntity } from './artist.entity';
 import { UserEntity } from '@db/user/entity';
+import { FavoriteEntity } from './favorite.entity';
 
 @Entity({
   name: 'MANGA',
@@ -26,11 +28,11 @@ export class MangaEntity {
     artists: ArtistEntity[],
     languages: LanguageEntity[],
   ) {
-      this.title      = title;
-      this.chapters   = chapters;
-      this.genres     = genres;
-      this.artists    = artists;
-      this.languages  = languages;
+    this.title = title;
+    this.chapters = chapters;
+    this.genres = genres;
+    this.artists = artists;
+    this.languages = languages;
   }
 
   @PrimaryGeneratedColumn({
@@ -58,14 +60,14 @@ export class MangaEntity {
   @CreateDateColumn({
     name: 'CREATED_AT',
     type: 'timestamp',
-    select: false
+    select: false,
   })
   created_at: Date;
 
   @UpdateDateColumn({
     name: 'UPDATED_AT',
     type: 'timestamp',
-    select: false
+    select: false,
   })
   updated_at: Date;
 
@@ -84,7 +86,7 @@ export class MangaEntity {
   })
   genres: GenreEntity[];
 
-  @ManyToMany(() => UserEntity, user => user.mangas,{
+  @ManyToMany(() => UserEntity, (user) => user.mangas, {
     nullable: true,
   })
   @JoinTable({
@@ -99,4 +101,7 @@ export class MangaEntity {
     },
   })
   users: UserEntity[];
+
+  @OneToMany(() => FavoriteEntity, (favorite) => favorite.manga)
+  favorites: FavoriteEntity[];
 }
