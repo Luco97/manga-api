@@ -5,41 +5,46 @@ import { GenreEntity, MangaEntity } from '@db/manga/entity';
 
 @Injectable()
 export class GenreEntityService {
-    
-    constructor(
-        @InjectRepository(GenreEntity)
-        public genreRepository: Repository<GenreEntity>
-    ) {}
+  constructor(
+    @InjectRepository(GenreEntity)
+    public genreRepository: Repository<GenreEntity>,
+  ) {}
 
-    async findAll(relations: string[] = ['mangas']): Promise<GenreEntity[]> {
-        const data: GenreEntity[] = await this.genreRepository.find({relations});
-        return data;
-    }
+  async findAll(relations: string[] = ['mangas']): Promise<GenreEntity[]> {
+    const data: GenreEntity[] = await this.genreRepository.find({ relations });
+    return data;
+  }
 
-    async findOne(id: number, relations: string[] = ['mangas']): Promise<GenreEntity> {
-        const data: GenreEntity = await this.genreRepository.findOne(id, {relations});
-        if(!data) throw new NotFoundException(`No se encuentra el genero id=${id}`);
-        return data;
-    }
+  async findOne(
+    id: number,
+    relations: string[] = ['mangas'],
+  ): Promise<GenreEntity> {
+    const data: GenreEntity = await this.genreRepository.findOne(id, {
+      relations,
+    });
+    if (!data)
+      throw new NotFoundException(`No se encuentra el genero id=${id}`);
+    return data;
+  }
 
-    async findBy(options: FindOneOptions<GenreEntity>): Promise<GenreEntity[]> {
-        const data = await this.genreRepository.find(options);
-        return data;
-    }
+  async findBy(options: FindOneOptions<GenreEntity>): Promise<GenreEntity[]> {
+    const data = await this.genreRepository.find(options);
+    return data;
+  }
 
-    async create( genre: GenreEntity) {
-        const data = this.genreRepository.create(genre);
-        return await this.genreRepository.save(data);
-    }
+  async create(genre: GenreEntity) {
+    const data = this.genreRepository.create(genre);
+    return await this.genreRepository.save(data);
+  }
 
-    async delete( genre: GenreEntity) {
-        const data = await this.findOne(genre.id, []);
-        return await this.genreRepository.remove(data);
-    }
+  async delete(genre: GenreEntity) {
+    const data = await this.findOne(genre.id, []);
+    return await this.genreRepository.remove(data);
+  }
 
-    async createCategory( manga: MangaEntity, genre: GenreEntity) {
-        const genero = await this.findOne( genre.id);
-        genero.mangas.push({...manga});
-        return await this.genreRepository.save(genero);
-    }
+  async createCategory(manga: MangaEntity, genre: GenreEntity) {
+    const genero = await this.findOne(genre.id);
+    genero.mangas.push({ ...manga });
+    return await this.genreRepository.save(genero);
+  }
 }
