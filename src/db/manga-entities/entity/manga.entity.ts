@@ -26,11 +26,11 @@ export class MangaEntity {
     artists: ArtistEntity[],
     languages: LanguageEntity[],
   ) {
-      this.title      = title;
-      this.chapters   = chapters;
-      this.genres     = genres;
-      this.artists    = artists;
-      this.languages  = languages;
+    this.title = title;
+    this.chapters = chapters;
+    this.genres = genres;
+    this.artists = artists;
+    this.languages = languages;
   }
 
   @PrimaryGeneratedColumn({
@@ -58,14 +58,14 @@ export class MangaEntity {
   @CreateDateColumn({
     name: 'CREATED_AT',
     type: 'timestamp',
-    select: false
+    select: false,
   })
   created_at: Date;
 
   @UpdateDateColumn({
     name: 'UPDATED_AT',
     type: 'timestamp',
-    select: false
+    select: false,
   })
   updated_at: Date;
 
@@ -84,7 +84,7 @@ export class MangaEntity {
   })
   genres: GenreEntity[];
 
-  @ManyToMany(() => UserEntity, user => user.mangas,{
+  @ManyToMany(() => UserEntity, (user) => user.mangas, {
     nullable: true,
   })
   @JoinTable({
