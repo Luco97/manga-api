@@ -1,4 +1,4 @@
-import { MangaEntity } from "@db/manga/entity";
+import { MangaEntity } from '@db/manga/entity';
 
 export interface response {
   status: number;
@@ -34,7 +34,7 @@ export interface User {
   id: number;
   username: string;
   email: string;
-  mangas?: MangaEntity[]
+  mangas?: MangaEntity[];
 }
 
 export interface Manga {
@@ -56,7 +56,6 @@ export interface MangaResponse {
   languages?: Language[];
   count?: number;
 }
-
 
 export interface MangaResponse {
   /* manga?: Manga;
