@@ -22,9 +22,19 @@ import {
       GenreEntity,
     ]),
   ],
-  exports: [MangaEntityService, ArtistEntityService, LanguageEntityService, GenreEntityService],
+  exports: [
+    MangaEntityService,
+    ArtistEntityService,
+    LanguageEntityService,
+    GenreEntityService,
+  ],
 
-  providers: [MangaEntityService, ArtistEntityService, LanguageEntityService, GenreEntityService],
+  providers: [
+    MangaEntityService,
+    ArtistEntityService,
+    LanguageEntityService,
+    GenreEntityService,
+  ],
 })
 export class MangaEntitiesModule {
   constructor() {}
