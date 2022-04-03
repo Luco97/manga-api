@@ -6,12 +6,14 @@ async function bootstrap() {
   const port = process.env.PORT || 8080;
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api', {
-    exclude: [{
-      method: RequestMethod.GET,
-      path: ''
-    }]
-  })
-  app.useGlobalPipes(new ValidationPipe())
+    exclude: [
+      {
+        method: RequestMethod.GET,
+        path: '',
+      },
+    ],
+  });
+  app.useGlobalPipes(new ValidationPipe());
   await app.listen(port || 8080);
 }
 bootstrap();
