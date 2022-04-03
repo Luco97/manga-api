@@ -20,22 +20,18 @@ import { SharedModule } from './shared/shared.module';
       ): Promise<TypeOrmModuleOptions> => {
         return {
           ...dbService.getTypeORMconfig(),
-          retryDelay: 3000
+          retryDelay: 3000,
         };
       },
     }),
     AuthModule,
     MangaModule,
     ConfigModule.forRoot({
-      isGlobal: true
+      isGlobal: true,
     }),
     // UserModule
   ],
   controllers: [AppController],
-  providers: [
-    AppService
-  ],
+  providers: [AppService],
 })
-export class AppModule {
-  
-}
+export class AppModule {}
