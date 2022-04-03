@@ -10,25 +10,18 @@ import { DbConfigService } from './services/db-config.service';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         signOptions: {
-           expiresIn: configService.get<string>('EXPIRES'),
+          expiresIn: configService.get<string>('EXPIRES'),
         },
-        secret: configService.get<string>('JWT_SEED')
+        secret: configService.get<string>('JWT_SEED'),
       }),
-      inject: [ConfigService], 
+      inject: [ConfigService],
     }),
 
     ConfigModule.forRoot({
-      isGlobal: true
+      isGlobal: true,
     }),
-    
   ],
-  providers: [
-    JwtService,
-    DbConfigService
-  ],
-  exports: [
-    JwtService,
-    DbConfigService
-  ]
+  providers: [JwtService, DbConfigService],
+  exports: [JwtService, DbConfigService],
 })
 export class SharedModule {}
