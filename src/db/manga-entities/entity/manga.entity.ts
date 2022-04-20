@@ -21,13 +21,13 @@ import { UserEntity } from '@db/user/entity';
 export class MangaEntity {
   constructor(
     title: string,
-    chapters: number,
+    pages: number,
     genres: GenreEntity[],
     artists: ArtistEntity[],
     languages: LanguageEntity[],
   ) {
     this.title = title;
-    this.chapters = chapters;
+    this.pages = pages;
     this.genres = genres;
     this.artists = artists;
     this.languages = languages;
@@ -48,12 +48,12 @@ export class MangaEntity {
   title: string;
 
   @Column({
-    name: 'CHAPTERS',
+    name: 'PAGES',
     type: 'int',
     update: true,
     nullable: false,
   })
-  chapters: number;
+  pages: number;
 
   @CreateDateColumn({
     name: 'CREATED_AT',
