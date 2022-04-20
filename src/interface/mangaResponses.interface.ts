@@ -40,7 +40,7 @@ export interface User {
 export interface Manga {
   id: number;
   title: string;
-  chapters: number;
+  pages: number;
   artists?: Artist[];
   genres?: Genre[];
   languages?: Language[];
@@ -50,7 +50,7 @@ export interface Manga {
 export interface MangaResponse {
   id: number;
   title: string;
-  chapters: number;
+  pages: number;
   artists?: Artist[];
   genres?: Genre[];
   languages?: Language[];

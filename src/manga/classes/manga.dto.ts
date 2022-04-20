@@ -30,7 +30,7 @@ export class createMangaDto {
   title: string;
 
   @IsNotEmpty({
-    message: `Falta definir la propiedad 'chapters'`,
+    message: `Falta definir la propiedad 'pages'`,
   })
   @Min(1, {
     message: 'Numero de capitulos bajo el minimo',
@@ -38,7 +38,7 @@ export class createMangaDto {
   @Max(1000, {
     message: 'Numero de capitulos sobre el maximo',
   })
-  chapters: number;
+  pages: number;
 
   @IsArray({
     message: `Propiedad 'genres' no es de tipo array`,
@@ -91,7 +91,7 @@ export class updateMangaDto {
   @Max(1000, {
     message: 'Numero de capitulos sobre el maximo',
   })
-  chapters: number;
+  pages: number;
 
   @IsOptional()
   @IsArray({
