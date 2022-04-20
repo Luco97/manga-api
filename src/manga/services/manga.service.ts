@@ -64,7 +64,7 @@ export class MangaService {
       },
     });
     if (data.length) {
-      const { artists, chapters, genres, id, languages, title, users } =
+      const { artists, pages, genres, id, languages, title, users } =
         data.pop();
       return {
         response: {
@@ -73,7 +73,7 @@ export class MangaService {
         },
         data: {
           artists,
-          chapters,
+          pages,
           genres,
           id,
           languages,
@@ -101,7 +101,7 @@ export class MangaService {
     if (!mangas.length) {
       const newManga = new MangaEntity(
         createManga.title.toLocaleLowerCase(),
-        createManga.chapters,
+        createManga.pages,
         createManga.genres,
         createManga.artists,
         createManga.languages,
@@ -146,7 +146,7 @@ export class MangaService {
       const manga: Manga = { ...data.data };
 
       manga.title = updateManga?.title || manga.title;
-      manga.chapters = updateManga?.chapters || manga.chapters;
+      manga.pages = updateManga?.pages || manga.pages;
       manga.artists = updateManga?.artists || manga.artists;
       manga.genres = updateManga?.genres || manga.genres;
       manga.languages = updateManga?.languages || manga.languages;
