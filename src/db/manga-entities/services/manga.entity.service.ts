@@ -36,6 +36,19 @@ export class MangaEntityService {
     return await this.mangaRepository.remove(data);
   }
 
+  async updateLikes(id: number, updateState: number): Promise<boolean> {
+    const data: MangaEntity[] = await this.mangaRepository.find({
+      id
+    });
+    if(data.length) {
+      const manga: MangaEntity = data.pop();
+      manga.likes += updateState;
+      const result = await this.mangaRepository.save(manga);
+      return result ? true : false;
+    }
+    return false;
+  }
+
   private mangaQueryInner(
     queryBuilder: SelectQueryBuilder<MangaEntity>,
     relation: string,
