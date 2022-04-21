@@ -41,6 +41,7 @@ export interface Manga {
   id: number;
   title: string;
   pages: number;
+  likes: number;
   artists?: Artist[];
   genres?: Genre[];
   languages?: Language[];
@@ -51,16 +52,17 @@ export interface MangaResponse {
   id: number;
   title: string;
   pages: number;
+  likes: number;
   artists?: Artist[];
   genres?: Genre[];
   languages?: Language[];
   count?: number;
 }
 
-export interface MangaResponse {
-  /* manga?: Manga;
-  mangas?: Manga[]; */
-  lenght?: number;
-  next?: string;
-  previous?: string;
-}
+// export interface MangaResponse {
+//   /* manga?: Manga;
+//   mangas?: Manga[]; */
+//   lenght?: number;
+//   next?: string;
+//   previous?: string;
+// }
