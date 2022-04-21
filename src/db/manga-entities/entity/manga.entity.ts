@@ -55,6 +55,15 @@ export class MangaEntity {
   })
   pages: number;
 
+  @Column({
+    name: 'LIKES',
+    type: 'int',
+    update: true,
+    nullable: false,
+    default: 0
+  })
+  likes: number;
+
   @CreateDateColumn({
     name: 'CREATED_AT',
     type: 'timestamp',
