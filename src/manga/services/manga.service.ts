@@ -64,7 +64,7 @@ export class MangaService {
       },
     });
     if (data.length) {
-      const { artists, pages, genres, id, languages, title, users } =
+      const { artists, pages, likes, genres, id, languages, title, users } =
         data.pop();
       return {
         response: {
@@ -74,6 +74,7 @@ export class MangaService {
         data: {
           artists,
           pages,
+          likes,
           genres,
           id,
           languages,
