@@ -91,7 +91,8 @@ export class UserService {
       //Manga ya existe como favorito
       if (manga) {
         user.mangas.splice(data.data.mangas.indexOf(manga), 1);
-        await this._userService.create(user);
+        await this._userService.save(user);
+        this._mangaService.updateLikes(body.manga.id, -1)
         //Prueba ------ Para emitir via socket que un nuevo manga fue creado (evitando listener de postgres)
         this._utilsService.mangaDropSubject.next({
           response: {
@@ -118,7 +119,8 @@ export class UserService {
       user.mangas.push(body.manga as MangaEntity);
 
       try {
-        await this._userService.create(user);
+        await this._userService.save(user);
+        this._mangaService.updateLikes(body.manga.id, 1)
       } catch (error) {
         //Manga incorrecto/no existe
         return {
