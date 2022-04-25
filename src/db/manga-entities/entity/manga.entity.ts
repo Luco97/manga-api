@@ -60,7 +60,7 @@ export class MangaEntity {
     type: 'int',
     update: true,
     nullable: false,
-    default: 0
+    default: 0,
   })
   likes: number;
 
