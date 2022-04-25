@@ -4,8 +4,13 @@ export const genreRelations: string[] = ['mangas'];
 
 export const languageRelations: string[] = ['mangas'];
 
-export const mangaRelations: string[] = [
-  'genres',
-  'languages',
-  'artists',
+export const mangaRelations: string[] = ['genres', 'languages', 'artists'];
+
+export const mangaColumns: string[] = [
+  'id',
+  'title',
+  'pages',
+  'likes',
+  'created_at',
+  'updated_at',
 ];
