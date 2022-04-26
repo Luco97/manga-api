@@ -120,7 +120,7 @@ export class UserService {
 
       try {
         await this._userService.save(user);
-        this._mangaService.updateLikes(body.manga.id, 1)
+        await this._mangaService.updateLikes(body.manga.id, 1)
       } catch (error) {
         //Manga incorrecto/no existe
         return {
