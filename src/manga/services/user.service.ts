@@ -127,6 +127,7 @@ export class UserService {
           response: {
             status: HttpStatus.BAD_REQUEST,
             message: `Manga con id = '${body.manga.id}' no existe`,
+            error
           },
         };
       }
