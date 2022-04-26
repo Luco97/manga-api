@@ -54,6 +54,7 @@ export interface MangaResponse {
   title: string;
   pages: number;
   likes: number;
+  isFavorite?: boolean
   created_at?: Date;
   updated_at?: Date;
   artists?: Artist[];
