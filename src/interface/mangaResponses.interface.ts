@@ -3,6 +3,7 @@ import { MangaEntity } from '@db/manga/entity';
 export interface response {
   status: number;
   message: string;
+  error?: any;
 }
 
 export interface Artist {
