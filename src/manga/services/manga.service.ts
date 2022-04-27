@@ -23,18 +23,20 @@ export class MangaService {
   ): Promise<{ response: response; data: Manga[] }> {
     const { skip, take, relations } = getMangas;
     const manga_title = `%${name || ''}%`;
-    const data: MangaEntity[] = await this._mangaService.findBy({
-      relations,
-      take,
-      skip,
-      order: {
-        id: 'DESC',
-      },
-      where: {
-        title: Like(manga_title),
-      },
-    });
-    //.findAll({relations, take, skip, manga_title})
+
+    const data: MangaEntity[] = await this._mangaService
+      // .findBy({
+      //   relations,
+      //   take,
+      //   skip,
+      //   order: {
+      //     id: 'DESC',
+      //   },
+      //   where: {
+      //     title: Like(manga_title),
+      //   },
+      // });
+      .findAll({ relations, take, skip, manga_title });
     if (data.length) {
       return {
         response: {
