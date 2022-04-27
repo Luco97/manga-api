@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, FindManyOptions, SelectQueryBuilder } from 'typeorm';
 import { MangaEntity } from '@db/manga/entity';
+import { searchByColumn, mangaRelations } from '../const/relations';
 
 @Injectable()
 export class MangaEntityService {
@@ -38,9 +39,9 @@ export class MangaEntityService {
 
   async updateLikes(id: number, updateState: number): Promise<boolean> {
     const data: MangaEntity[] = await this.mangaRepository.find({
-      id
+      id,
     });
-    if(data.length) {
+    if (data.length) {
       const manga: MangaEntity = data.pop();
       manga.likes += updateState;
       const result = await this.mangaRepository.save(manga);
@@ -49,11 +50,18 @@ export class MangaEntityService {
     return false;
   }
 
-  private mangaQueryInner(
+  private mangaQueryInnerAndJoin(
     queryBuilder: SelectQueryBuilder<MangaEntity>,
     relation: string,
   ): SelectQueryBuilder<MangaEntity> {
     return queryBuilder.innerJoinAndSelect(`manga.${relation}`, relation);
+  }
+
+  private mangaQueryInner(
+    queryBuilder: SelectQueryBuilder<MangaEntity>,
+    relation: string,
+  ): SelectQueryBuilder<MangaEntity> {
+    return queryBuilder.innerJoin(`manga.${relation}`, `${relation}-Inner`);
   }
 
   async findAll(options: {
@@ -64,17 +72,35 @@ export class MangaEntityService {
   }): Promise<MangaEntity[]> {
     const { relations, skip, take, manga_title } = options;
 
+    console.log('---> ', relations);
+    console.log('---> all ---> ', mangaRelations);
+
     let data = this.mangaRepository.createQueryBuilder('manga');
 
     for (let i = 0; i < relations?.length; i++) {
       const element = relations[i];
-      data = this.mangaQueryInner(data, element);
+      data = this.mangaQueryInnerAndJoin(data, element);
     }
 
     if (manga_title) {
-      data.where(`manga.title like :manga_title`, {
+      mangaRelations.forEach((element) => {
+        data = this.mangaQueryInner(data, element);
+      });
+      mangaRelations.forEach((element) => {
+        data.orWhere(
+          `${element}-Inner.${searchByColumn[element]} like :keyword`,
+          {
+            keyword: `${manga_title}`,
+          },
+        );
+      });
+      data.orWhere(`manga.title like :manga_title`, {
         manga_title: manga_title || '%%',
       });
+
+      // data.where(`manga.title like :manga_title`, {
+      //   manga_title: manga_title || '%%',
+      // });
     }
 
     data = data
@@ -98,7 +124,7 @@ export class MangaEntityService {
 
     for (let i = 0; i < relations?.length; i++) {
       const element = relations[i];
-      data = this.mangaQueryInner(data, element);
+      data = this.mangaQueryInnerAndJoin(data, element);
     }
 
     data = data
@@ -130,7 +156,7 @@ export class MangaEntityService {
 
     for (let i = 0; i < relations?.length; i++) {
       const element = relations[i];
-      data = this.mangaQueryInner(data, element);
+      data = this.mangaQueryInnerAndJoin(data, element);
     }
 
     data = data
