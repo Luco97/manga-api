@@ -22,7 +22,7 @@ export class MangaService {
     name?: string,
   ): Promise<{ response: response; data: Manga[] }> {
     const { skip, take, relations } = getMangas;
-    const manga_title = `%${name || ''}%`;
+    const search_keyword = `%${name || ''}%`;
 
     const data: MangaEntity[] = await this._mangaService
       // .findBy({
@@ -33,10 +33,10 @@ export class MangaService {
       //     id: 'DESC',
       //   },
       //   where: {
-      //     title: Like(manga_title),
+      //     title: Like(search_keyword),
       //   },
       // });
-      .findAll({ relations, take, skip, manga_title });
+      .findAll({ relations, take, skip, search_keyword });
     if (data.length) {
       return {
         response: {

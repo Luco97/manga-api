@@ -68,9 +68,9 @@ export class MangaEntityService {
     relations: string[];
     take: number;
     skip: number;
-    manga_title?: string;
+    search_keyword?: string;
   }): Promise<MangaEntity[]> {
-    const { relations, skip, take, manga_title } = options;
+    const { relations, skip, take, search_keyword } = options;
 
     console.log('---> ', relations);
     console.log('---> all ---> ', mangaRelations);
@@ -82,7 +82,7 @@ export class MangaEntityService {
       data = this.mangaQueryInnerAndJoin(data, element);
     }
 
-    if (manga_title) {
+    if (search_keyword) {
       mangaRelations.forEach((element) => {
         data = this.mangaQueryInner(data, element);
       });
@@ -90,16 +90,16 @@ export class MangaEntityService {
         data.orWhere(
           `${element}-Inner.${searchByColumn[element]} like :keyword`,
           {
-            keyword: `${manga_title}`,
+            keyword: `${search_keyword}`,
           },
         );
       });
-      data.orWhere(`manga.title like :manga_title`, {
-        manga_title: manga_title || '%%',
+      data.orWhere(`manga.title like :search_keyword`, {
+        search_keyword: search_keyword || '%%',
       });
 
-      // data.where(`manga.title like :manga_title`, {
-      //   manga_title: manga_title || '%%',
+      // data.where(`manga.title like :search_keyword`, {
+      //   search_keyword: search_keyword || '%%',
       // });
     }
 
