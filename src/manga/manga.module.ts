@@ -4,16 +4,14 @@ import {
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 //DB
-import { DbConfigService } from '@shared/services';
 import { MangaEntitiesModule } from '../db/manga-entities/manga-entities.module';
 //Modules
 import { SharedModule } from '../shared/shared.module';
 //Guard
-import { AuthGuard } from './guards/auth.guard';
 import { PayloadMiddleware } from './middleware/payload.middleware';
 import { RelationsMiddleware } from './middleware/relations.middleware';
+import { OrderMangaMiddleware } from './middleware/order-manga.middleware';
 //Controllers
 import { MangaController } from './controller/manga.controller';
 import { ArtistController } from './controller/artist.controller';
@@ -92,6 +90,13 @@ export class MangaModule implements NestModule {
           path: 'genre/:id',
           method: RequestMethod.PUT,
         },
+      )
+      .apply(OrderMangaMiddleware)
+      .forRoutes(
+        {
+          path: 'manga',
+          method: RequestMethod.POST
+        }
       );
   }
 }
