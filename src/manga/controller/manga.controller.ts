@@ -19,7 +19,6 @@ import { AuthGuard } from '../guards/auth.guard';
 import { MangaEntityService } from '@db/manga/services';
 
 @Controller('manga')
-@UseGuards(AuthGuard)
 export class MangaController {
   constructor(private _mangaService: MangaService) {}
 
@@ -43,6 +42,7 @@ export class MangaController {
     }
   }
 
+  @UseGuards(AuthGuard)
   @Post('create')
   async createManga(
     @Body() createManga: createMangaDto,
@@ -62,6 +62,7 @@ export class MangaController {
     }
   }
 
+  @UseGuards(AuthGuard)
   @Post('update/:id')
   async updateManga(
     @Param('id', ParseIntPipe) id: number,
@@ -83,6 +84,7 @@ export class MangaController {
     }
   }
 
+  @UseGuards(AuthGuard)
   @Delete('delete/:id')
   async delete(
     @Param('id', ParseIntPipe) id: number,
