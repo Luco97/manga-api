@@ -1,6 +1,7 @@
 import {
   ArrayMinSize,
   IsArray,
+  IsIn,
   IsNotEmpty,
   IsOptional,
   Length,
@@ -9,11 +10,21 @@ import {
 } from 'class-validator';
 import { ArrayContainsSome } from './custom-validator/ArrayContainsSome.class-validator';
 import { GenreEntity, ArtistEntity, LanguageEntity } from '@db/manga/entity';
-import { mangaRelations } from '@db/manga/const';
+import { mangaColumns, mangaRelations } from '@db/manga/const';
 import { UserEntity } from '@db/user/entity';
 import { Pagination } from './utils.dto';
 
 export class readMangaDto extends Pagination {
+  @IsIn(mangaColumns, {
+    message: 'no hay propiedad con ese nombre para ordenar',
+  })
+  property: string;
+
+  @IsIn(['ASC', 'DESC'], {
+    message: 'No es posible ese orden',
+  })
+  order: 'ASC' | 'DESC';
+
   @ArrayContainsSome(mangaRelations, {
     message: 'Hay campos que no se encuentran definidos en la tabla consultada',
   })
