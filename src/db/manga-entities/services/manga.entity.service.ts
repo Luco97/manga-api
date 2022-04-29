@@ -69,11 +69,10 @@ export class MangaEntityService {
     take: number;
     skip: number;
     search_keyword?: string;
+    property: string;
+    order: 'ASC' | 'DESC';
   }): Promise<MangaEntity[]> {
-    const { relations, skip, take, search_keyword } = options;
-
-    console.log('---> ', relations);
-    console.log('---> all ---> ', mangaRelations);
+    const { relations, skip, take, search_keyword, property, order } = options;
 
     let data = this.mangaRepository.createQueryBuilder('manga');
 
@@ -104,7 +103,7 @@ export class MangaEntityService {
     }
 
     data = data
-      .orderBy('manga.id', 'ASC')
+      .orderBy(`manga.${property}`, order)
       .take(take || 10)
       .skip(skip * take || 0);
 
