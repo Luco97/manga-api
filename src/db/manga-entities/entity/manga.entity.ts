@@ -67,7 +67,7 @@ export class MangaEntity {
   @CreateDateColumn({
     name: 'CREATED_AT',
     type: 'timestamp',
-    select: false,
+    // select: false,
   })
   created_at: Date;
 
