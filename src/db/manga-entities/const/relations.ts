@@ -18,5 +18,4 @@ export const mangaColumns: string[] = [
   'pages',
   'likes',
   'created_at',
-  'updated_at',
 ];
