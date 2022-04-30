@@ -16,7 +16,6 @@ import { Manga, response } from '@interface/mangaResponses.interface';
 import { createMangaDto, readMangaDto, updateMangaDto } from '@manga/dto';
 import { MangaService } from '@manga/services';
 import { AuthGuard } from '../guards/auth.guard';
-import { MangaEntityService } from '@db/manga/services';
 
 @Controller('manga')
 export class MangaController {
