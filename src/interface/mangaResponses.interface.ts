@@ -43,6 +43,7 @@ export interface Manga {
   title: string;
   pages: number;
   likes: number;
+  created_at?: Date;
   artists?: Artist[];
   genres?: Genre[];
   languages?: Language[];
