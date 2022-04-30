@@ -21,7 +21,7 @@ export class MangaService {
     getMangas: readMangaDto,
     name?: string,
   ): Promise<{ response: response; data: Manga[] }> {
-    const { skip, take, relations } = getMangas;
+    const { skip, take, relations, property, order } = getMangas;
     const search_keyword = `%${name || ''}%`;
 
     const data: MangaEntity[] = await this._mangaService
@@ -36,7 +36,7 @@ export class MangaService {
       //     title: Like(search_keyword),
       //   },
       // });
-      .findAll({ relations, take, skip, search_keyword });
+      .findAll({ relations, take, skip, search_keyword , property, order});
     if (data.length) {
       return {
         response: {
