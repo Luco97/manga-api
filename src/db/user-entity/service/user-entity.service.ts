@@ -65,4 +65,16 @@ export class UserEntityService {
     user.active = !user.active;
     this.userRepository.save(user);
   }
+
+  async checkIfFavoriteByUser(id_manga: number, id_user: number): Promise<boolean> {
+    const data: UserEntity = await this.userRepository
+      .createQueryBuilder('user')
+      .innerJoinAndSelect('user.mangas', 'mango', 'mango.id = :id_manga', {
+        id_manga,
+      })
+      .where('user.id = :id_user', { id_user })
+      .orderBy()
+      .getOne();
+    return data ? true : false;
+  }
 }
