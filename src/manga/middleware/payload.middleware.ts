@@ -1,4 +1,4 @@
-import { Injectable, NestMiddleware, Body } from '@nestjs/common';
+import { Injectable, NestMiddleware } from '@nestjs/common';
 import { JwtService } from '@shared/services';
 import { Request, Response } from 'express';
 
@@ -7,12 +7,10 @@ export class PayloadMiddleware implements NestMiddleware {
   constructor(private jwtService: JwtService) {}
 
   use(req: Request, res: Response, next: () => void) {
-    req.body = {
-      user: this.jwtService.getObjectJWT(
-        req.headers.authorization?.replace('Bearer ', ''),
-      ),
-      ...req.body,
-    };
+    const user = this.jwtService.getObjectJWT(
+      req.headers.authorization?.replace('Bearer ', ''),
+    );
+    req.body.user = user;
     next();
   }
 }
