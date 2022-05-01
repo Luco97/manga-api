@@ -30,5 +30,6 @@ export class JwtService {
         username: payload.username,
       };
     }
+    return {};
   }
 }
