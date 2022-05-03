@@ -63,6 +63,10 @@ export class MangaModule implements NestModule {
           path: 'user/favorites',
           method: RequestMethod.PUT,
         },
+        {
+          path: 'user/check',
+          method: RequestMethod.PUT,
+        },
       )
       .apply(RelationsMiddleware)
       .forRoutes(
