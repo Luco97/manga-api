@@ -92,7 +92,7 @@ export class UserService {
       if (manga) {
         user.mangas.splice(data.data.mangas.indexOf(manga), 1);
         await this._userService.save(user);
-        this._mangaService.updateLikes(body.manga.id, -1)
+        this._mangaService.updateLikes(body.manga.id, -1);
         //Prueba ------ Para emitir via socket que un nuevo manga fue creado (evitando listener de postgres)
         this._utilsService.mangaDropSubject.next({
           response: {
@@ -120,14 +120,14 @@ export class UserService {
 
       try {
         await this._userService.save(user);
-        await this._mangaService.updateLikes(body.manga.id, 1)
+        await this._mangaService.updateLikes(body.manga.id, 1);
       } catch (error) {
         //Manga incorrecto/no existe
         return {
           response: {
             status: HttpStatus.BAD_REQUEST,
             message: `Manga con id = '${body.manga.id}' no existe`,
-            error
+            error,
           },
         };
       }
@@ -159,6 +159,23 @@ export class UserService {
         status: HttpStatus.NOT_FOUND,
         message: `No existe un usuario con id = '${id}'`,
       },
+    };
+  }
+
+  async checkFavorite(
+    id_manga: number,
+    id_user: number,
+  ): Promise<{ response: response; isFavorite?: boolean }> {
+    const isFavorite: boolean = await this._userService.checkIfFavoriteByUser(
+      id_manga,
+      id_user,
+    );
+    return {
+      response: {
+        status: HttpStatus.OK,
+        message: 'Check para saber si es favorito',
+      },
+      isFavorite,
     };
   }
 }
