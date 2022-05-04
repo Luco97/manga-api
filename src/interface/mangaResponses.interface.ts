@@ -44,6 +44,7 @@ export interface Manga {
   pages: number;
   likes: number;
   created_at?: Date;
+  isFavorite?: boolean;
   artists?: Artist[];
   genres?: Genre[];
   languages?: Language[];
