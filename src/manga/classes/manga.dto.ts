@@ -15,6 +15,12 @@ import { UserEntity } from '@db/user/entity';
 import { Pagination } from './utils.dto';
 
 export class readMangaDto extends Pagination {
+
+  user?: {
+    id: number;
+    username: string;
+  };
+
   @IsIn(mangaColumns, {
     message: 'no hay propiedad con ese nombre para ordenar',
   })
