@@ -10,7 +10,7 @@ export class PayloadMiddleware implements NestMiddleware {
     const user = this.jwtService.getObjectJWT(
       req.headers.authorization?.replace('Bearer ', ''),
     );
-    req.body.user = user;
+    if (user?.id && user?.username) req.body.user = user;
     next();
   }
 }
