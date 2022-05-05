@@ -28,11 +28,7 @@ import { EventsGateway } from './events/events.gateway';
 import { UtilsService } from './services/utils.service';
 
 @Module({
-  imports: [
-    UserEntityModule,
-    MangaEntitiesModule,
-    SharedModule,
-  ],
+  imports: [UserEntityModule, MangaEntitiesModule, SharedModule],
   controllers: [
     MangaController,
     ArtistController,
@@ -67,6 +63,10 @@ export class MangaModule implements NestModule {
           path: 'user/check',
           method: RequestMethod.PUT,
         },
+        {
+          path: 'manga',
+          method: RequestMethod.POST,
+        },
       )
       .apply(RelationsMiddleware)
       .forRoutes(
@@ -96,11 +96,9 @@ export class MangaModule implements NestModule {
         },
       )
       .apply(OrderMangaMiddleware)
-      .forRoutes(
-        {
-          path: 'manga',
-          method: RequestMethod.POST
-        }
-      );
+      .forRoutes({
+        path: 'manga',
+        method: RequestMethod.POST,
+      });
   }
 }
