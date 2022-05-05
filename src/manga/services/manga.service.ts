@@ -1,6 +1,6 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
-import { Like } from 'typeorm';
 import { MangaEntity } from '@db/manga/entity';
+import { UserEntityService } from '@db/user/service';
 import { MangaEntityService } from '@db/manga/services';
 import {
   Manga,
@@ -13,8 +13,9 @@ import { UtilsService } from './utils.service';
 @Injectable()
 export class MangaService {
   constructor(
-    private _mangaService: MangaEntityService,
     private _utilsService: UtilsService,
+    private _userService: UserEntityService,
+    private _mangaService: MangaEntityService,
   ) {}
 
   async getAll(
@@ -36,7 +37,30 @@ export class MangaService {
       //     title: Like(search_keyword),
       //   },
       // });
-      .findAll({ relations, take, skip, search_keyword , property, order});
+      .findAll({ relations, take, skip, search_keyword, property, order });
+    if (getMangas?.user?.id && data.length) {
+      const promiseArray: Promise<boolean>[] = [];
+      const auxManga: Manga[] = [...data];
+      auxManga.forEach((element) => {
+        promiseArray.push(
+          this._userService.checkIfFavoriteByUser(
+            element.id,
+            getMangas.user.id,
+          ),
+        );
+      });
+      const resultPromise: boolean[] = await Promise.all(promiseArray);
+      auxManga.forEach(
+        (element, index) => (element.isFavorite = resultPromise[index]),
+      );
+      return {
+        response: {
+          status: HttpStatus.OK,
+          message: 'getAll mangas',
+        },
+        data: auxManga,
+      };
+    }
     if (data.length) {
       return {
         response: {
