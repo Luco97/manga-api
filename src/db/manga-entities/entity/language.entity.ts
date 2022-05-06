@@ -14,9 +14,10 @@ import { MangaEntity } from './manga.entity';
   name: 'IDIOMA',
 })
 export class LanguageEntity {
-  constructor(language: string, country: string) {
+  constructor(language: string, country: string, country_flag: string) {
     this.language = language;
     this.country = country;
+    this.country_flag = country_flag;
   }
 
   @PrimaryGeneratedColumn({
@@ -40,6 +41,13 @@ export class LanguageEntity {
     nullable: false,
   })
   country: string;
+
+  @Column({
+    name: 'COUNTRY_FLAG_URL',
+    type: 'varchar',
+    nullable: true,
+  })
+  country_flag: string;
 
   @CreateDateColumn({
     name: 'CREATED_AT',
