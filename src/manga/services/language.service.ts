@@ -67,6 +67,7 @@ export class LanguageService {
       const newLanguage: LanguageEntity = new LanguageEntity(
         createLanguage.language.toLocaleLowerCase(),
         createLanguage.country.toLocaleLowerCase(),
+        createLanguage?.country_flag
       );
       const data = await this._languageService.create(newLanguage);
       return {
