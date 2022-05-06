@@ -1,11 +1,6 @@
 import { languageRelations } from '@db/manga/const';
 import { ArrayContainsSome } from './custom-validator/ArrayContainsSome.class-validator';
-import {
-  ArrayNotEmpty,
-  IsNotEmpty,
-  IsOptional,
-  Length,
-} from 'class-validator';
+import { ArrayNotEmpty, IsNotEmpty, IsOptional, Length } from 'class-validator';
 
 export class createLanguageDto {
   @IsNotEmpty({
@@ -22,6 +17,8 @@ export class createLanguageDto {
     message: 'Esta bajo el minimo/Supera el maximo de caracteres',
   })
   country: string;
+
+  country_flag?: string;
 }
 
 export class readLanguageDto {
