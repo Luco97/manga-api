@@ -3,6 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtService } from './services/jwt.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DbConfigService } from './services/db-config.service';
+import { CloudinaryService } from './services/cloudinary.service';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { DbConfigService } from './services/db-config.service';
       isGlobal: true,
     }),
   ],
-  providers: [JwtService, DbConfigService],
-  exports: [JwtService, DbConfigService],
+  providers: [JwtService, DbConfigService, CloudinaryService],
+  exports: [JwtService, DbConfigService, CloudinaryService],
 })
 export class SharedModule {}
