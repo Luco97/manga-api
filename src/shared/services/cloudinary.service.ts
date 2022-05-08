@@ -17,9 +17,11 @@ export class CloudinaryService {
   async upload(
     filePath: string,
     folderParth: string,
+    fileName: string
   ): Promise<{ result?: any; error?: any }> {
     const post = await this._cloudinary.uploader.upload(filePath, {
       folder: folderParth,
+      public_id: fileName
     });
     if (post?.error) return { error: post.error };
     return { result: post };
