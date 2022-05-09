@@ -2,6 +2,7 @@ import { Injectable, HttpStatus } from '@nestjs/common';
 import { MangaEntity } from '@db/manga/entity';
 import { UserEntityService } from '@db/user/service';
 import { MangaEntityService } from '@db/manga/services';
+import { CloudinaryService } from '@shared/services';
 import {
   Manga,
   MangaResponse,
@@ -16,6 +17,7 @@ export class MangaService {
     private _utilsService: UtilsService,
     private _userService: UserEntityService,
     private _mangaService: MangaEntityService,
+    private _cloudinaryService: CloudinaryService,
   ) {}
 
   async getAll(
@@ -38,36 +40,52 @@ export class MangaService {
       //   },
       // });
       .findAll({ relations, take, skip, search_keyword, property, order });
-    if (getMangas?.user?.id && data.length) {
-      const promiseArray: Promise<boolean>[] = [];
+    if (data.length) {
       const auxManga: Manga[] = [...data];
+      const promiseArray_cover: Promise<string>[] = [];
       auxManga.forEach((element) => {
-        promiseArray.push(
-          this._userService.checkIfFavoriteByUser(
-            element.id,
-            getMangas.user.id,
+        promiseArray_cover.push(
+          this._cloudinaryService.manga_page(
+            element.title.toLowerCase().replace(/\ /g, '_'),
           ),
         );
       });
-      const resultPromise: boolean[] = await Promise.all(promiseArray);
-      auxManga.forEach(
-        (element, index) => (element.isFavorite = resultPromise[index]),
+      const resultPromise_cover: string[] = await Promise.all(
+        promiseArray_cover,
       );
+      auxManga.forEach(
+        (element, index) => (element.cover = resultPromise_cover[index]),
+      );
+      if (getMangas?.user?.id) {
+        const promiseArray_isFavorite: Promise<boolean>[] = [];
+        auxManga.forEach((element) => {
+          promiseArray_isFavorite.push(
+            this._userService.checkIfFavoriteByUser(
+              element.id,
+              getMangas.user.id,
+            ),
+          );
+        });
+        const resultPromise: boolean[] = await Promise.all(
+          promiseArray_isFavorite,
+        );
+        auxManga.forEach(
+          (element, index) => (element.isFavorite = resultPromise[index]),
+        );
+        return {
+          response: {
+            status: HttpStatus.OK,
+            message: 'getAll mangas',
+          },
+          data: auxManga,
+        };
+      }
       return {
         response: {
           status: HttpStatus.OK,
           message: 'getAll mangas',
         },
         data: auxManga,
-      };
-    }
-    if (data.length) {
-      return {
-        response: {
-          status: HttpStatus.OK,
-          message: 'getAll mangas',
-        },
-        data,
       };
     }
     return {
