@@ -25,6 +25,10 @@
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Aplicacion basica para subir y ver doujin (Mangas de un capitulo comunmente llamados OneShot) con la intencion de:
+- Aplicar la metologia de organizar archivos como es con Angular
+- Aplicar conceptos de Back-End (por lo que algunas librerias tienen un desarrollo similar a un Back-End de Node.js)
+- Intentar sentirme satisfecho conmigo mismo creyendo que es suficiente saber lo aplicado en esta aplicacion
 
 ## Installation
 
