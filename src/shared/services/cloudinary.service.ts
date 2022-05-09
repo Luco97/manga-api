@@ -26,4 +26,9 @@ export class CloudinaryService {
     if (post?.error) return { error: post.error };
     return { result: post };
   }
+
+  async manga_page(name: string, number: number = 1): Promise<string> {
+    const image = this._cloudinary.url(`mangas/${name}/${number}.jpg`);
+    return image;
+  }
 }
