@@ -7,9 +7,11 @@ import {
   CreateDateColumn,
   Entity,
   ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { RoleEntity } from './role.entity';
 
 @Entity({
   name: 'USUARIOS',
@@ -75,6 +77,9 @@ export class UserEntity {
     nullable: true,
   })
   mangas: MangaEntity[];
+
+  @ManyToOne(() => RoleEntity, (role) => role.users)
+  role: RoleEntity;
 
   @BeforeInsert()
   @BeforeUpdate()
