@@ -52,13 +52,6 @@ export class UserEntity {
   })
   password: string;
 
-  @Column({
-    name: 'ACTIVE',
-    type: 'boolean',
-    nullable: true,
-  })
-  active: boolean;
-
   @CreateDateColumn({
     name: 'CREATED_AT',
     type: 'timestamp',
