@@ -14,7 +14,7 @@ export class RoleEntity {
   @Column({
     name: 'ROLE_NAME',
     nullable: false,
-    select: false,
+    // select: false,
   })
   role_name: string;
 
