@@ -61,11 +61,6 @@ export class UserEntityService {
     return await this.userRepository.save(user);
   }
 
-  async updateStatus(user: UserEntity) {
-    user.active = !user.active;
-    this.userRepository.save(user);
-  }
-
   async checkIfFavoriteByUser(id_manga: number, id_user: number): Promise<boolean> {
     const data: UserEntity = await this.userRepository
       .createQueryBuilder('user')
