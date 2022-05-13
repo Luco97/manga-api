@@ -11,20 +11,21 @@ export class RoleEntityService {
     private _roleRepository: Repository<RoleEntity>,
   ) {}
 
-  async find(id: number): Promise<number> {
-    return this._roleRepository
+  async find(id: number): Promise<boolean> {
+    const query: number = await this._roleRepository
       .createQueryBuilder('role')
-      .innerJoin('role.users', 'user', 'user.id = :id', {id})
-      .where('role.role_name = :type', {type: 'admin'})
+      .innerJoin('role.users', 'user', 'user.id = :id', { id })
+      .where('role.role_name = :type', { type: 'admin' })
       .orderBy()
       .getCount();
+    return query ? true : false;
   }
 
   get getCommon(): Promise<RoleEntity> {
     return this._roleRepository.findOne({
       where: {
-        role_name: 'common'
-      }
-    })
+        role_name: 'common',
+      },
+    });
   }
 }
