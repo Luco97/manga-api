@@ -22,6 +22,7 @@ import { AuthGuard } from '../guards/auth.guard';
 import { Manga, response } from '@interface/mangaResponses.interface';
 import { CloudinaryService } from '@shared/services';
 import { unlink } from 'fs';
+import { RoleGuard } from '../guards/role.guard';
 
 @Controller('manga')
 export class MangaController {
@@ -50,7 +51,7 @@ export class MangaController {
     }
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RoleGuard)
   @Post('create')
   async createManga(
     @Body() createManga: createMangaDto,
@@ -70,7 +71,7 @@ export class MangaController {
     }
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RoleGuard)
   @Post('update/:id')
   async updateManga(
     @Param('id', ParseIntPipe) id: number,
@@ -92,7 +93,7 @@ export class MangaController {
     }
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RoleGuard)
   @Delete('delete/:id')
   async delete(
     @Param('id', ParseIntPipe) id: number,
@@ -132,7 +133,7 @@ export class MangaController {
     }
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RoleGuard)
   @Post('manga_pages/:manga_name')
   @UseInterceptors(
     FilesInterceptor('files', 3, {
