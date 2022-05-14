@@ -20,9 +20,9 @@ import {
   updateArtistsDto,
 } from '@manga/dto';
 import { AuthGuard } from '../guards/auth.guard';
+import { RoleGuard } from '../guards/role.guard';
 
 @Controller('artist')
-@UseGuards(AuthGuard)
 export class ArtistController {
   constructor(private _artistService: ArtistService) {}
 
@@ -45,6 +45,7 @@ export class ArtistController {
     }
   }
 
+  @UseGuards(AuthGuard, RoleGuard)
   @Post('create')
   async create(
     @Body() createArtist: createArtistDto,
@@ -64,6 +65,7 @@ export class ArtistController {
     }
   }
 
+  @UseGuards(AuthGuard, RoleGuard)
   @Put('update/:id')
   async update(
     @Param('id', ParseIntPipe) id: number,
@@ -84,6 +86,7 @@ export class ArtistController {
     }
   }
 
+  @UseGuards(AuthGuard, RoleGuard)
   @Delete('delete/:id')
   async delete(
     @Param('id', ParseIntPipe) id: number,
