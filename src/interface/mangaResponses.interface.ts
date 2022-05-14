@@ -27,6 +27,7 @@ export interface Genre {
 export interface Language {
   id: number;
   language: string;
+  country_flag: string;
   mangas?: MangaEntity[];
   count?: number;
 }
