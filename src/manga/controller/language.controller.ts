@@ -15,8 +15,8 @@ import { Language, response } from '@interface/mangaResponses.interface';
 import { createLanguageDto, readLanguageDto } from '@manga/dto';
 import { LanguageService } from '@manga/services';
 import { AuthGuard } from '../guards/auth.guard';
+import { RoleGuard } from '../guards/role.guard';
 
-@UseGuards(AuthGuard)
 @Controller('language')
 export class LanguageController {
   constructor(private _languageService: LanguageService) {}
@@ -39,6 +39,7 @@ export class LanguageController {
     }
   }
 
+  @UseGuards(AuthGuard, RoleGuard)
   @Post('create')
   async create(
     @Body() createLanguage: createLanguageDto,
@@ -58,6 +59,7 @@ export class LanguageController {
     }
   }
 
+  @UseGuards(AuthGuard, RoleGuard)
   @Delete('delete/:id')
   async delete(
     @Param('id', ParseIntPipe) id: number,
