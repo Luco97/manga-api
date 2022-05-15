@@ -19,9 +19,9 @@ import {
 } from '@manga/dto';
 import { GenreService } from '@manga/services';
 import { AuthGuard } from '../guards/auth.guard';
+import { RoleGuard } from '../guards/role.guard';
 
 @Controller('genre')
-@UseGuards(AuthGuard)
 export class GenreController {
   constructor(private _genreService: GenreService) {}
 
@@ -44,6 +44,7 @@ export class GenreController {
     }
   }
 
+  @UseGuards(AuthGuard, RoleGuard)
   @Post('create')
   async create(
     @Body() createGenre: createGenreDto,
@@ -63,6 +64,7 @@ export class GenreController {
     }
   }
 
+  @UseGuards(AuthGuard, RoleGuard)
   @Delete('delete/:id')
   async delete(
     @Param('id', ParseIntPipe) id: number,
