@@ -37,6 +37,7 @@ export interface User {
   username: string;
   email: string;
   mangas?: MangaEntity[];
+  count?: number;
 }
 
 export interface Manga {
