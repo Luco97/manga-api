@@ -113,7 +113,7 @@ export class MangaController {
     }
   }
 
-  @Put(':id')
+  @Post(':id')
   async oneMangaById(
     @Param('id', ParseIntPipe) id: number,
     @Body() readManga: readMangaDto,
