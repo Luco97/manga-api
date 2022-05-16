@@ -96,9 +96,15 @@ export class MangaModule implements NestModule {
         },
       )
       .apply(OrderMangaMiddleware)
-      .forRoutes({
-        path: 'manga',
-        method: RequestMethod.POST,
-      });
+      .forRoutes(
+        {
+          path: 'manga',
+          method: RequestMethod.POST,
+        },
+        {
+          path: 'manga/:id',
+          method: RequestMethod.POST,
+        },
+      );
   }
 }
