@@ -47,7 +47,7 @@ export class UserService {
     getFavoritesBody: getFavorite,
   ): Promise<{ response: response; data?: User }> {
     const { take, skip, user, relations } = getFavoritesBody;
-    const mangas: MangaEntity[] = await this._mangaService.getMangasById({
+    const [mangas, count] = await this._mangaService.getMangasById({
       relations,
       take,
       skip,
@@ -69,6 +69,7 @@ export class UserService {
         },
         data: {
           ...data,
+          count,
         },
       };
     }
