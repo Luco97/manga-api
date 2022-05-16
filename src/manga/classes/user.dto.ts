@@ -5,7 +5,7 @@ import { ArrayContainsSome } from './custom-validator/ArrayContainsSome.class-va
 import { Pagination } from './utils.dto';
 
 export class setFavorite {
-  user: {
+  user?: {
     id: number;
     username: string;
   };
