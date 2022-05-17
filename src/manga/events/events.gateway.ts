@@ -12,13 +12,13 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayInit {
 
   afterInit(server: Server) {
     this._utilsService.mangaFavoriteSubject.subscribe(({ response, data }) => {
-      server.emit(`favorite:manga:${data.id}`, {
+      server.emit(`like/manga/${data.id}`, {
         response,
         data,
       });
     });
     this._utilsService.mangaDropSubject.subscribe(({ response, data }) => {
-      server.emit(`favorite:drop:manga:${data.id}`, {
+      server.emit(`drop/manga/${data.id}`, {
         response,
         data,
       });
@@ -29,7 +29,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayInit {
     //listener que emite los mangas que fueron creados
     //desde que alguien a iniciado una conexion con el servidor
     this._utilsService.mangaCreateSubject.subscribe(({ response, data }) => {
-      client.emit('manga:create:controller', {
+      client.emit('create/manga', {
         response,
         data,
       });
