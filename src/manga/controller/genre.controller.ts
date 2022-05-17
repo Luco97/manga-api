@@ -8,7 +8,6 @@ import {
   Post,
   Body,
   Delete,
-  Put,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { Genre, response } from '@interface/mangaResponses.interface';
@@ -92,7 +91,8 @@ export class GenreController {
   ) {
     try {
       const foo: { response: response; data?: Genre } =
-        await this._genreService.getOne(id, readGenre.relations);
+        // await this._genreService.getOne(id, readGenre.relations);
+        await this._genreService.getGenreMangas(id, readGenre);
       return res.status(foo.response.status).json(foo);
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
@@ -104,7 +104,7 @@ export class GenreController {
     }
   }
 
-  @Put(':id')
+  @Post(':id')
   async getOne(
     @Param('id', ParseIntPipe) id: number,
     @Body() readGenre: readGenreDto,
