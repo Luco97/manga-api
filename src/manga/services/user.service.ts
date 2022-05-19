@@ -94,11 +94,11 @@ export class UserService {
         user.mangas.splice(data.data.mangas.indexOf(manga), 1);
         await this._userService.save(user);
         this._mangaService.updateLikes(body.manga.id, -1);
-        //Prueba ------ Para emitir via socket que un nuevo manga fue creado (evitando listener de postgres)
+        //Prueba ------ Para emitir via socket que un nuevo manga fue quitado de favoritos (evitando listener de postgres)
         this._utilsService.mangaDropSubject.next({
           response: {
             status: HttpStatus.OK,
-            message: `Manga con id = '${body.manga.id}' y titulo = '${body.manga.title}' fue quitado de favoritos por someone`,
+            message: `Manga quitado de favoritos`,
           },
           data: body.manga,
         });
@@ -133,7 +133,7 @@ export class UserService {
         };
       }
       const { id, username, email } = user;
-      //Prueba ------ Para emitir via socket que un nuevo manga fue creado (evitando listener de postgres)
+      //Prueba ------ Para emitir via socket que un nuevo manga fue agregado a favoritos (evitando listener de postgres)
       this._utilsService.mangaFavoriteSubject.next({
         response: {
           status: HttpStatus.CREATED,
