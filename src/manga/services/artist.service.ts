@@ -51,7 +51,7 @@ export class ArtistService {
     getArtistsBody: readArtist_getMangasDto,
   ): Promise<{ response: response; data?: Artist }> {
     const { skip, take, relations } = getArtistsBody;
-    const data: MangaEntity[] = await this._mangaService.getMangasById({
+    const [data, count] = await this._mangaService.getMangasById({
       skip,
       take,
       relations,
@@ -69,6 +69,7 @@ export class ArtistService {
         data: {
           ...artist.data,
           mangas: data,
+          count
         },
       };
     return {
