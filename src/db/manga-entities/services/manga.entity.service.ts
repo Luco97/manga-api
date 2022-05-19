@@ -141,7 +141,7 @@ export class MangaEntityService {
     skip: number;
     relation_name: string;
     relation_id: number;
-  }): Promise<MangaEntity[]> {
+  }): Promise<[MangaEntity[], number]> {
     const { relations, skip, take, relation_name, relation_id } = options;
 
     let data = this.mangaRepository
@@ -163,7 +163,7 @@ export class MangaEntityService {
       .take(take || 10)
       .skip(skip * take || 0);
 
-    const readyQuery = await data.getMany();
+    const readyQuery = await data.getManyAndCount();
     return readyQuery;
   }
 }
