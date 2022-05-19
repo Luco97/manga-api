@@ -50,7 +50,7 @@ export class GenreService {
     getGenreBody: readGenre_getMangasDto,
   ): Promise<{ response: response; data?: Genre }> {
     const { skip, take, relations } = getGenreBody;
-    const data: MangaEntity[] = await this._mangaService.getMangasById({
+    const [data, count] = await this._mangaService.getMangasById({
       relations,
       take,
       skip,
@@ -68,6 +68,7 @@ export class GenreService {
         data: {
           ...genre.data,
           mangas: data,
+          count
         },
       };
     return {
