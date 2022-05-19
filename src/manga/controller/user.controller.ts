@@ -8,17 +8,16 @@ import {
   Put,
 } from '@nestjs/common';
 import { Response } from 'express';
-
 import { response, User } from '@interface/mangaResponses.interface';
 import { getFavorite, setFavorite } from '@manga/dto';
 import { UserService } from '@manga/services';
 import { AuthGuard } from '../guards/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('user')
 export class UserController {
   constructor(private _userService: UserService /* UserEntityService */) {}
 
-  @UseGuards(AuthGuard)
   @Post('favorites')
   async getFavorites(
     @Body() getBody: getFavorite,
@@ -42,7 +41,6 @@ export class UserController {
     }
   }
 
-  @UseGuards(AuthGuard)
   @Put('favorites')
   async favoriteManga(
     //@Param('id', ParseIntPipe) id: number,
@@ -65,15 +63,14 @@ export class UserController {
     }
   }
 
-  @Put('check')
+  @Post('check')
   async isFavorite(
     @Body() Favorite: setFavorite,
     @Res() res: Response<{ response: response; isFavorite?: boolean }>,
   ) {
     try {
       // console.log('Controlador');
-      const { id } = Favorite.user;
-      if (!id)
+      if (!Favorite?.user)
         return res.json({
           response: {
             status: HttpStatus.OK,
@@ -81,6 +78,7 @@ export class UserController {
           },
           isFavorite: false,
         });
+      const { id } = Favorite?.user;
       const foo: { response: response; isFavorite?: boolean } =
         await this._userService.checkFavorite(Favorite.manga.id, id);
       return res.status(foo.response.status).json(foo);
