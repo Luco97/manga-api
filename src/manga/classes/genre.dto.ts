@@ -1,4 +1,4 @@
-import { IsNotEmpty, Length } from 'class-validator';
+import { IsNotEmpty, IsOptional, Length } from 'class-validator';
 import { genreRelations, mangaRelations } from '@db/manga/const';
 import { ArrayContainsSome } from './custom-validator/ArrayContainsSome.class-validator';
 import { Pagination } from './utils.dto';
@@ -11,6 +11,12 @@ export class createGenreDto {
     message: 'Esta bajo el minimo/Supera el maximo de caracteres',
   })
   tag: string;
+
+  @IsOptional()
+  @Length(1, 250, {
+    message: 'Esta bajo el minimo/Supera el maximo de caracteres',
+  })
+  description: string;
 }
 
 export class readGenreDto extends Pagination {
