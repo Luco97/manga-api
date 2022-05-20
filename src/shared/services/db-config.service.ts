@@ -24,7 +24,7 @@ export class DbConfigService {
   }
 
   private enviromentConfig() {
-    switch (process.env.ENVIRONMENT) {
+    switch (process.env.NODE_ENV) {
       case 'development':
         return {
           synchronize: true,
