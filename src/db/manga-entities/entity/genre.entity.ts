@@ -14,8 +14,9 @@ import { MangaEntity } from './manga.entity';
   name: 'GENERO',
 })
 export class GenreEntity {
-  constructor(tag: string) {
+  constructor(tag: string, description?: string) {
     this.tag = tag;
+    this.description = description || '';
   }
 
   @PrimaryGeneratedColumn({
@@ -30,6 +31,14 @@ export class GenreEntity {
     nullable: false,
   })
   tag: string;
+
+  @Column({
+    name: 'DESCRIPTION',
+    type: 'varchar',
+    length: 250,
+    nullable: true,
+  })
+  description: string;
 
   @CreateDateColumn({
     name: 'CREATED_AT',
