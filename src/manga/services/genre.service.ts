@@ -117,6 +117,7 @@ export class GenreService {
     if (!genres.length) {
       const newGenre: GenreEntity = new GenreEntity(
         createGenre.tag.toLocaleLowerCase(),
+        createGenre?.description
       );
       const data = await this._genreService.create(newGenre);
       return {
