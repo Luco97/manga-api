@@ -6,11 +6,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToMany,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { EmailEntity } from './email.entity';
 import { RoleEntity } from './role.entity';
 
 @Entity({
@@ -73,6 +76,10 @@ export class UserEntity {
 
   @ManyToOne(() => RoleEntity, (role) => role.users)
   role: RoleEntity;
+
+  @OneToOne(() => EmailEntity)
+  @JoinColumn()
+  activation: EmailEntity;
 
   @BeforeInsert()
   @BeforeUpdate()
