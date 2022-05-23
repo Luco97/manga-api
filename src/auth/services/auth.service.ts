@@ -3,15 +3,22 @@ import { compare } from 'bcrypt';
 
 import { createUserDto, loginUserDto } from '@auth/dto';
 import { UserEntity } from '@db/user/entity';
-import { RoleEntityService, UserEntityService } from '@db/user/service';
-import { JwtService } from '@shared/services';
+import {
+  EmailEntityService,
+  RoleEntityService,
+  UserEntityService,
+} from '@db/user/service';
+import { JwtService, MailerService } from '@shared/services';
 import { response, userResponse } from '@interface/authResponses.interface';
+import { html_template } from '../../utils/utils';
 
 @Injectable()
 export class AuthService {
   constructor(
     private _userService: UserEntityService,
     private _roleService: RoleEntityService,
+    private _verifyService: EmailEntityService,
+    private _mailerService: MailerService,
     private _jwtService: JwtService,
   ) {}
 
@@ -32,11 +39,21 @@ export class AuthService {
       createUser.email,
       createUser.password,
     );
+
+    newUser.activation = await this._verifyService.create;
     newUser.role = await this._roleService.getCommon;
-    this._userService.create(newUser);
+    const { username, email } = await this._userService.create(newUser);
+    this._mailerService.sendMail(
+      email,
+      `${username} account validation - MangasApp`,
+      html_template
+        .replace(/{{ domain }}/g, 'http://localhost:8080')
+        .replace(/{{ username }}/g, username)
+        .replace(/{{ guid }}/g, newUser.activation.uuid),
+    );
     return {
       status: HttpStatus.CREATED,
-      message: 'Usuraio creado con exito',
+      message: 'Usuraio creado con exito!',
     };
   }
 
@@ -75,6 +92,20 @@ export class AuthService {
     return {
       status: HttpStatus.NOT_FOUND,
       message: 'Datos invalidos (El usuario no existe)',
+    };
+  }
+
+  async emailConfirm(uuid: string): Promise<response> {
+    const process = await this._verifyService.findOne(uuid);
+    if (!process)
+      return {
+        status: HttpStatus.OK,
+        message: 'No existe',
+      };
+    this._verifyService.updateStatus(process);
+    return {
+      status: HttpStatus.OK,
+      message: 'Listoco',
     };
   }
 }
