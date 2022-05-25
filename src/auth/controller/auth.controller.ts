@@ -6,8 +6,9 @@ import {
   HttpStatus,
   Get,
   Param,
+  Req,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { createUserDto, loginUserDto } from '@auth/dto';
 import { AuthService } from 'auth/services/auth.service';
 import { response, userResponse } from '@interface/authResponses.interface';
@@ -18,11 +19,16 @@ export class AuthController {
 
   @Post('sign')
   async sign(
+    @Req() req: Request,
     @Body() createUser: createUserDto,
     @Res() res: Response<response>,
   ) {
     try {
-      const foo: response = await this._authService.signUser(createUser);
+      const domain: string = `${req.protocol}://${req.get('host')}`;
+      const foo: response = await this._authService.signUser({
+        createUser,
+        domain,
+      });
       return res.status(foo.status).json(foo);
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
