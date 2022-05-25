@@ -22,7 +22,11 @@ export class AuthService {
     private _jwtService: JwtService,
   ) {}
 
-  async signUser(createUser: createUserDto): Promise<response> {
+  async signUser(parameters: {
+    createUser: createUserDto;
+    domain: string;
+  }): Promise<response> {
+    const { createUser, domain } = parameters;
     const users: UserEntity[] = await this._userService.findBy({
       where: [{ username: createUser.username }, { email: createUser.email }],
     });
@@ -47,7 +51,7 @@ export class AuthService {
       email,
       `${username} account validation - MangasApp`,
       html_template
-        .replace(/{{ domain }}/g, 'http://localhost:8080')
+        .replace(/{{ domain }}/g, domain)
         .replace(/{{ username }}/g, username)
         .replace(/{{ guid }}/g, newUser.activation.uuid),
     );
