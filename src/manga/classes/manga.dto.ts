@@ -15,7 +15,6 @@ import { UserEntity } from '@db/user/entity';
 import { Pagination } from './utils.dto';
 
 export class readMangaDto extends Pagination {
-
   user?: {
     id: number;
     username: string;
