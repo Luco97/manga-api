@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {
   ArtistEntity,
+  CommentEntity,
   GenreEntity,
   LanguageEntity,
   MangaEntity,
@@ -20,6 +21,7 @@ import {
       ArtistEntity,
       LanguageEntity,
       GenreEntity,
+      CommentEntity
     ]),
   ],
   exports: [
