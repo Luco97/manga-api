@@ -18,7 +18,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayInit {
       });
     });
     this._utilsService.mangaDropSubject.subscribe(({ response, data }) => {
-      server.emit(`drop/manga/${data.id}`, {
+      server.emit(`dislike/manga/${data.id}`, {
         response,
         data,
       });
