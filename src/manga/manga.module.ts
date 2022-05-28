@@ -67,6 +67,10 @@ export class MangaModule implements NestModule {
           path: 'manga',
           method: RequestMethod.POST,
         },
+        {
+          path: 'manga/comment/:manga_id',
+          method: RequestMethod.POST,
+        },
       )
       .apply(RelationsMiddleware)
       .forRoutes(
