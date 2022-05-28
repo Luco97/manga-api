@@ -8,7 +8,6 @@ import {
   ParseIntPipe,
   Body,
   Delete,
-  Put,
   Query,
   UseInterceptors,
   UploadedFiles,
@@ -16,7 +15,13 @@ import {
 import { Response } from 'express';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { createMangaDto, readMangaDto, updateMangaDto } from '@manga/dto';
+import {
+  CommentDto,
+  createMangaDto,
+  Pagination,
+  readMangaDto,
+  updateMangaDto,
+} from '@manga/dto';
 import { MangaService } from '@manga/services';
 import { AuthGuard } from '../guards/auth.guard';
 import { Manga, response } from '@interface/mangaResponses.interface';
@@ -184,6 +189,49 @@ export class MangaController {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
           message: 'Error en el servidor',
           error,
+        },
+      });
+    }
+  }
+
+  @Post('comment/:manga_id')
+  async getComments(
+    @Body() pagination: Pagination,
+    @Param('manga_id', ParseIntPipe) id: number,
+    @Res()
+    res: Response<{
+      response: response;
+    }>,
+  ) {
+    try {
+      // Logica de obtener comentarios paginados
+    } catch (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        response: {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: 'Error en el servidor',
+        },
+      });
+    }
+  }
+
+  @Post('comment/:manga_id')
+  async commentManga(
+    @Body()
+    userComment: CommentDto,
+    @Param('manga_id', ParseIntPipe) id: number,
+    @Res()
+    res: Response<{
+      response: response;
+    }>,
+  ) {
+    try {
+      // Logica de insertar comentario
+    } catch (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        response: {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: 'Error en el servidor',
         },
       });
     }
