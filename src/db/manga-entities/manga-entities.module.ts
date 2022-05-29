@@ -13,6 +13,7 @@ import {
   LanguageEntityService,
   MangaEntityService,
 } from './services';
+import { CommentEntityService } from './services/comment.entity.service';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import {
       ArtistEntity,
       LanguageEntity,
       GenreEntity,
-      CommentEntity
+      CommentEntity,
     ]),
   ],
   exports: [
@@ -29,6 +30,7 @@ import {
     ArtistEntityService,
     LanguageEntityService,
     GenreEntityService,
+    CommentEntityService,
   ],
 
   providers: [
@@ -36,6 +38,7 @@ import {
     ArtistEntityService,
     LanguageEntityService,
     GenreEntityService,
+    CommentEntityService,
   ],
 })
 export class MangaEntitiesModule {
