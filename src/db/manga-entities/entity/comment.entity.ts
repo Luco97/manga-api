@@ -1,5 +1,11 @@
 import { UserEntity } from '@db/user/entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { MangaEntity } from './manga.entity';
 
 @Entity({
@@ -18,11 +24,11 @@ export class CommentEntity {
   })
   comment: string;
 
-  @Column({
+  @CreateDateColumn({
     name: 'created_at',
     type: 'timestamp',
   })
-  createDate: Date;
+  created_at: Date;
 
   @ManyToOne(() => MangaEntity, {
     nullable: false,
