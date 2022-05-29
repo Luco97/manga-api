@@ -67,6 +67,12 @@ export interface MangaResponse {
   count?: number;
 }
 
+export interface Commentary {
+  id: number;
+  comment: string;
+  created_at: Date;
+}
+
 // export interface MangaResponse {
 //   /* manga?: Manga;
 //   mangas?: Manga[]; */
