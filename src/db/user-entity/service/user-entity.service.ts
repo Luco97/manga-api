@@ -61,7 +61,26 @@ export class UserEntityService {
     return await this.userRepository.save(user);
   }
 
-  async checkIfFavoriteByUser(id_manga: number, id_user: number): Promise<boolean> {
+  saveManga(user_id: number, manga_id: number): Promise<void> {
+    return this.userRepository
+      .createQueryBuilder('user')
+      .relation('mangas')
+      .of(user_id)
+      .add(manga_id);
+  }
+
+  removeManga(user_id: number, manga_id: number): Promise<void> {
+    return this.userRepository
+      .createQueryBuilder('user')
+      .relation('mangas')
+      .of(user_id)
+      .remove(manga_id);
+  }
+
+  async checkIfFavoriteByUser(
+    id_manga: number,
+    id_user: number,
+  ): Promise<boolean> {
     const data: UserEntity = await this.userRepository
       .createQueryBuilder('user')
       .innerJoinAndSelect('user.mangas', 'mango', 'mango.id = :id_manga', {
