@@ -26,6 +26,7 @@ import { UserEntityModule } from '@db/user/user-entity.module';
 import { UserController } from './controller/user.controller';
 import { EventsGateway } from './events/events.gateway';
 import { UtilsService } from './services/utils.service';
+import { CommentService } from './services/comment.service';
 
 @Module({
   imports: [UserEntityModule, MangaEntitiesModule, SharedModule],
@@ -44,6 +45,7 @@ import { UtilsService } from './services/utils.service';
     UserService,
     EventsGateway,
     UtilsService,
+    CommentService,
   ],
 })
 export class MangaModule implements NestModule {
