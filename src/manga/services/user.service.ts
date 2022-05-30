@@ -85,54 +85,15 @@ export class UserService {
     id: number,
     body: setFavorite,
   ): Promise<{ response: response; data?: User }> {
-    const data: { response: response; data?: User } = await this.getOne(id);
-    if (data?.data) {
-      const user: UserEntity = data.data as UserEntity;
-      const manga = data.data.mangas.find((manga) => manga.id == body.manga.id);
-      //Manga ya existe como favorito
-      if (manga) {
-        user.mangas.splice(data.data.mangas.indexOf(manga), 1);
-        await this._userService.save(user);
-        this._mangaService.updateLikes(body.manga.id, -1);
-        //Prueba ------ Para emitir via socket que un nuevo manga fue quitado de favoritos (evitando listener de postgres)
-        this._utilsService.mangaDropSubject.next({
-          response: {
-            status: HttpStatus.OK,
-            message: `Manga quitado de favoritos`,
-          },
-          data: body.manga,
-        });
-        //fin Prueba
-        const { id, username, email } = user;
-        return {
-          response: {
-            status: HttpStatus.OK,
-            message: `Manga con id = '${body.manga.id}' y titulo = '${body.manga.title}' ya existe, Manga eliminado`,
-          },
-          data: {
-            id,
-            username,
-            email,
-            mangas: [],
-          },
-        };
-      }
-      user.mangas.push(body.manga as MangaEntity);
-
-      try {
-        await this._userService.save(user);
-        await this._mangaService.updateLikes(body.manga.id, 1);
-      } catch (error) {
-        //Manga incorrecto/no existe
-        return {
-          response: {
-            status: HttpStatus.BAD_REQUEST,
-            message: `Manga con id = '${body.manga.id}' no existe`,
-            error,
-          },
-        };
-      }
-      const { id, username, email } = user;
+    const { data } = await this.getOne(id, []);
+    const { manga } = body;
+    const favoriteStatus = await this._userService.checkIfFavoriteByUser(
+      manga.id,
+      data.id,
+    );
+    if (!favoriteStatus) {
+      await this._userService.saveManga(data.id, manga.id);
+      await this._mangaService.updateLikes(body.manga.id, 1);
       //Prueba ------ Para emitir via socket que un nuevo manga fue agregado a favoritos (evitando listener de postgres)
       this._utilsService.mangaFavoriteSubject.next({
         response: {
@@ -148,19 +109,33 @@ export class UserService {
           message: 'setFavorite user',
         },
         data: {
-          id,
-          username,
-          email,
-          mangas: [body.manga as MangaEntity],
+          ...data,
+          mangas: [manga as MangaEntity],
+        },
+      };
+    } else {
+      await this._userService.removeManga(data.id, manga.id);
+      this._mangaService.updateLikes(body.manga.id, -1);
+      //Prueba ------ Para emitir via socket que un nuevo manga fue quitado de favoritos (evitando listener de postgres)
+      this._utilsService.mangaDropSubject.next({
+        response: {
+          status: HttpStatus.OK,
+          message: `Manga quitado de favoritos`,
+        },
+        data: body.manga,
+      });
+      //fin Prueba
+      return {
+        response: {
+          status: HttpStatus.OK,
+          message: `Manga con id = '${body.manga.id}' y titulo = '${body.manga.title}' ya existe, Manga eliminado`,
+        },
+        data: {
+          ...data,
+          mangas: [],
         },
       };
     }
-    return {
-      response: {
-        status: HttpStatus.NOT_FOUND,
-        message: `No existe un usuario con id = '${id}'`,
-      },
-    };
   }
 
   async checkFavorite(
