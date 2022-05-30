@@ -11,6 +11,7 @@ import {
   Query,
   UseInterceptors,
   UploadedFiles,
+  Get,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { FilesInterceptor } from '@nestjs/platform-express';
@@ -18,21 +19,26 @@ import { diskStorage } from 'multer';
 import {
   CommentDto,
   createMangaDto,
-  Pagination,
   readMangaDto,
   updateMangaDto,
 } from '@manga/dto';
-import { MangaService } from '@manga/services';
 import { AuthGuard } from '../guards/auth.guard';
-import { Manga, response } from '@interface/mangaResponses.interface';
+import {
+  Commentary,
+  Manga,
+  response,
+} from '@interface/mangaResponses.interface';
 import { CloudinaryService } from '@shared/services';
 import { unlink } from 'fs';
 import { RoleGuard } from '../guards/role.guard';
+import { MangaService } from '../services/manga.service';
+import { CommentService } from '../services/comment.service';
 
 @Controller('manga')
 export class MangaController {
   constructor(
     private _mangaService: MangaService,
+    private _commentService: CommentService,
     private _cloudinaryService: CloudinaryService,
   ) {}
 
@@ -194,17 +200,33 @@ export class MangaController {
     }
   }
 
-  @Post('comment/:manga_id')
+  @Get('comment/:manga_id')
   async getComments(
-    @Body() pagination: Pagination,
+    @Query('take', ParseIntPipe) take: number,
+    @Query('skip', ParseIntPipe) skip: number,
     @Param('manga_id', ParseIntPipe) id: number,
     @Res()
     res: Response<{
       response: response;
+      data?: {
+        comments: Commentary[];
+        count: number;
+      };
     }>,
   ) {
     try {
-      // Logica de obtener comentarios paginados
+      const foo: {
+        response: response;
+        data: {
+          comments: Commentary[];
+          count: number;
+        };
+      } = await this._commentService.getCommentsByManga({
+        manga_id: id,
+        take,
+        skip,
+      });
+      return res.status(foo.response.status).json(foo);
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         response: {
@@ -215,6 +237,7 @@ export class MangaController {
     }
   }
 
+  @UseGuards(AuthGuard)
   @Post('comment/:manga_id')
   async commentManga(
     @Body()
@@ -223,10 +246,17 @@ export class MangaController {
     @Res()
     res: Response<{
       response: response;
+      comment?: Commentary;
     }>,
   ) {
     try {
-      // Logica de insertar comentario
+      const foo: { response: response; comment: Commentary } =
+        await this._commentService.postComment({
+          manga_id: id,
+          user_id: userComment.user.id,
+          comment: userComment.comment,
+        });
+      return res.status(foo.response.status).json(foo);
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         response: {
