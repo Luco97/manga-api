@@ -14,6 +14,7 @@ export class CommentService {
     response: response;
     data: { comments: Commentary[]; count: number };
   }> {
+    //Agregar logica para saber cuales son propios de un usuario => usar take y skip para aligerar esta idea
     const [comments, count] = await this._commentService.getCommentsByManga(
       parameters,
     );
