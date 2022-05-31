@@ -22,15 +22,15 @@ export class LanguageController {
   constructor(private _languageService: LanguageService) {}
 
   @Get()
-  async getAll(
-    @Res() res: Response<{ response: response; data?: Language[] }>,
-  ) {
+  getAll(@Res() res: Response<{ response: response; data?: Language[] }>) {
     try {
-      const foo: { response: response; data?: Language[] } =
-        await this._languageService.getAll();
-      return res.status(foo.response.status).json(foo);
+      this._languageService
+        .getAll()
+        .subscribe((foo: { response: response; data?: Language[] }) =>
+          res.status(foo.response.status).json(foo),
+        );
     } catch (error) {
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         response: {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
           message: 'Error en el servidor',
@@ -41,16 +41,18 @@ export class LanguageController {
 
   @UseGuards(AuthGuard, RoleGuard)
   @Post('create')
-  async create(
+  create(
     @Body() createLanguage: createLanguageDto,
     @Res() res: Response<{ response: response; data?: Language }>,
   ) {
     try {
-      const foo: { response: response; data?: Language } =
-        await this._languageService.create(createLanguage);
-      return res.status(foo.response.status).json(foo);
+      this._languageService
+        .create(createLanguage)
+        .subscribe((foo: { response: response; data?: Language }) =>
+          res.status(foo.response.status).json(foo),
+        );
     } catch (error) {
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         response: {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
           message: 'Error en el servidor',
@@ -61,16 +63,18 @@ export class LanguageController {
 
   @UseGuards(AuthGuard, RoleGuard)
   @Delete('delete/:id')
-  async delete(
+  delete(
     @Param('id', ParseIntPipe) id: number,
     @Res() res: Response<{ response: response; data?: Language }>,
   ) {
     try {
-      const foo: { response: response; data?: Language } =
-        await this._languageService.delete(id);
-      return res.status(foo.response.status).json(foo);
+      this._languageService
+        .delete(id)
+        .subscribe((foo: { response: response; data?: Language }) =>
+          res.status(foo.response.status).json(foo),
+        );
     } catch (error) {
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         response: {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
           message: 'Error en el servidor',
@@ -80,17 +84,19 @@ export class LanguageController {
   }
 
   @Post(':id')
-  async getOne(
+  getOne(
     @Param('id', ParseIntPipe) id: number,
     @Body() readLanguage: readLanguageDto,
     @Res() res: Response<{ response: response; data?: Language }>,
   ) {
     try {
-      const foo: { response: response; data?: Language } =
-        await this._languageService.getOne(id, readLanguage.relations);
-      return res.status(foo.response.status).json(foo);
+      this._languageService
+        .getOne(id, readLanguage.relations)
+        .subscribe((foo: { response: response; data?: Language }) =>
+          res.status(foo.response.status).json(foo),
+        );
     } catch (error) {
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         response: {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
           message: 'Error en el servidor',
