@@ -1,46 +1,49 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOneOptions, Repository } from 'typeorm';
-import { LanguageEntity, MangaEntity } from '@db/manga/entity';
-
+import { LanguageEntity } from '@db/manga/entity';
+import { from, Observable } from 'rxjs';
 
 @Injectable()
 export class LanguageEntityService {
+  constructor(
+    @InjectRepository(LanguageEntity)
+    private languageRepository: Repository<LanguageEntity>,
+  ) {}
 
-    constructor(
-        @InjectRepository(LanguageEntity)
-        private languageRepository: Repository<LanguageEntity>
-    ) {}
+  findAll(relations: string[] = ['mangas']): Observable<LanguageEntity[]> {
+    return from(this.languageRepository.find({ relations }));
+  }
 
-    async findAll(relations: string[] = ['mangas']): Promise<LanguageEntity[]> {
-        const data: LanguageEntity[] = await this.languageRepository.find({relations});
-        return data;
-    }
+  findOne(
+    id: number,
+    relations: string[] = ['mangas'],
+  ): Observable<LanguageEntity> {
+    return from(this.languageRepository.findOne(id, { relations }));
+  }
 
-    async findOne( id: number, relations: string[] = ['mangas']): Promise<LanguageEntity> {
-        const data: LanguageEntity = await this.languageRepository.findOne(id, {relations});
-        if(!data) throw new NotFoundException(`No existe el lenguaje con id=${id}`);
-        return data;
-    }
+  findBy(
+    options: FindOneOptions<LanguageEntity>,
+  ): Observable<LanguageEntity[]> {
+    return from(this.languageRepository.find(options));
+  }
 
-    async findBy(options: FindOneOptions<LanguageEntity>): Promise<LanguageEntity[]> {
-        const data: LanguageEntity[] = await this.languageRepository.find(options);
-        return data;
-    }
+  create(language: LanguageEntity): Observable<LanguageEntity> {
+    const data = this.languageRepository.create(language);
+    return from(this.languageRepository.save(data));
+  }
 
-    async create( language: LanguageEntity) {
-        const data = this.languageRepository.create(language);
-        return await this.languageRepository.save(data);
-    }
-
-    async delete( language: LanguageEntity) {
-        const data: LanguageEntity = await this.findOne(language.id, []);
-        return await this.languageRepository.remove(data)
-    }
-
-    async createTranslate( manga: MangaEntity, language: LanguageEntity) {
-        const lenguaje: LanguageEntity = await this.findOne(language.id);
-        lenguaje.mangas.push({...manga} as MangaEntity);
-        return await this.languageRepository.save(lenguaje);
-    }
+  delete(language: LanguageEntity): Observable<LanguageEntity> {
+    const observer = new Observable<LanguageEntity>((subscriber) => {
+      this.findOne(language.id, []).subscribe((element: LanguageEntity) => {
+        from(this.languageRepository.remove(element)).subscribe(
+          (removedElement: LanguageEntity) => {
+            subscriber.next(removedElement);
+            subscriber.complete();
+          },
+        );
+      });
+    });
+    return observer;
+  }
 }
