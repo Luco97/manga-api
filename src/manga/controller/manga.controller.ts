@@ -19,6 +19,7 @@ import { diskStorage } from 'multer';
 import {
   CommentDto,
   createMangaDto,
+  DeleteCommentDto,
   readMangaDto,
   updateMangaDto,
 } from '@manga/dto';
@@ -257,6 +258,26 @@ export class MangaController {
           comment: userComment.comment,
         });
       return res.status(foo.response.status).json(foo);
+    } catch (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        response: {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: 'Error en el servidor',
+        },
+      });
+    }
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete('comment/:manga_id/:comment_id')
+  async deleteComment(
+    @Body() deleteComment: DeleteCommentDto,
+    @Param('manga_id', ParseIntPipe) manga_id: number,
+    @Param('comment_id') comment_id: number,
+    @Res() res: Response<{ response: response }>,
+  ) {
+    try {
+      //logica para borrar
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         response: {
