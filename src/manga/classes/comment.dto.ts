@@ -11,3 +11,7 @@ export class CommentDto {
   })
   comment: string;
 }
+
+export class utilCommentDto {
+  user?: { id: number; username: string };
+}
