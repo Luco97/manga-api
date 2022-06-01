@@ -71,6 +71,8 @@ export interface Commentary {
   id: number;
   comment: string;
   created_at: Date;
+  user?: User;
+  isCommentUser?: boolean;
 }
 
 // export interface MangaResponse {
