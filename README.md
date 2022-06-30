@@ -27,7 +27,7 @@
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 <p align="center">
-  <a><img src="https://res.cloudinary.com/hicpcnwox/image/upload/v1652511156/manga-api-assets/Marca-background-red_iikp59.png" width="320" alt="Manga-api Logo" /></a>
+  <a><img src="https://res.cloudinary.com/hicpcnwox/image/upload/v1656555394/manga-api-assets/logo.png" width="320" alt="Manga-api Logo" /></a>
 </p>
 
 Aplicacion basica para subir y ver doujin (Mangas de un capitulo comunmente llamados OneShot) con la intencion de:
