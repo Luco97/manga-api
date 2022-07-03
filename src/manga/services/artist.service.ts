@@ -118,9 +118,7 @@ export class ArtistService {
     if (!artists.length) {
       const newArtist: ArtistEntity = new ArtistEntity(
         createArtist.name.toLocaleLowerCase(),
-        createArtist?.seudoName,
         createArtist?.age,
-        createArtist?.country,
         createArtist?.type,
         createArtist?.description,
       );
@@ -155,12 +153,8 @@ export class ArtistService {
     if (artists.length) {
       const artist: ArtistEntity = artists.pop();
       updateArtist.age ? (artist.age = updateArtist.age) : 0;
-      updateArtist.country ? (artist.country = updateArtist.country) : 0;
       updateArtist.description
         ? (artist.description = updateArtist.description)
-        : 0;
-      updateArtist.seudoName
-        ? (artist.artistic_name = updateArtist.seudoName)
         : 0;
       updateArtist.type ? (artist.type = updateArtist.type) : 0;
 
