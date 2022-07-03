@@ -84,19 +84,14 @@ export class ArtistService {
     id: number,
     relations: string[],
   ): Promise<{ response: response; data?: Artist }> {
-    const data: ArtistEntity[] = await this._artistService.findBy({
-      relations,
-      where: {
-        id,
-      },
-    });
-    if (data.length) {
+    const data: ArtistEntity = await this._artistService.findOne(id);
+    if (data) {
       return {
         response: {
           status: HttpStatus.OK,
           message: 'getOne artistas',
         },
-        data: data.pop(),
+        data: data,
       };
     }
     return {
