@@ -93,7 +93,6 @@ export class UserService {
     );
     if (!favoriteStatus) {
       await this._userService.saveManga(data.id, manga.id);
-      await this._mangaService.updateLikes(body.manga.id, 1);
       //Prueba ------ Para emitir via socket que un nuevo manga fue agregado a favoritos (evitando listener de postgres)
       this._utilsService.mangaFavoriteSubject.next({
         response: {
@@ -115,7 +114,6 @@ export class UserService {
       };
     } else {
       await this._userService.removeManga(data.id, manga.id);
-      this._mangaService.updateLikes(body.manga.id, -1);
       //Prueba ------ Para emitir via socket que un nuevo manga fue quitado de favoritos (evitando listener de postgres)
       this._utilsService.mangaDropSubject.next({
         response: {
