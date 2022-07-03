@@ -31,12 +31,6 @@ export class updateArtistsDto {
   age: number;
 
   @IsOptional()
-  @Length(1, 35, {
-    message: 'Esta bajo el minimo/Supera el maximo de caracteres',
-  })
-  country: string;
-
-  @IsOptional()
   @Length(1, 20, {
     message: 'Esta bajo el minimo/Supera el maximo de caracteres',
   })
