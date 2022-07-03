@@ -101,30 +101,14 @@ export class MangaService {
     id: number,
     relations: string[],
   ): Promise<{ response: response; data?: MangaResponse }> {
-    const data: MangaEntity[] = await this._mangaService.findBy({
-      relations,
-      where: {
-        id,
-      },
-    });
-    if (data.length) {
-      const { artists, pages, likes, genres, id, languages, title, users } =
-        data.pop();
+    const data: MangaEntity = await this._mangaService.findOne(id, relations);
+    if (data) {
       return {
         response: {
           status: HttpStatus.OK,
           message: 'getOne Manga',
         },
-        data: {
-          artists,
-          pages,
-          likes,
-          genres,
-          id,
-          languages,
-          title,
-          count: users?.length,
-        },
+        data,
       };
     }
     return {
