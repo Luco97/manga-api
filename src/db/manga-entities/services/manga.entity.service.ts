@@ -11,15 +11,21 @@ export class MangaEntityService {
     private mangaRepository: Repository<MangaEntity>,
   ) {}
 
-  async findOne(
-    id: number,
-    relations: string[] = ['users', 'genres', 'languages', 'artists'],
-  ): Promise<MangaEntity> {
-    const data: MangaEntity = await this.mangaRepository.findOne(id, {
-      relations,
+  async findOne(id: number, relations: string[] = []): Promise<MangaEntity> {
+    const QB = this.mangaRepository.createQueryBuilder('manga');
+
+    relations.forEach((relation) => {
+      this.mangaQueryInnerAndJoin(QB, relation);
     });
-    if (!data) throw new NotFoundException(`No existe el manga con id=${id}`);
-    return data;
+
+    return QB.where('manga.id = :id', { id })
+      .loadRelationCountAndMap(
+        'manga.favorites',
+        'manga.users',
+        'users',
+        (subQuery) => subQuery.orderBy('"cnt"'),
+      )
+      .getOne();
   }
 
   async findBy(options: FindManyOptions<MangaEntity>): Promise<MangaEntity[]> {
@@ -33,21 +39,8 @@ export class MangaEntityService {
   }
 
   async delete(manga: MangaEntity) {
-    const data = await this.findOne(manga.id, []);
+    const data = await this.findOne(manga.id);
     return await this.mangaRepository.remove(data);
-  }
-
-  async updateLikes(id: number, updateState: number): Promise<boolean> {
-    const data: MangaEntity[] = await this.mangaRepository.find({
-      id,
-    });
-    if (data.length) {
-      const manga: MangaEntity = data.pop();
-      manga.likes += updateState;
-      const result = await this.mangaRepository.save(manga);
-      return result ? true : false;
-    }
-    return false;
   }
 
   private mangaQueryInnerAndJoin(
@@ -103,6 +96,12 @@ export class MangaEntityService {
     }
 
     data = data
+      .loadRelationCountAndMap(
+        'manga.likes',
+        'manga.users',
+        'usuarios',
+        (subQuery) => subQuery.orderBy('cnt'),
+      )
       .orderBy(`manga.${property}`, order)
       .take(take || 10)
       .skip(skip * take || 0);
