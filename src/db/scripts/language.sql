@@ -1,0 +1,3 @@
+INSERT INTO "IDIOMA" ("ID", "LANGUAGE", "CREATED_AT", "UPDATED_AT", "COUNTRY", "COUNTRY_FLAG_URL") VALUES(5, 'japanese', '2022-01-18 22:37:24.460', '2022-01-18 22:50:07.835', 'japan', 'https://flagcdn.com/w80/jp.png');
+INSERT INTO "IDIOMA" ("ID", "LANGUAGE", "CREATED_AT", "UPDATED_AT", "COUNTRY", "COUNTRY_FLAG_URL") VALUES(6, 'chinese', '2022-01-18 22:52:00.971', '2022-01-18 22:52:00.971', 'china', 'https://flagcdn.com/w80/cn.png');
+INSERT INTO "IDIOMA" ("ID", "LANGUAGE", "CREATED_AT", "UPDATED_AT", "COUNTRY", "COUNTRY_FLAG_URL") VALUES(8, 'english', '2022-02-23 23:02:53.659', '2022-02-23 23:02:53.659', 'united states', 'https://flagcdn.com/w80/us.png');
