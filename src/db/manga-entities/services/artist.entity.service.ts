@@ -49,10 +49,4 @@ export class ArtistEntityService {
         const data = await this.findOne(artist.id, []);
         return await this.artistRepository.remove(data);
     }
-
-    async createWriter( manga: MangaEntity, artist: ArtistEntity) {
-        const artista = await this.findOne(artist.id);
-        artista.mangas.push({...manga} as MangaEntity); 
-        return await this.artistRepository.save(artista);
-    }
 }

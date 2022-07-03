@@ -41,10 +41,4 @@ export class GenreEntityService {
     const data = await this.findOne(genre.id, []);
     return await this.genreRepository.remove(data);
   }
-
-  async createCategory(manga: MangaEntity, genre: GenreEntity) {
-    const genero = await this.findOne(genre.id);
-    genero.mangas.push({ ...manga });
-    return await this.genreRepository.save(genero);
-  }
 }
