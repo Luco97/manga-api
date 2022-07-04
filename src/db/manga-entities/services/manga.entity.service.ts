@@ -40,7 +40,7 @@ export class MangaEntityService {
 
   async delete(manga: MangaEntity) {
     const data = await this.findOne(manga.id);
-    return await this.mangaRepository.remove(data);
+    return this.mangaRepository.remove(data);
   }
 
   private mangaQueryLeftAndSelect(
