@@ -15,7 +15,7 @@ export class MangaEntityService {
     const QB = this.mangaRepository.createQueryBuilder('manga');
 
     relations.forEach((relation) => {
-      this.mangaQueryInnerAndJoin(QB, relation);
+      this.mangaQueryLeftAndSelect(QB, relation);
     });
 
     return QB.where('manga.id = :id', { id })
@@ -43,18 +43,18 @@ export class MangaEntityService {
     return await this.mangaRepository.remove(data);
   }
 
-  private mangaQueryInnerAndJoin(
+  private mangaQueryLeftAndSelect(
     queryBuilder: SelectQueryBuilder<MangaEntity>,
     relation: string,
   ): SelectQueryBuilder<MangaEntity> {
-    return queryBuilder.innerJoinAndSelect(`manga.${relation}`, relation);
+    return queryBuilder.leftJoinAndSelect(`manga.${relation}`, relation);
   }
 
-  private mangaQueryInner(
+  private mangaQueryLeft(
     queryBuilder: SelectQueryBuilder<MangaEntity>,
     relation: string,
   ): SelectQueryBuilder<MangaEntity> {
-    return queryBuilder.innerJoin(`manga.${relation}`, `${relation}-Inner`);
+    return queryBuilder.leftJoin(`manga.${relation}`, `${relation}-Inner`);
   }
 
   async findAll(options: {
@@ -71,12 +71,12 @@ export class MangaEntityService {
 
     for (let i = 0; i < relations?.length; i++) {
       const element = relations[i];
-      data = this.mangaQueryInnerAndJoin(data, element);
+      data = this.mangaQueryLeftAndSelect(data, element);
     }
 
     if (search_keyword) {
       mangaRelations.forEach((element) => {
-        data = this.mangaQueryInner(data, element);
+        data = this.mangaQueryLeft(data, element);
       });
       mangaRelations.forEach((element) => {
         data.orWhere(
@@ -89,10 +89,6 @@ export class MangaEntityService {
       data.orWhere(`manga.title like :search_keyword`, {
         search_keyword: search_keyword || '%%',
       });
-
-      // data.where(`manga.title like :search_keyword`, {
-      //   search_keyword: search_keyword || '%%',
-      // });
     }
 
     data = data
@@ -122,7 +118,7 @@ export class MangaEntityService {
 
     for (let i = 0; i < relations?.length; i++) {
       const element = relations[i];
-      data = this.mangaQueryInnerAndJoin(data, element);
+      data = this.mangaQueryLeftAndSelect(data, element);
     }
 
     data = data
@@ -154,10 +150,16 @@ export class MangaEntityService {
 
     for (let i = 0; i < relations?.length; i++) {
       const element = relations[i];
-      data = this.mangaQueryInnerAndJoin(data, element);
+      data = this.mangaQueryLeftAndSelect(data, element);
     }
 
     data = data
+      .loadRelationCountAndMap(
+        'manga.likes',
+        'manga.users',
+        'usuarios',
+        (subQuery) => subQuery.orderBy('cnt'),
+      )
       .orderBy('manga.id', 'DESC')
       .take(take || 10)
       .skip(skip * take || 0);
