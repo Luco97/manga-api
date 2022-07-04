@@ -46,7 +46,13 @@ export class MangaService {
       auxManga.forEach((element) => {
         promiseArray_cover.push(
           this._cloudinaryService.manga_page(
-            element.title.toLowerCase().replace(/\ /g, '_'),
+            element.id % 2
+              ? element.id % 3
+                ? 'test'
+                : 'dusty_miller'
+              : element.title.length % 2
+              ? 'dusty_miller_2'
+              : 'game_pasado_carne',
           ),
         );
       });
