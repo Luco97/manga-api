@@ -26,17 +26,16 @@ export class GenreEntityService {
   }
 
   async findBy(options: FindOneOptions<GenreEntity>): Promise<GenreEntity[]> {
-    const data = await this.genreRepository.find(options);
-    return data;
+    return this.genreRepository.find(options);
   }
 
   async create(genre: GenreEntity) {
     const data = this.genreRepository.create(genre);
-    return await this.genreRepository.save(data);
+    return this.genreRepository.save(data);
   }
 
   async delete(genre: GenreEntity) {
     const data = await this.findOne(genre.id);
-    return await this.genreRepository.remove(data);
+    return this.genreRepository.remove(data);
   }
 }
