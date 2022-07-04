@@ -12,10 +12,4 @@ export const searchByColumn = {
   languages: 'language',
 };
 
-export const mangaColumns: string[] = [
-  'id',
-  'title',
-  'pages',
-  'likes',
-  'created_at',
-];
+export const mangaColumns: string[] = ['id', 'title', 'pages', 'created_at'];
