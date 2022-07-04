@@ -8,18 +8,7 @@ export class ArtistEntityService {
   constructor(
     @InjectRepository(ArtistEntity)
     private artistRepository: Repository<ArtistEntity>,
-  ) {
-    /*  this.findOne(4).then( (value) => {
-            const a: ArtistEntity = value;
-            this.delete(a);
-        });
-        this.findAll();
-        this.findOne(6); */
-    /* this.findOne(3).then( (value) => {
-            const a: ArtistEntity = value;
-            this.delete(a);
-        }); */
-  }
+  ) {}
 
   async findAll(relations: string[] = ['mangas']): Promise<ArtistEntity[]> {
     const data = await this.artistRepository.find({ relations });
@@ -31,7 +20,7 @@ export class ArtistEntityService {
     relations: string[] = ['mangas'],
   ): Promise<ArtistEntity> {
     // const data = await this.artistRepository.findOne(id, {relations});
-    const data = await this.artistRepository
+    return this.artistRepository
       .createQueryBuilder('artist')
       .loadRelationCountAndMap(
         'artist.count',
@@ -44,26 +33,21 @@ export class ArtistEntityService {
       .where('artist.id = :id', { id })
       .addOrderBy('artist.id')
       .getOne();
-    if (!data)
-      throw new NotFoundException(`No puede encontrar un artista con id=${id}`);
-    return data;
   }
 
   async findBy(
     options: FindManyOptions<ArtistEntity>,
   ): Promise<ArtistEntity[]> {
-    const data = await this.artistRepository.find(options);
-    return data;
+    return this.artistRepository.find(options);
   }
 
   async create(artist: ArtistEntity) {
-    /* const data = this.artistRepository.create({...artist} as ArtistEntity) */
     const newArtist = this.artistRepository.create(artist);
-    return await this.artistRepository.save(newArtist);
+    return this.artistRepository.save(newArtist);
   }
 
   async delete(artist: ArtistEntity) {
     const data = await this.findOne(artist.id, []);
-    return await this.artistRepository.remove(data);
+    return this.artistRepository.remove(data);
   }
 }
