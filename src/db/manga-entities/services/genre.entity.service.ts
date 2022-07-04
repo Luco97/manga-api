@@ -15,16 +15,14 @@ export class GenreEntityService {
     return data;
   }
 
-  async findOne(
-    id: number,
-    relations: string[] = ['mangas'],
-  ): Promise<GenreEntity> {
-    const data: GenreEntity = await this.genreRepository.findOne(id, {
-      relations,
-    });
-    if (!data)
-      throw new NotFoundException(`No se encuentra el genero id=${id}`);
-    return data;
+  async findOne(id: number): Promise<GenreEntity> {
+    return this.genreRepository
+      .createQueryBuilder('genre')
+      .where('genre.id = :id', { id })
+      .loadRelationCountAndMap('genre.count', 'genre.mangas', 'mangos', (qb) =>
+        qb.orderBy('cnt'),
+      )
+      .getOne();
   }
 
   async findBy(options: FindOneOptions<GenreEntity>): Promise<GenreEntity[]> {
@@ -38,7 +36,7 @@ export class GenreEntityService {
   }
 
   async delete(genre: GenreEntity) {
-    const data = await this.findOne(genre.id, []);
+    const data = await this.findOne(genre.id);
     return await this.genreRepository.remove(data);
   }
 }
