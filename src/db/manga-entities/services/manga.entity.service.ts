@@ -72,6 +72,12 @@ export class MangaEntityService {
     for (let i = 0; i < relations?.length; i++) {
       const element = relations[i];
       data = this.mangaQueryLeftAndSelect(data, element);
+      data.loadRelationCountAndMap(
+        `${element}.count`,
+        `${element}.mangas`,
+        '',
+        (subQuery) => subQuery.orderBy('cnt'),
+      );
     }
 
     if (search_keyword) {
