@@ -27,7 +27,7 @@
     "@nestjs/jwt": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/platform-socket.io": "^8.3.1",
-    "@nestjs/typeorm": "^8.0.2",
+    "@nestjs/typeorm": "^8.1.2",
     "@nestjs/websockets": "^8.3.1",
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.4.0",
@@ -38,7 +38,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "typeorm": "^0.2.38"
+    "typeorm": "^0.3.6"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",
