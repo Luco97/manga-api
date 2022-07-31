@@ -1,3 +1,34 @@
+
+<p align="center">
+  <a><img src="https://res.cloudinary.com/hicpcnwox/image/upload/v1656555394/manga-api-assets/logo.png" width="320" alt="Manga-api Logo" /></a>
+</p>
+<hr>
+
+## Description
+
+Aplicacion basica para subir y ver doujin (Mangas de un capitulo comunmente llamados OneShot) con la intencion de:
+
+- Aplicar la metologia de organizar archivos como es con Angular
+- Aplicar conceptos de Back-End (por lo que algunas librerias tienen un desarrollo similar a un Back-End de Node.js)
+- Intentar sentirme satisfecho conmigo mismo creyendo que es suficiente saber lo aplicado en esta aplicacion
+
+### Herramientas
+
+- PostgreSQL como base de datos.
+  - Usando TypeORM.
+- JWT para la autenticacion.
+- Bcrypt para hash de contraseñas.
+- WebSockets con socket.io.
+- Cloudinary para subir imagenes (CDN).
+- Nodemailer para verificar existencia de E-mail.
+
+### Diagrama F-R
+
+<img src="https://cdn.discordapp.com/attachments/920746100464431144/983535967359086682/Dbeaver_diagram.png" alt="Diagrama base de datos F-Rs">
+
+<hr>
+
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
 </p>
@@ -22,33 +53,8 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-<p align="center">
-  <a><img src="https://res.cloudinary.com/hicpcnwox/image/upload/v1656555394/manga-api-assets/logo.png" width="320" alt="Manga-api Logo" /></a>
-</p>
-
-Aplicacion basica para subir y ver doujin (Mangas de un capitulo comunmente llamados OneShot) con la intencion de:
-
-- Aplicar la metologia de organizar archivos como es con Angular
-- Aplicar conceptos de Back-End (por lo que algunas librerias tienen un desarrollo similar a un Back-End de Node.js)
-- Intentar sentirme satisfecho conmigo mismo creyendo que es suficiente saber lo aplicado en esta aplicacion
-
-### Herramientas
-
-- PostgreSQL como base de datos.
-  - Usando TypeORM.
-- JWT para la autenticacion.
-- Bcrypt para hash de contraseñas.
-- WebSockets con socket.io.
-- Cloudinary para subir imagenes (CDN).
-- Nodemailer para verificar existencia de E-mail.
-
-### Diagrama F-R
-
-<img src="https://cdn.discordapp.com/attachments/920746100464431144/983535967359086682/Dbeaver_diagram.png" alt="Diagrama base de datos F-Rs">
 ## Installation
 
 ```bash
