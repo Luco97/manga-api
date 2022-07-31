@@ -19,7 +19,7 @@ export class LanguageEntityService {
     id: number,
     relations: string[] = ['mangas'],
   ): Observable<LanguageEntity> {
-    return from(this.languageRepository.findOne(id, { relations }));
+    return from(this.languageRepository.findOne({ where: { id }, relations }));
   }
 
   findBy(
