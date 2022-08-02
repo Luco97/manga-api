@@ -1,10 +1,8 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { DbConfigService } from '@shared/services';
 import { SharedModule } from './../shared/shared.module';
 import { AuthController } from './controller/auth.controller';
 import { AuthService } from './services/auth.service';
-import { UserEntityModule } from '../db/user-entity/user-entity.module';
+import { UserEntityModule } from '../db/user-model/user-entity.module';
 
 @Module({
     imports: [

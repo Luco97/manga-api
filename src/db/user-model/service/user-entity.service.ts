@@ -17,31 +17,18 @@ export class UserEntityService {
   }
 
   async findOneByMail(email: string): Promise<UserEntity> {
-    const data: UserEntity = await this.userRepository.findOneOrFail(
-      {},
-      {
-        where: {
-          email,
-        },
+    const data: UserEntity = await this.userRepository.findOneOrFail({
+      where: {
+        email,
       },
-    );
-    return data;
-  }
-
-  async findOneByMail2(email: string): Promise<UserEntity> {
-    const data: UserEntity = await this.userRepository.findOne(
-      {},
-      {
-        where: {
-          email,
-        },
-      },
-    );
+    });
     return data;
   }
 
   async findOne(id: number): Promise<UserEntity> {
-    const data: UserEntity = await this.userRepository.findOne(id);
+    const data: UserEntity = await this.userRepository.findOne({
+      where: { id },
+    });
     if (!data) throw new NotFoundException('No se puede encontrar usuario');
     return data;
   }
