@@ -1,5 +1,5 @@
-export * from './manga-entities/const';
-export * from './manga-entities/entity';
+export * from './manga-model/const';
+export * from './manga-model/entity';
 
-export * from './user-entity/const';
-export * from './user-entity/entity';
+export * from './user-model/const';
+export * from './user-model/entity';
