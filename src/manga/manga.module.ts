@@ -5,7 +5,6 @@ import {
   RequestMethod,
 } from '@nestjs/common';
 //DB
-import { MangaEntitiesModule } from '../db/manga-entities/manga-entities.module';
 //Modules
 import { SharedModule } from '../shared/shared.module';
 //Guard
@@ -27,6 +26,7 @@ import { UserController } from './controller/user.controller';
 import { EventsGateway } from './events/events.gateway';
 import { UtilsService } from './services/utils.service';
 import { CommentService } from './services/comment.service';
+import { MangaEntitiesModule } from '@db/manga/manga-entities.module';
 
 @Module({
   imports: [UserEntityModule, MangaEntitiesModule, SharedModule],

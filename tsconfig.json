@@ -20,10 +20,10 @@
     "paths": {
       "@shared/services": ["shared/services/index"],
       "@interface/*": ["interface/*"],
-      "@db/manga/*": ["db/manga-entities/*"],
+      "@db/manga/*": ["db/manga-model/*"],
       "@manga/dto": ["manga/classes/index"],
       "@manga/services": ["manga/services/index"],
-      "@db/user/*": ["db/user-entity/*"],
+      "@db/user/*": ["db/user-model/*"],
       "@auth/dto": ["auth/classes/user.dto"]
     }
   }

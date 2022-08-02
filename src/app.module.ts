@@ -8,7 +8,7 @@ import { DbConfigService } from '@shared/services';
 import { MangaModule } from './manga/manga.module';
 import { SharedModule } from './shared/shared.module';
 // import { UserModule } from './db/user/user.module';
-// import { MangaEntitiesModule } from './db/manga-entities/manga-entities.module';
+// import { MangaEntitiesModule } from './db/manga-model/manga-model.module';
 
 @Module({
   imports: [
