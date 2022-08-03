@@ -18,13 +18,13 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@shared/services": ["shared/services/index"],
       "@interface/*": ["interface/*"],
+      "@db/user/*": ["db/user-model/*"],
       "@db/manga/*": ["db/manga-model/*"],
       "@manga/dto": ["manga/classes/index"],
+      "@auth/dto": ["auth/classes/user.dto"],
       "@manga/services": ["manga/services/index"],
-      "@db/user/*": ["db/user-model/*"],
-      "@auth/dto": ["auth/classes/user.dto"]
+      "@shared/services": ["shared/services/index"]
     }
   }
 }
