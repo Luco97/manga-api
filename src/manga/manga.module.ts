@@ -7,45 +7,48 @@ import {
 //DB
 //Modules
 import { SharedModule } from '../shared/shared.module';
+import { UserEntityModule } from '@db/user/user-entity.module';
+import { MangaEntitiesModule } from '@db/manga/manga-entities.module';
 //Guard
 import { PayloadMiddleware } from './middleware/payload.middleware';
 import { RelationsMiddleware } from './middleware/relations.middleware';
 import { OrderMangaMiddleware } from './middleware/order-manga.middleware';
 //Controllers
-import { MangaController } from './controller/manga.controller';
-import { ArtistController } from './controller/artist.controller';
-import { GenreController } from './controller/genre.controller';
-import { LanguageController } from './controller/language.controller';
-import { MangaService } from './services/manga.service';
-import { ArtistService } from './services/artist.service';
-import { GenreService } from './services/genre.service';
-import { LanguageService } from './services/language.service';
-import { UserService } from './services/user.service';
-import { UserEntityModule } from '@db/user/user-entity.module';
 import { UserController } from './controller/user.controller';
-import { EventsGateway } from './events/events.gateway';
+import { MangaController } from './controller/manga.controller';
+import { GenreController } from './controller/genre.controller';
+import { ArtistController } from './controller/artist.controller';
+import { LanguageController } from './controller/language.controller';
+// Services
 import { UtilsService } from './services/utils.service';
+import { UserService } from './services/user.service';
+import { MangaService } from './services/manga.service';
+import { GenreService } from './services/genre.service';
+import { ArtistService } from './services/artist.service';
 import { CommentService } from './services/comment.service';
-import { MangaEntitiesModule } from '@db/manga/manga-entities.module';
+import { LanguageService } from './services/language.service';
+// Gateways
+import { EventsGateway } from './events/events.gateway';
 
 @Module({
   imports: [UserEntityModule, MangaEntitiesModule, SharedModule],
   controllers: [
-    MangaController,
-    ArtistController,
-    GenreController,
-    LanguageController,
     UserController,
+    MangaController,
+    GenreController,
+    ArtistController,
+    LanguageController,
   ],
   providers: [
-    MangaService,
-    ArtistService,
-    GenreService,
-    LanguageService,
     UserService,
-    EventsGateway,
+    MangaService,
+    GenreService,
     UtilsService,
+    ArtistService,
     CommentService,
+    LanguageService,
+    // Gateways
+    EventsGateway,
   ],
 })
 export class MangaModule implements NestModule {
