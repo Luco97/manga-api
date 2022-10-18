@@ -29,6 +29,7 @@
     "@nestjs/platform-socket.io": "^8.3.1",
     "@nestjs/typeorm": "^8.1.2",
     "@nestjs/websockets": "^8.3.1",
+    "@types/nodemailer": "^6.4.6",
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
