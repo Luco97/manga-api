@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-const nodemailer = require('nodemailer');
+// const nodemailer = require('nodemailer');
+import { Transporter, createTransport } from 'nodemailer';
 
 @Injectable()
 export class MailerService {
-  private transport: any;
+  private transport: Transporter;
   constructor() {
-    this.transport = nodemailer.createTransport({
+    this.transport = createTransport({
       service: process.env.MAIL_SERVICE,
       auth: {
         user: process.env.MAIL_USER,
